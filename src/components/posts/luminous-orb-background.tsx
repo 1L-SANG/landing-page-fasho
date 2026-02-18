@@ -10,12 +10,15 @@ const LuminousOrbBackground = () => {
             const scrollY = window.scrollY;
             const windowHeight = window.innerHeight;
             if (scrollY < windowHeight) {
-                setOpacity(1);
+                const heroProgress = Math.min(scrollY / windowHeight, 1);
+                const heroOpacityFactor = 0.32 + heroProgress * 0.68;
+                setOpacity(heroOpacityFactor);
             } else {
                 const fadeAmount = Math.min((scrollY - windowHeight) / (windowHeight * 2), 0.3);
                 setOpacity(1 - fadeAmount);
             }
         };
+        handleScroll();
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);

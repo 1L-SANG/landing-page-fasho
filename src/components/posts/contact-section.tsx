@@ -34,7 +34,10 @@ const ContactSection = () => {
                     <div className="grid md:grid-cols-2">
                         {/* Left - Contact Info */}
                         <div className="border-b border-white/10 p-10 md:border-b-0 md:border-r md:p-14">
-                            <h2 className="mb-4 text-[28px] font-bold text-white md:text-[32px]">
+                            <h2
+                                className="mb-4 text-[28px] font-bold tracking-[0.015em] text-white md:text-[32px]"
+                                style={{ wordSpacing: '0.06em' }}
+                            >
                                 문의하기
                             </h2>
                             <p className="mb-12 whitespace-pre-line text-[16px] text-white/60">
@@ -61,12 +64,12 @@ const ContactSection = () => {
                                     <div>
                                         <p className="mb-1 text-[13px] text-white/40">이메일</p>
                                         <a
-                                            href="mailto:ilsang@wearless.ai"
+                                            href="mailto:ilsang@wearless.kr"
                                             className="text-[17px] font-medium text-white transition-opacity hover:opacity-80"
                                             tabIndex={0}
                                             aria-label="이메일 보내기"
                                         >
-                                            ilsang@wearless.ai
+                                            ilsang@wearless.kr
                                         </a>
                                     </div>
                                 </div>
@@ -75,11 +78,16 @@ const ContactSection = () => {
 
                         {/* Right - CTA */}
                         <div className="flex flex-col items-center justify-center p-10 text-center md:p-14">
-                            <h2 className="mb-4 text-[28px] font-bold text-white md:text-[32px]">
+                            <h2
+                                className="mb-4 text-[28px] font-bold tracking-[0.015em] text-white md:text-[32px]"
+                                style={{ wordSpacing: '0.06em' }}
+                            >
                                 지금 바로 시작하세요
                             </h2>
                             <p className="mb-10 text-[16px] text-white/60">
-                                Wearless의 혜택을 지금 전부 받아가세요.
+                                Wearless Pro plan을 75% 할인된 가격에,
+                                <br />
+                                만날 수 있는 처음이자 마지막 이벤트에요.
                             </p>
                             <Button
                                 variant="ghost"
@@ -87,7 +95,7 @@ const ContactSection = () => {
                                 className="mt-8 rounded-xl border-0 bg-white px-12 py-3 text-[18px] font-semibold text-[#1A1A1A] shadow-lg hover:scale-105 hover:bg-white/90 hover:text-[#1A1A1A]"
                                 onClick={triggerHeroSurveyFromCta}
                             >
-                                지금 시작하기
+                                할인혜택 받으러가기
                             </Button>
                         </div>
                     </div>
