@@ -109,8 +109,8 @@ const FeaturesSection = () => {
                         className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}
                         style={{ zIndex: 2 }}
                     >
-                        <GradientBorderContainer>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                        <GradientBorderContainer disableHover>
+                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
                                 <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[0].title}</h3>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[0].description}</p>
                             </div>
@@ -150,8 +150,8 @@ const FeaturesSection = () => {
                         className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
                         style={{ zIndex: 2 }}
                     >
-                        <GradientBorderContainer>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                        <GradientBorderContainer disableHover>
+                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
                                 <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[1].title}</h3>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[1].description}</p>
                             </div>
@@ -163,8 +163,8 @@ const FeaturesSection = () => {
                         className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}
                         style={{ transitionDelay: '150ms', zIndex: 2 }}
                     >
-                        <GradientBorderContainer>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                        <GradientBorderContainer disableHover>
+                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
                                 <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[2].title}</h3>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[2].description}</p>
                             </div>
@@ -176,8 +176,8 @@ const FeaturesSection = () => {
                         className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
                         style={{ transitionDelay: '150ms', zIndex: 2 }}
                     >
-                        <GradientBorderContainer>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                        <GradientBorderContainer disableHover>
+                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
                                 <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[3].title}</h3>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[3].description}</p>
                             </div>

@@ -93,45 +93,62 @@ const HeroSection = () => {
                 스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요.
             </p>
 
-            {/* CTA Button — hides when survey is open */}
+            {/* CTA + Survey Transition */}
             <div
-                className="animate-fade-in"
-                style={{
-                    animationDelay: '0.7s',
-                    animationDuration: '0.6s',
-                    transition: 'all 0.5s cubic-bezier(0.16,1,0.3,1)',
-                    opacity: isSurveyOpen ? 0 : 1,
-                    transform: isSurveyOpen ? 'translateY(-10px) scale(0.95)' : 'translateY(0) scale(1)',
-                    maxHeight: isSurveyOpen ? '0px' : '100px',
-                    overflow: 'hidden',
-                    marginBottom: isSurveyOpen ? '0px' : undefined,
-                }}
+                className="mx-auto w-full max-w-[500px] animate-fade-in"
+                style={{ animationDelay: '0.7s', animationDuration: '0.6s' }}
             >
-                <Button variant="cta" size="lg" onClick={handleOpenSurvey}>
-                    지금 시작하기
-                </Button>
-            </div>
+                <div
+                    className="grid transition-[grid-template-rows] duration-[650ms]"
+                    style={{
+                        gridTemplateRows: isSurveyOpen ? '0fr 1fr' : '1fr 0fr',
+                        transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
+                    }}
+                >
+                    <div className="overflow-hidden">
+                        <div
+                            className="flex justify-center pb-2 transition-all duration-[650ms]"
+                            style={{
+                                transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
+                                opacity: isSurveyOpen ? 0 : 1,
+                                transform: isSurveyOpen
+                                    ? 'translateY(-12px) scale(0.96)'
+                                    : 'translateY(0) scale(1)',
+                                pointerEvents: isSurveyOpen ? 'none' : 'auto',
+                            }}
+                        >
+                            <Button id="hero-start-cta" variant="cta" size="lg" onClick={handleOpenSurvey}>
+                                지금 시작하기
+                            </Button>
+                        </div>
+                    </div>
 
-            {/* Inline Survey — appears when CTA is clicked */}
-            <div
-                className="w-full"
-                style={{
-                    transition: 'margin-top 0.5s cubic-bezier(0.16,1,0.3,1)',
-                    marginTop: isSurveyOpen ? '0px' : '-8px',
-                }}
-            >
-                <SurveyInline open={isSurveyOpen} onClose={handleCloseSurvey} />
+                    <div className="overflow-hidden">
+                        <div
+                            className="pt-1 transition-all duration-[650ms]"
+                            style={{
+                                transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
+                                opacity: isSurveyOpen ? 1 : 0,
+                                transform: isSurveyOpen
+                                    ? 'translateY(0) scale(1)'
+                                    : 'translateY(12px) scale(0.98)',
+                            }}
+                        >
+                            <SurveyInline open={isSurveyOpen} onClose={handleCloseSurvey} />
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Demo Video */}
             <div
-                className="mx-auto mt-4 w-full max-w-[900px] animate-fade-in"
+                className="relative z-20 mx-auto mt-4 w-full max-w-[900px] animate-fade-in"
                 style={{ animationDelay: '1.1s', animationDuration: '0.8s' }}
             >
                 <VideoContainer
                     src={HERO_VIDEO_URL}
                     aspectRatio="16/9"
-                    borderType="gradient"
+                    borderType="none"
                 />
             </div>
         </section>

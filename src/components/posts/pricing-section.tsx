@@ -6,6 +6,7 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { triggerHeroSurveyFromCta } from '@/lib/hero-survey-scroll';
 
 interface Plan {
     name: string;
@@ -62,7 +63,7 @@ const PricingCard = ({ plan, delay, onCtaClick }: { plan: Plan; delay: number; o
     }, []);
 
     const content = (
-        <div className={`flex h-full flex-col p-10 ${plan.recommended ? '' : 'border-[1.5px] border-[#E5E5E5] rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:border-[#1A1A1A] transition-all'}`}>
+        <div className={`flex h-full flex-col p-10 ${plan.recommended ? '' : 'rounded-[20px] border-[1.5px] border-[#E5E5E5] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)]'}`}>
             {/* Plan Name */}
             <p className={`mb-2 text-[16px] font-semibold ${plan.recommended ? 'text-[#1A1A1A]' : 'text-[#6B6B6B]'}`}>
                 {plan.name}
@@ -93,7 +94,7 @@ const PricingCard = ({ plan, delay, onCtaClick }: { plan: Plan; delay: number; o
             <Button
                 variant={plan.recommended ? 'primary' : 'ghost'}
                 size="md"
-                className={`w-full rounded-xl ${plan.recommended ? 'shadow-[0_4px_16px_rgba(0,0,0,0.15)]' : ''}`}
+                className={`w-full rounded-xl ${plan.recommended ? 'shadow-[0_4px_16px_rgba(0,0,0,0.15)]' : 'hover:border-[#E5E5E5] hover:text-[#6B6B6B]'}`}
                 onClick={onCtaClick}
                 aria-label={plan.ctaLabel}
                 tabIndex={0}
@@ -132,12 +133,7 @@ interface PricingSectionProps {
 }
 
 const PricingSection = ({ onCtaClick }: PricingSectionProps) => {
-    const handleScrollToContact = () => {
-        const element = document.getElementById('contact');
-        if (element) element.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    const handleCtaClick = onCtaClick ?? handleScrollToContact;
+    const handleCtaClick = onCtaClick ?? triggerHeroSurveyFromCta;
 
     return (
         <section

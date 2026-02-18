@@ -42,6 +42,7 @@ const getOptionSpan = (count: number, index: number): string => {
  * ──────────────────────────────────────────────────── */
 
 const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
+    const EXIT_ANIMATION_MS = 560;
     const [stepIndex, setStepIndex] = useState(0);
     const [email, setEmail] = useState('');
     const [inputValue, setInputValue] = useState('');
@@ -50,6 +51,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
     const [splitSelection, setSplitSelection] = useState<SplitState>({ left: null, right: null });
     const [cardBounce, setCardBounce] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const [shouldRender, setShouldRender] = useState(open);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const currentStep = SURVEY_STEPS[stepIndex] as SurveyStep;
@@ -57,29 +59,34 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
 
     /* Visibility transition */
     useEffect(() => {
+        let closeTimer: ReturnType<typeof setTimeout> | undefined;
+
         if (open) {
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => setIsVisible(true));
-            });
+            setShouldRender(true);
+            requestAnimationFrame(() => setIsVisible(true));
         } else {
             setIsVisible(false);
+            closeTimer = setTimeout(() => {
+                setShouldRender(false);
+            }, EXIT_ANIMATION_MS);
         }
-    }, [open]);
 
-    /* Reset state when closing */
+        return () => {
+            if (closeTimer) clearTimeout(closeTimer);
+        };
+    }, [open, EXIT_ANIMATION_MS]);
+
+    /* Reset state when fully closed */
     useEffect(() => {
-        if (!open) {
-            const timer = setTimeout(() => {
-                setStepIndex(0);
-                setEmail('');
-                setAnswers({});
-                setInputValue('');
-                setMultiSelection([]);
-                setSplitSelection({ left: null, right: null });
-            }, 500);
-            return () => clearTimeout(timer);
+        if (!shouldRender) {
+            setStepIndex(0);
+            setEmail('');
+            setAnswers({});
+            setInputValue('');
+            setMultiSelection([]);
+            setSplitSelection({ left: null, right: null });
         }
-    }, [open]);
+    }, [shouldRender]);
 
     /* Scroll into view when opened */
     useEffect(() => {
@@ -214,7 +221,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
     };
 
     /* ── Guard ── */
-    if (!open && !isVisible) return null;
+    if (!shouldRender) return null;
 
     /* ────────────────────────────────────────────────────
      *  Render — Inline (not modal)
@@ -225,11 +232,13 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
             ref={containerRef}
             className="w-full max-w-[500px] mx-auto"
             style={{
-                transition: 'all 0.6s cubic-bezier(0.16,1,0.3,1)',
+                transition:
+                    'opacity 0.56s cubic-bezier(0.16,1,0.3,1), transform 0.56s cubic-bezier(0.16,1,0.3,1), max-height 0.56s cubic-bezier(0.16,1,0.3,1)',
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.96)',
                 maxHeight: isVisible ? '800px' : '0px',
                 overflow: 'hidden',
+                willChange: 'opacity, transform, max-height',
             }}
         >
             {/* Glass Card */}

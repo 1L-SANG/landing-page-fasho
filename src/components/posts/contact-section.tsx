@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { User, Mail } from 'lucide-react';
 import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
 import { Button } from '@/components/ui/button';
+import { triggerHeroSurveyFromCta } from '@/lib/hero-survey-scroll';
 
 const ContactSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -84,10 +85,7 @@ const ContactSection = () => {
                                 variant="ghost"
                                 size="lg"
                                 className="mt-8 rounded-xl border-0 bg-white px-12 py-3 text-[18px] font-semibold text-[#1A1A1A] shadow-lg hover:scale-105 hover:bg-white/90 hover:text-[#1A1A1A]"
-                                onClick={() => {
-                                    const el = document.getElementById('home');
-                                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                                }}
+                                onClick={triggerHeroSurveyFromCta}
                             >
                                 지금 시작하기
                             </Button>

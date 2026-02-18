@@ -57,19 +57,19 @@ const HowItWorksSection = () => {
                         return (
                             <div
                                 key={i}
-                                className={`group relative transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                                className={`relative transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                                 style={{ transitionDelay: `${i * 150}ms` }}
                             >
                                 {/* Card with monotone gradient border */}
                                 <div
-                                    className="h-full rounded-[20px] p-[1px] transition-shadow hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)]"
+                                    className="h-full rounded-[20px] p-[1px]"
                                     style={{ background: 'linear-gradient(to bottom right, #1A1A1A, #4A4A4A, #6B6B6B)' }}
                                 >
-                                    <div className="flex h-full flex-col rounded-[20px] bg-white p-8 transition-transform group-hover:-translate-y-2">
+                                    <div className="flex h-full flex-col rounded-[20px] bg-white p-8">
                                         <Icon
                                             size={48}
                                             strokeWidth={1.5}
-                                            className="mb-5 text-[#9E9E9E] transition-colors group-hover:text-[#1A1A1A]"
+                                            className="mb-5 text-[#9E9E9E]"
                                             aria-hidden="true"
                                         />
                                         <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-[#1A1A1A] text-[16px] font-bold text-white">
