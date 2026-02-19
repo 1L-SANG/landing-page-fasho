@@ -117,118 +117,118 @@ const FeaturesSection = () => {
                         </GradientBorderContainer>
                     </div>
 
-                    {/* Center Video (row-span-2) */}
-                    <div
-                        className="row-span-2 flex items-center justify-center relative"
-                        style={{
-                            transition: 'all 0.8s ease-out',
-                            opacity: isVisible ? 1 : 0,
-                            transform: isVisible ? 'scale(1)' : 'scale(0.95)',
-                            transitionDelay: '200ms',
-                            zIndex: 3,
-                        }}
-                    >
-                        <div className="w-full px-4">
-                            <MonotoneBorderContainer>
-                                <div className="relative overflow-hidden bg-[#0A0A0A]" style={{ aspectRatio: '16/9' }}>
-                                    <video
-                                        ref={videoRef}
-                                        className="video-no-controls absolute inset-0 h-full w-full object-cover"
-                                        muted
-                                        loop
-                                        playsInline
-                                    >
-                                        <source src={FEATURES_VIDEO_URL} type="video/mp4" />
-                                    </video>
-                                </div>
-                            </MonotoneBorderContainer>
-                        </div>
-                    </div>
-
-                    {/* Top Right */}
-                    <div
-                        className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
-                        style={{ zIndex: 2 }}
-                    >
-                        <GradientBorderContainer disableHover>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[1].title}</h3>
-                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B] whitespace-pre-line">{FEATURES[1].description}</p>
-                            </div>
-                        </GradientBorderContainer>
-                    </div>
-
-                    {/* Bottom Left */}
-                    <div
-                        className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}
-                        style={{ transitionDelay: '150ms', zIndex: 2 }}
-                    >
-                        <GradientBorderContainer disableHover>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[2].title}</h3>
-                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B] whitespace-pre-line">{FEATURES[2].description}</p>
-                            </div>
-                        </GradientBorderContainer>
-                    </div>
-
-                    {/* Bottom Right */}
-                    <div
-                        className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
-                        style={{ transitionDelay: '150ms', zIndex: 2 }}
-                    >
-                        <GradientBorderContainer disableHover>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[3].title}</h3>
-                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B] whitespace-pre-line">{FEATURES[3].description}</p>
-                            </div>
-                        </GradientBorderContainer>
-                    </div>
-                </div>
-
-                {/* Mobile: stacked layout */}
-                <div className="lg:hidden">
-                    {/* Mobile Video */}
-                    <div
-                        className={`mx-auto mb-12 max-h-[500px] transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
-                    >
-                        <GradientBorderContainer>
-                            <div className="relative overflow-hidden bg-[#0A0A0A]" style={{ aspectRatio: '9/16', maxHeight: '500px' }}>
+                {/* Center Video (row-span-2) */}
+                <div
+                    className="row-span-2 flex items-center justify-center relative"
+                    style={{
+                        transition: 'all 0.8s ease-out',
+                        opacity: isVisible ? 1 : 0,
+                        transform: isVisible ? 'scale(1)' : 'scale(0.95)',
+                        transitionDelay: '200ms',
+                        zIndex: 3,
+                    }}
+                >
+                    <div className="w-full px-4">
+                        <MonotoneBorderContainer>
+                            <div className="relative overflow-hidden bg-[#0A0A0A]" style={{ aspectRatio: '16/9' }}>
                                 <video
+                                    ref={videoRef}
                                     className="video-no-controls absolute inset-0 h-full w-full object-cover"
                                     muted
                                     loop
                                     playsInline
-                                    autoPlay
                                 >
                                     <source src={FEATURES_VIDEO_URL} type="video/mp4" />
                                 </video>
                             </div>
-                        </GradientBorderContainer>
-                    </div>
-
-                    {/* Mobile Feature Cards */}
-                    <div className="space-y-12">
-                        {FEATURES.map((feature, i) => (
-                            <div
-                                key={i}
-                                className={`text-center transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                                style={{ transitionDelay: `${i * 150}ms` }}
-                            >
-                                <div className="mx-auto mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-full text-[14px] font-bold text-white"
-                                    style={{ background: MOBILE_GRADIENTS[i] }}
-                                >
-                                    {String(i + 1).padStart(2, '0')}
-                                </div>
-                                <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white/80 p-6">
-                                    <h3 className="mb-3 text-[22px] font-bold text-[#1A1A1A] md:text-[26px]">{feature.title}</h3>
-                                    <p className="text-[15px] leading-[1.7] text-[#6B6B6B] whitespace-pre-line">{feature.description}</p>
-                                </div>
-                            </div>
-                        ))}
+                        </MonotoneBorderContainer>
                     </div>
                 </div>
+
+                {/* Top Right */}
+                <div
+                    className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
+                    style={{ zIndex: 2 }}
+                >
+                    <GradientBorderContainer disableHover>
+                        <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
+                            <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[1].title}</h3>
+                            <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[1].description}</p>
+                        </div>
+                    </GradientBorderContainer>
+                </div>
+
+                {/* Bottom Left */}
+                <div
+                    className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}
+                    style={{ transitionDelay: '150ms', zIndex: 2 }}
+                >
+                    <GradientBorderContainer disableHover>
+                        <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
+                            <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[2].title}</h3>
+                            <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[2].description}</p>
+                        </div>
+                    </GradientBorderContainer>
+                </div>
+
+                {/* Bottom Right */}
+                <div
+                    className={`relative transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
+                    style={{ transitionDelay: '150ms', zIndex: 2 }}
+                >
+                    <GradientBorderContainer disableHover>
+                        <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
+                            <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[3].title}</h3>
+                            <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[3].description}</p>
+                        </div>
+                    </GradientBorderContainer>
+                </div>
             </div>
-        </section>
+
+            {/* Mobile: stacked layout */}
+            <div className="lg:hidden">
+                {/* Mobile Video */}
+                <div
+                    className={`mx-auto mb-12 max-h-[500px] transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+                >
+                    <GradientBorderContainer>
+                        <div className="relative overflow-hidden bg-[#0A0A0A]" style={{ aspectRatio: '9/16', maxHeight: '500px' }}>
+                            <video
+                                className="video-no-controls absolute inset-0 h-full w-full object-cover"
+                                muted
+                                loop
+                                playsInline
+                                autoPlay
+                            >
+                                <source src={FEATURES_VIDEO_URL} type="video/mp4" />
+                            </video>
+                        </div>
+                    </GradientBorderContainer>
+                </div>
+
+                {/* Mobile Feature Cards */}
+                <div className="space-y-12">
+                    {FEATURES.map((feature, i) => (
+                        <div
+                            key={i}
+                            className={`text-center transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                            style={{ transitionDelay: `${i * 150}ms` }}
+                        >
+                            <div className="mx-auto mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-full text-[14px] font-bold text-white"
+                                style={{ background: MOBILE_GRADIENTS[i] }}
+                            >
+                                {String(i + 1).padStart(2, '0')}
+                            </div>
+                            <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white/80 p-6">
+                                <h3 className="mb-3 text-[22px] font-bold text-[#1A1A1A] md:text-[26px]">{feature.title}</h3>
+                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{feature.description}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+        </section >
     );
 };
 

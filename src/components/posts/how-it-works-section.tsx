@@ -13,8 +13,8 @@ interface Step {
 }
 
 const STEPS: Step[] = [
-    { icon: Upload, number: '1', title: '제품 사진 업로드', description: '스마트폰으로 찍은 사진으로도 충분해요.' },
-    { icon: Sliders, number: '2', title: '기능 선택', description: 'Wearless의 다양한 기능들 중, 원하는 기능을 사용해보세요.' },
+    { icon: Upload, number: '1', title: '제품 사진 업로드', description: '스마트폰으로 찍은 사진으로도\n충분해요.' },
+    { icon: Sliders, number: '2', title: '기능 선택', description: 'Wearless의 다양한 기능들 중, \n원하는 기능을 사용해보세요.' },
     { icon: Sparkles, number: '3', title: 'AI 이미지 생성', description: '구도, 포즈, 디테일을 직관적으로 수정하며 완성도를 높이세요.' },
     { icon: Download, number: '4', title: '결과물 다운로드', description: '결과물을 바로 다운로드해서\n쇼핑몰에 적용하세요.' },
 ];
@@ -60,23 +60,22 @@ const HowItWorksSection = () => {
                                 className={`relative transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                                 style={{ transitionDelay: `${i * 150}ms` }}
                             >
-                                {/* Card with monotone gradient border */}
+                                {/* Card with subtle border */}
                                 <div
                                     className="h-full rounded-[20px] p-[1px]"
-                                    style={{ background: 'linear-gradient(to bottom right, #1A1A1A, #4A4A4A, #6B6B6B)' }}
+                                    style={{ background: 'linear-gradient(to bottom right, #444, #333, #2A2A2A)' }}
                                 >
-                                    <div className="flex h-full flex-col rounded-[20px] bg-white p-8">
-                                        <Icon
-                                            size={48}
-                                            strokeWidth={1.5}
-                                            className="mb-5 text-[#9E9E9E]"
-                                            aria-hidden="true"
-                                        />
-                                        <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-[#1A1A1A] text-[16px] font-bold text-white">
-                                            {step.number}
+                                    <div className="flex h-full flex-col rounded-[20px] bg-[#2A2A2A] p-8">
+                                        <div className="mb-6 flex h-[52px] w-[52px] items-center justify-center rounded-[14px] bg-[#4A4A4A]">
+                                            <Icon
+                                                size={26}
+                                                strokeWidth={1.8}
+                                                className="text-white/90"
+                                                aria-hidden="true"
+                                            />
                                         </div>
-                                        <h3 className="mb-3 text-[20px] font-semibold text-[#1A1A1A]">{step.title}</h3>
-                                        <p className="whitespace-pre-line text-[15px] leading-[1.6] text-[#6B6B6B]">{step.description}</p>
+                                        <h3 className="mb-3 text-[18px] font-bold text-white">{step.title}</h3>
+                                        <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#CCC]">{step.description}</p>
                                     </div>
                                 </div>
 
