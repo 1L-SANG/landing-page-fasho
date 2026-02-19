@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { VideoContainer } from '@/components/ui/video-container';
 import { SurveyInline } from '@/components/survey/SurveyInline';
 
-const HERO_VIDEO_URL = '/video/demo.mov';
+const HERO_VIDEO_URL = '/video/real demo 1.mov';
 
 const HeroSection = () => {
     const [isSurveyOpen, setIsSurveyOpen] = useState(false);
@@ -130,7 +130,7 @@ const HeroSection = () => {
                 <VideoContainer
                     src={HERO_VIDEO_URL}
                     aspectRatio="16/9"
-                    borderType="none"
+                    borderType="gradient"
                 />
             </div>
         </section>
