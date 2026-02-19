@@ -2,6 +2,13 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
+import {
+    trackMetaLead,
+    trackMetaSubmitApplication,
+    trackMetaCompleteRegistration,
+    trackGASurveyStart,
+    trackGASurveyComplete,
+} from '@/lib/analytics';
 import { FaceIcon } from '@/components/survey/icons/face-icon';
 import { NoFaceIcon } from '@/components/survey/icons/no-face-icon';
 
@@ -64,6 +71,10 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
         if (open) {
             setShouldRender(true);
             requestAnimationFrame(() => setIsVisible(true));
+
+            /* Analytics: survey opened */
+            trackMetaLead();
+            trackGASurveyStart();
         } else {
             setIsVisible(false);
             closeTimer = setTimeout(() => {
@@ -134,6 +145,17 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
 
         if (SURVEY_STEPS[nextIndex]?.type === 'done') {
             console.log('Survey completed:', { email, answers: newAnswers });
+
+            /* Analytics: survey completed */
+            trackMetaCompleteRegistration();
+
+            const roleIndex = newAnswers.role as number | undefined;
+            const roleStep = SURVEY_STEPS.find((s) => s.id === 'role');
+            const roleName =
+                roleIndex !== undefined && roleStep?.options?.[roleIndex]
+                    ? roleStep.options[roleIndex].text
+                    : 'unknown';
+            trackGASurveyComplete(roleName);
         }
 
         setStepIndex(nextIndex);
@@ -161,6 +183,9 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
     const handleEmailSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (email.trim() && email.includes('@')) {
+            /* Analytics: email submitted */
+            trackMetaSubmitApplication();
+
             setCardBounce(true);
             setTimeout(() => {
                 setCardBounce(false);
