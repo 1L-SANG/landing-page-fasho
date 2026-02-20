@@ -258,7 +258,7 @@ const FeaturesSection = () => {
                                     <h3 className="mb-3 text-[22px] font-bold text-[#1A1A1A] md:text-[26px]">
                                         {feature.title}
                                     </h3>
-                                    <p className="whitespace-pre-line text-[15px] leading-[1.7] text-[#6B6B6B]">
+                                    <p className="whitespace-normal md:whitespace-pre-line text-[15px] leading-[1.7] text-[#6B6B6B]">
                                         {feature.description}
                                     </p>
                                 </div>

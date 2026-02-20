@@ -92,7 +92,7 @@ const ContactSection = () => {
                             <Button
                                 variant="ghost"
                                 size="lg"
-                                className="mt-8 rounded-xl border-0 bg-white px-12 py-3 text-[18px] font-semibold text-[#1A1A1A] shadow-lg hover:scale-105 hover:bg-white/90 hover:text-[#1A1A1A]"
+                                className="mt-8 rounded-xl border-0 bg-white px-12 py-3 text-[18px] font-bold text-[#1A1A1A] shadow-lg hover:scale-105 hover:bg-white/90 hover:text-[#1A1A1A]"
                                 onClick={triggerHeroSurveyFromCta}
                             >
                                 할인혜택 받으러가기
