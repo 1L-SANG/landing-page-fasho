@@ -209,11 +209,11 @@ html {
 /* --- Gradient Border Container Animations --- */
 @keyframes gradientShift {
   0% {
-    filter: hue-rotate(0deg);
+    background-position: 0% 50%;
   }
 
   100% {
-    filter: hue-rotate(360deg);
+    background-position: 200% 50%;
   }
 }
 
@@ -256,19 +256,23 @@ html {
   pointer-events: none;
 }
 
-/* --- Mobile Menu Fade In --- */
-@keyframes fadeIn {
+/* --- Hero Entrance Fade In --- */
+@keyframes fadeInUp {
   from {
     opacity: 0;
+    transform: translate3d(0, 14px, 0);
   }
 
   to {
     opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.25s ease-out;
+  opacity: 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity, transform;
 }
 
 /* --- Survey Modal Keyframes --- */

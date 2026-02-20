@@ -11,6 +11,7 @@ interface VideoContainerProps {
     poster?: string;
     aspectRatio?: string;
     borderType?: BorderType;
+    preload?: 'none' | 'metadata' | 'auto';
     className?: string;
 }
 
@@ -19,9 +20,10 @@ const VideoContainer = ({
     poster,
     aspectRatio = '16/9',
     borderType = 'gradient',
+    preload = 'metadata',
     className = '',
 }: VideoContainerProps) => {
-    const videoRef = useVideoAutoplay();
+    const videoRef = useVideoAutoplay({ threshold: 0.2, rootMargin: '120px 0px' });
 
     const getVideoType = (url: string): string => {
         const ext = url.split('.').pop()?.toLowerCase();
@@ -41,10 +43,12 @@ const VideoContainer = ({
                 className="absolute inset-0 h-full w-full object-cover video-no-controls"
                 muted
                 loop
+                autoPlay
                 playsInline
+                preload={preload}
                 poster={
                     poster ??
-                    `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%23F5F5F7' width='1600' height='900'/%3E%3C/svg%3E`
+                    `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%230A0A0A' width='1600' height='900'/%3E%3C/svg%3E`
                 }
             >
                 {isMov ? (

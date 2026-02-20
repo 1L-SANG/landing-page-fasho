@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
 import { FaceIcon } from '@/components/survey/icons/face-icon';
 import { NoFaceIcon } from '@/components/survey/icons/no-face-icon';
@@ -22,6 +23,12 @@ type SplitState = { left: number | null; right: number | null };
  * ──────────────────────────────────────────────────── */
 
 const ACTIVE_TYPES = ['select', 'input', 'multi-select', 'split-select', 'image-select'];
+const INVITE_KEYWORD_GRADIENT_STYLE = {
+    background: 'linear-gradient(135deg, #7465E0, #4F79E8, #87A8F3)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+};
 
 const getSelectGrid = (count: number): string => {
     if (count === 2) return 'grid-cols-2';
@@ -285,10 +292,14 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                     {/* ── EMAIL ── */}
                     {currentStep.type === 'email' && (
                         <div className="text-center">
-                            <div className="mx-auto mb-3.5 inline-flex h-11 w-11 items-center justify-center rounded-[13px] bg-[#1A1A1A]">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
-                                    <path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6M22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6M22 6L12 13L2 6" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
+                            <div className="mx-auto mb-3.5 inline-flex items-center justify-center">
+                                <Image
+                                    src="/logo.png"
+                                    alt="Wearless Logo"
+                                    width={44}
+                                    height={44}
+                                    className="object-contain"
+                                />
                             </div>
                             <p className="mb-1.5 text-[19px] font-bold tracking-tight text-[#111]">{currentStep.title}</p>
                             <p className="mb-5 text-[13.5px] leading-relaxed text-[#999]">{currentStep.desc}</p>
@@ -321,27 +332,19 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                     {currentStep.type === 'survey-invite' && (
                         <div className="pt-3.5 text-center">
                             <p className="mb-7 text-[20px] font-bold leading-snug tracking-tight text-[#111]">
-                                잠깐!{' '}
+                                잠깐!
+                                <br className="md:hidden" />
+                                <span className="hidden md:inline">&nbsp;</span>
                                 <span
                                     className="font-black"
-                                    style={{
-                                        background: 'linear-gradient(135deg, #8B7FD4, #6A9BE8, #9BB8F0)',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent',
-                                        backgroundClip: 'text',
-                                    }}
+                                    style={INVITE_KEYWORD_GRADIENT_STYLE}
                                 >
                                     Pro 플랜
                                 </span>
                                 을{' '}
                                 <span
                                     className="font-black"
-                                    style={{
-                                        background: 'linear-gradient(135deg, #8B7FD4, #6A9BE8, #9BB8F0)',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent',
-                                        backgroundClip: 'text',
-                                    }}
+                                    style={INVITE_KEYWORD_GRADIENT_STYLE}
                                 >
                                     무료
                                 </span>

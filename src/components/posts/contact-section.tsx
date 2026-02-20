@@ -85,7 +85,7 @@ const ContactSection = () => {
                                 지금 바로 시작하세요
                             </h2>
                             <p className="mb-10 text-[16px] text-white/60">
-                                Wearless Pro plan을 75% 할인된 가격에,
+                                Wearless Pro plan을 무료로,
                                 <br />
                                 만날 수 있는 처음이자 마지막 이벤트에요.
                             </p>

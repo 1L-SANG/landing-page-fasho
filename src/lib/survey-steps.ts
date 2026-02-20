@@ -43,7 +43,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         id: 'email',
         type: 'email',
         title: '이메일로 전달해드릴게요',
-        desc: '누구보다 Wearless를 빠르게 체험하세요.',
+        desc: '누구보다 Wearless를 빠르게 체험해보세요.',
     },
     {
         id: 'survey_invite',

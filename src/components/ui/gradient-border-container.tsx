@@ -21,6 +21,8 @@ const GradientBorderContainer = ({
             style={{
                 background:
                     'conic-gradient(from 180deg, #12ADE6, #4C63FC, #DC4CFC, #FF0080, #EE00FF, #12B4E6, #12ADE6)',
+                backgroundSize: '200% 200%',
+                backgroundPosition: '0% 50%',
                 animation: 'gradientShift 8s linear infinite',
             }}
         >

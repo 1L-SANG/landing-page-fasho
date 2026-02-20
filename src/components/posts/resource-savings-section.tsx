@@ -76,26 +76,26 @@ const ResourceSavingsSection = () => {
 
                 {/* Stats Grid */}
                 <GradientBorderContainer innerClassName="bg-white">
-                    <div className="grid md:grid-cols-3">
+                    <div className="grid grid-cols-3">
                         {STATS.map((stat, i) => {
                             const Icon = stat.icon;
                             return (
                                 <div
                                     key={i}
-                                    className={`group p-10 text-center transition-all duration-700 hover:bg-gradient-to-b hover:from-[#FAFAFA] hover:to-white md:p-12 ${i < STATS.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#E5E5E5]' : ''
+                                    className={`group p-3 text-center transition-all duration-700 hover:bg-gradient-to-b hover:from-[#FAFAFA] hover:to-white sm:p-5 md:p-12 ${i < STATS.length - 1 ? 'border-r border-[#E5E5E5]' : ''
                                         } ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                                     style={{ transitionDelay: `${i * 100}ms` }}
                                 >
                                     {/* Icon */}
-                                    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl transition-transform hover:scale-110"
+                                    <div className="mx-auto mb-3 flex h-9 w-9 items-center justify-center rounded-xl transition-transform hover:scale-110 sm:mb-4 sm:h-12 sm:w-12 sm:rounded-2xl md:mb-5 md:h-16 md:w-16"
                                         style={{ background: stat.iconBg }}
                                     >
-                                        <Icon size={32} className="text-white" aria-hidden="true" />
+                                        <Icon className="h-5 w-5 text-white sm:h-6 sm:w-6 md:h-8 md:w-8" aria-hidden="true" />
                                     </div>
 
                                     {/* Value */}
                                     <div
-                                        className="mb-3 text-[48px] font-bold md:text-[56px]"
+                                        className="mb-1 text-[28px] font-bold sm:mb-2 sm:text-[38px] md:mb-3 md:text-[58px]"
                                         style={{
                                             background: stat.gradient,
                                             WebkitBackgroundClip: 'text',
@@ -106,15 +106,17 @@ const ResourceSavingsSection = () => {
                                     </div>
 
                                     {/* Label */}
-                                    <h3 className="mb-2 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">
+                                    <h3 className="mb-1 text-[15px] font-bold text-[#1A1A1A] sm:text-[19px] md:mb-2 md:text-[24px]">
                                         {stat.label}
                                     </h3>
 
                                     {/* Description */}
-                                    <p className="text-[15px] text-[#6B6B6B]">{stat.description}</p>
+                                    <p className="text-[11px] leading-[1.5] text-[#6B6B6B] sm:text-[13px] sm:leading-[1.6] md:text-[15px]">
+                                        {stat.description}
+                                    </p>
 
                                     {/* Bottom gradient line */}
-                                    <div className="mx-auto mt-6 h-[2px] w-24 scale-x-0 transition-transform group-hover:scale-x-100"
+                                    <div className="mx-auto mt-2 h-[2px] w-8 scale-x-0 transition-transform group-hover:scale-x-100 sm:mt-4 sm:w-14 md:mt-6 md:w-24"
                                         style={{ background: stat.gradient }}
                                     />
                                 </div>

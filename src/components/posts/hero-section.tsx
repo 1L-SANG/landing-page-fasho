@@ -46,13 +46,15 @@ const HeroSection = () => {
 
             {/* Headline */}
             <h1
-                className="mb-6 text-center text-[34px] font-bold leading-[1.1] tracking-[0.015em] md:text-[48px] lg:text-[56px] animate-fade-in"
+                className="mb-6 text-center text-[32px] font-bold leading-[1.1] tracking-[0.015em] sm:text-[34px] md:text-[48px] lg:text-[56px] animate-fade-in"
                 style={{ animationDelay: '0.2s', animationDuration: '0.6s', wordSpacing: '0.06em' }}
             >
                 <span className="text-[#1A1A1A]">
                     촬영에 힘 쏟지 마세요.
                     <br />
-                    쇼핑몰 대표님만을 위한 AI,
+                    <span className="inline-block whitespace-nowrap">
+                        쇼핑몰 대표님만을 위한 AI,
+                    </span>
                 </span>
                 <br />
                 <span
@@ -69,7 +71,7 @@ const HeroSection = () => {
 
             {/* Sub-headline */}
             <p
-                className="mx-auto mb-10 max-w-[540px] text-center text-[18px] font-medium tracking-[0.01em] leading-[1.7] text-[#3A3A3A] md:text-[20px] animate-fade-in"
+                className="mx-auto mb-10 max-w-[540px] whitespace-nowrap text-center text-[15px] max-[390px]:text-[14px] max-[360px]:text-[13px] font-medium tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:text-[18px] md:text-[20px] animate-fade-in"
                 style={{ animationDelay: '0.5s', animationDuration: '0.6s', wordSpacing: '0.05em' }}
             >
                 스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요.
@@ -125,12 +127,13 @@ const HeroSection = () => {
             {/* Demo Video */}
             <div
                 className="relative z-20 mx-auto mt-4 w-full max-w-[900px] animate-fade-in"
-                style={{ animationDelay: '1.1s', animationDuration: '0.8s' }}
+                style={{ animationDelay: '0.9s', animationDuration: '0.7s' }}
             >
                 <VideoContainer
                     src={HERO_VIDEO_URL}
                     aspectRatio="16/9"
                     borderType="gradient"
+                    preload="auto"
                 />
             </div>
         </section>

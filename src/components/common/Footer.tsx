@@ -35,7 +35,7 @@ const Footer = () => {
                     {/* Center - Company Info */}
                     <div className="space-y-1 text-center text-[13px] text-[#6B6B6B]">
                         <p>대표자: 정일상</p>
-                        <p>이메일: <a href="mailto:contact@wearless.ai" className="underline hover:text-[#1A1A1A] transition-colors">contact@wearless.ai</a></p>
+                        <p>이메일: <a href="mailto:ilsang@wearless.kr" className="underline hover:text-[#1A1A1A] transition-colors">ilsang@wearless.kr</a></p>
                     </div>
 
                     {/* Right - Links & Copyright */}

@@ -15,12 +15,11 @@ const FEATURES = [
     { title: '릴스용 템플릿', description: '인스타그램에서 인기 있는 릴스들을 선택해서 트렌드에 맞게 AI로 \n생성해보세요.' },
 ] as const;
 
-const MOBILE_GRADIENTS = [
-    'linear-gradient(135deg, #12ADE6, #4C63FC)',
-    'linear-gradient(135deg, #4C63FC, #DC4CFC)',
-    'linear-gradient(135deg, #DC4CFC, #FF0080)',
-    'linear-gradient(135deg, #FF0080, #12ADE6)',
-];
+const NUMBER_BADGE_STYLE = {
+    background: 'linear-gradient(145deg, #050505 0%, #1A1A1A 58%, #000000 100%)',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.28), 0 6px 14px rgba(0,0,0,0.35)',
+    border: '1px solid rgba(255,255,255,0.78)',
+};
 
 const FeaturesSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -53,7 +52,7 @@ const FeaturesSection = () => {
                 <SectionHeader
                     label="WHY WEARLESS"
                     title="왜 Wearless인가요?"
-                    subtitle="쇼핑몰 대표님만을 위해 만들어진 서비스니까."
+                    subtitle="Wearless만이 가지고 있으니까요."
                 />
 
                 {/* Desktop: 3-col grid with center video */}
@@ -111,7 +110,15 @@ const FeaturesSection = () => {
                     >
                         <GradientBorderContainer disableHover>
                             <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[0].title}</h3>
+                                <div className="mb-3 flex items-center gap-3">
+                                    <span
+                                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white"
+                                        style={NUMBER_BADGE_STYLE}
+                                    >
+                                        1
+                                    </span>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[0].title}</h3>
+                                </div>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B] whitespace-pre-line">{FEATURES[0].description}</p>
                             </div>
                         </GradientBorderContainer>
@@ -153,7 +160,15 @@ const FeaturesSection = () => {
                     >
                         <GradientBorderContainer disableHover>
                             <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[1].title}</h3>
+                                <div className="mb-3 flex items-center gap-3">
+                                    <span
+                                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white"
+                                        style={NUMBER_BADGE_STYLE}
+                                    >
+                                        2
+                                    </span>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[1].title}</h3>
+                                </div>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[1].description}</p>
                             </div>
                         </GradientBorderContainer>
@@ -166,7 +181,15 @@ const FeaturesSection = () => {
                     >
                         <GradientBorderContainer disableHover>
                             <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[2].title}</h3>
+                                <div className="mb-3 flex items-center gap-3">
+                                    <span
+                                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white"
+                                        style={NUMBER_BADGE_STYLE}
+                                    >
+                                        3
+                                    </span>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[2].title}</h3>
+                                </div>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[2].description}</p>
                             </div>
                         </GradientBorderContainer>
@@ -179,7 +202,15 @@ const FeaturesSection = () => {
                     >
                         <GradientBorderContainer disableHover>
                             <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <h3 className="mb-3 text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[3].title}</h3>
+                                <div className="mb-3 flex items-center gap-3">
+                                    <span
+                                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white"
+                                        style={NUMBER_BADGE_STYLE}
+                                    >
+                                        4
+                                    </span>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[3].title}</h3>
+                                </div>
                                 <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[3].description}</p>
                             </div>
                         </GradientBorderContainer>
@@ -190,22 +221,23 @@ const FeaturesSection = () => {
                 <div className="lg:hidden">
                     {/* Mobile Video */}
                     <div
-                        className={`mx-auto mb-12 max-h-[500px] transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+                        className={`mx-auto mb-10 w-full max-w-[900px] transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
                     >
-                        <GradientBorderContainer>
-                            <div className="relative overflow-hidden bg-[#0A0A0A]" style={{ aspectRatio: '9/16', maxHeight: '500px' }}>
+                        <MonotoneBorderContainer>
+                            <div className="relative aspect-video w-full overflow-hidden bg-[#0A0A0A]">
                                 <video
                                     className="video-no-controls absolute inset-0 h-full w-full object-cover"
                                     muted
                                     loop
                                     playsInline
                                     autoPlay
+                                    preload="metadata"
                                 >
                                     <source src={FEATURES_VIDEO_URL} type="video/mp4" />
                                     <source src={FEATURES_VIDEO_URL} type="video/quicktime" />
                                 </video>
                             </div>
-                        </GradientBorderContainer>
+                        </MonotoneBorderContainer>
                     </div>
 
                     {/* Mobile Feature Cards */}
@@ -216,14 +248,19 @@ const FeaturesSection = () => {
                                 className={`text-center transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                                 style={{ transitionDelay: `${i * 150}ms` }}
                             >
-                                <div className="mx-auto mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-full text-[14px] font-bold text-white"
-                                    style={{ background: MOBILE_GRADIENTS[i] }}
+                                <div
+                                    className="mx-auto mb-4 flex h-[40px] w-[40px] items-center justify-center rounded-full text-[14px] font-bold text-white"
+                                    style={NUMBER_BADGE_STYLE}
                                 >
                                     {String(i + 1).padStart(2, '0')}
                                 </div>
-                                <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white/80 p-6">
-                                    <h3 className="mb-3 text-[22px] font-bold text-[#1A1A1A] md:text-[26px]">{feature.title}</h3>
-                                    <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{feature.description}</p>
+                                <div className="rounded-2xl border border-[#9A9A9A] bg-white p-6">
+                                    <h3 className="mb-3 text-[22px] font-bold text-[#1A1A1A] md:text-[26px]">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="whitespace-pre-line text-[15px] leading-[1.7] text-[#6B6B6B]">
+                                        {feature.description}
+                                    </p>
                                 </div>
                             </div>
                         ))}
