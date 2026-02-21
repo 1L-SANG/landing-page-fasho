@@ -11,8 +11,8 @@ const FEATURES_VIDEO_URL = '/video/real demo 2.mov';
 const FEATURES = [
     { title: '레퍼런스 기반 생성', description: '원하는 느낌의 이미지를 구현해보세요.' },
     { title: '쇼핑몰 정체성 유지', description: '쇼핑몰에서 그동안 업로드하던 컷들의 무드를 반영해보세요.' },
-    { title: '다양한 컷 종류', description: '고스트컷부터 디테일컷, 일상컷, 스튜디오컷까지 원하는 컷을 생성해보세요.' },
-    { title: '릴스용 템플릿', description: '인스타그램에서 인기 있는 릴스를 선택해서 트렌드에 맞게 AI로 생성해보세요.' },
+    { title: '다양한 컷 종류', description: '고스트컷부터 디테일컷, 일상컷, 스튜디오컷까지 원하는 컷을 \n생성해보세요.' },
+    { title: '릴스용 템플릿', description: '인스타그램에서 인기 있는 릴스들을 선택해서 트렌드에 맞게 AI로 \n생성해보세요.' },
 ] as const;
 
 const NUMBER_BADGE_STYLE = {
@@ -117,9 +117,9 @@ const FeaturesSection = () => {
                                     >
                                         1
                                     </span>
-                                    <h3 className="typo-heading-card text-[#1A1A1A]">{FEATURES[0].title}</h3>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[0].title}</h3>
                                 </div>
-                                <p className="measure-28ch typo-body wrap-pretty text-kor-safe text-[#6B6B6B]">{FEATURES[0].description}</p>
+                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B] whitespace-pre-line">{FEATURES[0].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>
@@ -167,9 +167,9 @@ const FeaturesSection = () => {
                                     >
                                         2
                                     </span>
-                                    <h3 className="typo-heading-card text-[#1A1A1A]">{FEATURES[1].title}</h3>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[1].title}</h3>
                                 </div>
-                                <p className="measure-28ch typo-body wrap-pretty text-kor-safe text-[#6B6B6B]">{FEATURES[1].description}</p>
+                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[1].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>
@@ -188,9 +188,9 @@ const FeaturesSection = () => {
                                     >
                                         3
                                     </span>
-                                    <h3 className="typo-heading-card text-[#1A1A1A]">{FEATURES[2].title}</h3>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[2].title}</h3>
                                 </div>
-                                <p className="measure-28ch typo-body wrap-pretty text-kor-safe text-[#6B6B6B]">{FEATURES[2].description}</p>
+                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[2].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>
@@ -209,9 +209,9 @@ const FeaturesSection = () => {
                                     >
                                         4
                                     </span>
-                                    <h3 className="typo-heading-card text-[#1A1A1A]">{FEATURES[3].title}</h3>
+                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[3].title}</h3>
                                 </div>
-                                <p className="measure-28ch typo-body wrap-pretty text-kor-safe text-[#6B6B6B]">{FEATURES[3].description}</p>
+                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[3].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>
@@ -255,10 +255,10 @@ const FeaturesSection = () => {
                                     {String(i + 1).padStart(2, '0')}
                                 </div>
                                 <div className="rounded-2xl border border-[#9A9A9A] bg-white p-6">
-                                    <h3 className="mb-3 typo-heading-card text-[#1A1A1A]">
+                                    <h3 className="mb-3 text-[22px] font-bold text-[#1A1A1A] md:text-[26px]">
                                         {feature.title}
                                     </h3>
-                                    <p className="mx-auto measure-28ch typo-body wrap-pretty text-kor-safe text-[#6B6B6B]">
+                                    <p className="whitespace-normal md:whitespace-pre-line text-[15px] leading-[1.7] text-[#6B6B6B]">
                                         {feature.description}
                                     </p>
                                 </div>

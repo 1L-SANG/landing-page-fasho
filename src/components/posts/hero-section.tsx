@@ -22,7 +22,7 @@ const HeroSection = () => {
     return (
         <section
             id="home"
-            className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 pb-12 pt-[72px]"
+            className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 pb-12 pt-[72px]"
         >
             {/* Stats Badge */}
             <div
@@ -46,10 +46,17 @@ const HeroSection = () => {
 
             {/* Headline */}
             <h1
-                className="mb-6 text-center typo-heading-display wrap-balance text-kor-safe animate-fade-in"
-                style={{ animationDelay: '0.2s', animationDuration: '0.6s' }}
+                className="mb-6 text-center text-[32px] font-bold leading-[1.1] tracking-[0.015em] sm:text-[34px] md:text-[48px] lg:text-[56px] animate-fade-in"
+                style={{ animationDelay: '0.2s', animationDuration: '0.6s', wordSpacing: '0.06em' }}
             >
-                <span className="text-[#1A1A1A]">촬영에 힘 쏟지 마세요. 쇼핑몰 대표님만을 위한 AI, </span>
+                <span className="text-[#1A1A1A]">
+                    촬영에 힘 쏟지 마세요.
+                    <br />
+                    <span className="inline-block whitespace-nowrap">
+                        쇼핑몰 대표님만을 위한 AI,
+                    </span>
+                </span>
+                <br />
                 <span
                     className="relative inline-block"
                     style={{
@@ -64,8 +71,8 @@ const HeroSection = () => {
 
             {/* Sub-headline */}
             <p
-                className="mx-auto mb-10 measure-32ch text-center typo-body-lead wrap-pretty text-kor-safe text-[#3A3A3A] animate-fade-in"
-                style={{ animationDelay: '0.5s', animationDuration: '0.6s' }}
+                className="mx-auto mb-10 max-w-[540px] whitespace-nowrap text-center text-[15px] max-[390px]:text-[14px] max-[360px]:text-[13px] font-medium tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:text-[18px] md:text-[20px] animate-fade-in"
+                style={{ animationDelay: '0.5s', animationDuration: '0.6s', wordSpacing: '0.05em' }}
             >
                 스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요.
             </p>
