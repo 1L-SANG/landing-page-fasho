@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
 import { FaceIcon } from '@/components/survey/icons/face-icon';
@@ -60,6 +60,7 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
 
     const currentStep = SURVEY_STEPS[stepIndex] as SurveyStep;
     const progress = Math.min((stepIndex / (SURVEY_STEPS.length - 1)) * 100, 100);
+    const multiSelectionSet = useMemo(() => new Set(multiSelection), [multiSelection]);
 
     /* Visibility transition */
     useEffect(() => {
@@ -190,13 +191,18 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
         goToNextStep(na);
     };
 
-    const toggleMultiSelect = (idx: number) => {
-        if (multiSelection.includes(idx)) {
-            setMultiSelection(multiSelection.filter((i) => i !== idx));
-        } else if (multiSelection.length < (currentStep.maxSelect ?? 2)) {
-            setMultiSelection([...multiSelection, idx]);
-        }
-    };
+    const toggleMultiSelect = useCallback((idx: number) => {
+        const maxSelect = currentStep.maxSelect ?? 2;
+        setMultiSelection((prev) => {
+            if (prev.includes(idx)) {
+                return prev.filter((i) => i !== idx);
+            }
+            if (prev.length >= maxSelect) {
+                return prev;
+            }
+            return [...prev, idx];
+        });
+    }, [currentStep.maxSelect]);
 
     const submitMultiSelect = () => {
         if (multiSelection.length === 0) return;
@@ -365,11 +371,11 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                     '불성실한 답변은 AI 필터링으로 대상에서 제외됩니다.',
                                     '선착순 혜택으로, 인원이 마감되면 해당 이벤트창은 사라집니다.',
                                 ].map((text, i) => (
-                                    <div key={i} className="flex items-center gap-1.5">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                                    <div key={i} className="flex items-start gap-1.5 text-left">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-[1px] flex-shrink-0">
                                             <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                                         </svg>
-                                        <span className="text-[11px] font-medium text-[#888]">{text}</span>
+                                        <span className="text-[11px] font-medium leading-snug text-[#888]">{text}</span>
                                     </div>
                                 ))}
                             </div>
@@ -390,10 +396,11 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                         <button
                                             key={i}
                                             onClick={() => handleSelect(currentStep.id, i)}
-                                            className={`flex flex-col items-center justify-center gap-1.5 rounded-[14px] px-2.5 py-3.5 text-center transition-all duration-200 ${getOptionSpan(currentStep.options?.length ?? 0, i)} ${isSel
+                                            className={`touch-manipulation flex flex-col items-center justify-center gap-1.5 rounded-[14px] px-2.5 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${getOptionSpan(currentStep.options?.length ?? 0, i)} ${isSel
                                                     ? 'scale-[0.97] border-[1.5px] border-[#1A1A1A]/60 bg-white/80 shadow-[0_2px_12px_rgba(0,0,0,0.06)]'
                                                     : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                 }`}
+                                            aria-pressed={isSel}
                                         >
                                             <span className="text-[13px] font-semibold leading-snug text-[#333]">{o.text}</span>
                                         </button>
@@ -425,10 +432,11 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                         <button
                                             key={i}
                                             onClick={() => handleSelect(currentStep.id, i)}
-                                            className={`flex flex-col items-center gap-3 rounded-2xl px-2.5 pb-3.5 pt-[18px] transition-all duration-200 ${isSel
+                                            className={`touch-manipulation flex flex-col items-center gap-3 rounded-2xl px-2.5 pb-3.5 pt-[18px] transition-[transform,background-color,border-color] duration-150 ${isSel
                                                     ? 'scale-[0.97] border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04] shadow-[0_2px_16px_rgba(76,99,252,0.1)]'
                                                     : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                 }`}
+                                            aria-pressed={isSel}
                                         >
                                             <div className="flex h-[90px] w-[72px] items-center justify-center opacity-70">
                                                 {o.image === 'face' ? <FaceIcon /> : <NoFaceIcon />}
@@ -479,25 +487,18 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                             {currentStep.gridLayout ? (
                                 <div className="grid grid-cols-2 gap-2">
                                     {currentStep.options?.map((o, i) => {
-                                        const isSel = multiSelection.includes(i);
+                                        const isSel = multiSelectionSet.has(i);
                                         return (
                                             <button
                                                 key={i}
                                                 onClick={() => toggleMultiSelect(i)}
-                                                className={`relative flex flex-col items-center gap-1 rounded-[14px] px-3 py-3.5 text-center transition-all duration-200 ${isSel
+                                                className={`touch-manipulation flex flex-col items-center gap-1 rounded-[14px] px-3 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${isSel
                                                         ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
                                                         : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                     }`}
+                                                aria-pressed={isSel}
                                             >
-                                                <div className="flex w-full items-start justify-center">
-                                                    <div className="text-center text-[14px] font-bold leading-snug text-[#222]">{o.text}</div>
-                                                    <div
-                                                        className={`absolute right-3 top-3 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[12px] text-white transition-all duration-200 ${isSel ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]' : 'border-[1.5px] border-[#ddd] bg-transparent'
-                                                            }`}
-                                                    >
-                                                        {isSel && '✓'}
-                                                    </div>
-                                                </div>
+                                                <div className="text-center text-[14px] font-bold leading-snug text-[#222]">{o.text}</div>
                                                 <div className="mt-0.5 text-center text-[11.5px] leading-snug text-[#555]">{o.sub}</div>
                                             </button>
                                         );
@@ -506,26 +507,19 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                             ) : (
                                 <div className="flex flex-col gap-2">
                                     {currentStep.options?.map((o, i) => {
-                                        const isSel = multiSelection.includes(i);
+                                        const isSel = multiSelectionSet.has(i);
                                         return (
                                             <button
                                                 key={i}
                                                 onClick={() => toggleMultiSelect(i)}
-                                                className={`flex items-center justify-between rounded-[14px] px-4 py-3.5 text-left transition-all duration-200 ${isSel
+                                                className={`touch-manipulation flex flex-col items-start rounded-[14px] px-4 py-3.5 text-left transition-[transform,background-color,border-color] duration-150 ${isSel
                                                         ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
                                                         : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                     }`}
+                                                aria-pressed={isSel}
                                             >
-                                                <div>
-                                                    <div className="text-[14px] font-bold text-[#222]">{o.text}</div>
-                                                    {o.sub && <div className="mt-0.5 text-[12px] text-[#666]">{o.sub}</div>}
-                                                </div>
-                                                <div
-                                                    className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[12px] text-white transition-all duration-200 ${isSel ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]' : 'border-[1.5px] border-[#ddd] bg-transparent'
-                                                        }`}
-                                                >
-                                                    {isSel && '✓'}
-                                                </div>
+                                                <div className="text-[14px] font-bold text-[#222]">{o.text}</div>
+                                                {o.sub && <div className="mt-0.5 text-[12px] text-[#666]">{o.sub}</div>}
                                             </button>
                                         );
                                     })}
@@ -570,7 +564,7 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                                 <button
                                                     key={`${side}-${i}`}
                                                     onClick={() => handleSetSplit(side, i)}
-                                                    className={`flex-1 rounded-lg px-1.5 py-2.5 text-[13px] font-medium transition-all duration-200 ${splitSelection[side] === i
+                                                    className={`touch-manipulation flex-1 rounded-lg px-1.5 py-2.5 text-[13px] font-medium transition-[background-color,border-color,color] duration-150 ${splitSelection[side] === i
                                                             ? 'border border-[#1A1A1A] bg-[#1A1A1A] text-white'
                                                             : 'border border-transparent bg-white/60 hover:bg-white/80'
                                                         }`}
