@@ -8,17 +8,17 @@ import { GradientBorderContainer } from '@/components/ui/gradient-border-contain
 
 const TESTIMONIALS = [
     {
-        quote: '적자가 심해서 쇼핑몰을 포기할까 한참 고민했었어요.\nwearless 덕분에 오히려 지금은 매출이 최고점인 상태입니다.',
+        quote: '적자가 심해서 쇼핑몰을 포기할까 한참 고민했었어요. wearless 덕분에 오히려 지금은 매출이 최고점인 상태입니다.',
         name: '임*현 대표',
         logo: '/teenz-logo.png',
     },
     {
-        quote: 'AI 느낌 날까 봐 걱정했는데, 생각보다 자연스러워서 놀랐어요..!\n확실히 퀄리티 차이가 납니다.',
+        quote: 'AI 느낌 날까 봐 걱정했는데, 생각보다 자연스러워서 놀랐어요..! 확실히 퀄리티 차이가 납니다.',
         name: '김*연 대표',
         logo: '/eko-logo.png',
     },
     {
-        quote: '제가 찍은 컷들을 바탕으로 다양하게\n생성되는게 진짜 너무 효율적이네요.',
+        quote: '제가 찍은 컷들을 바탕으로 다양하게 생성되는게 진짜 너무 효율적이네요.',
         name: '김*지 대표',
         logo: '/oac-logo.png',
     },
@@ -61,12 +61,12 @@ const TestimonialCard = ({
                     </div>
 
                     {/* Quote */}
-                    <p className="mb-2 min-h-[150px] md:min-h-[170px] whitespace-pre-line text-[18px] font-medium leading-[1.7] text-[#1A1A1A]">
+                    <p className="mb-6 flex-1 measure-28ch typo-body-lead wrap-pretty text-kor-safe text-[#1A1A1A]">
                         &ldquo;{testimonial.quote}&rdquo;
                     </p>
 
                     {/* Profile */}
-                    <div className="flex items-center gap-3">
+                    <div className="mt-auto flex items-center gap-3">
                         <Image
                             src={testimonial.logo}
                             alt={`${testimonial.name} 로고`}

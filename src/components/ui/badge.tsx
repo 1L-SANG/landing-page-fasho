@@ -10,11 +10,11 @@ interface BadgeProps {
 
 const variantStyles: Record<BadgeVariant, string> = {
     default:
-        'bg-[#F0F0F0] text-[#1A1A1A] text-[12px] font-semibold tracking-wide',
+        'bg-[#F0F0F0] text-[#1A1A1A] typo-caption',
     gradient:
-        'bg-white/80 backdrop-blur-sm border border-[#E5E5E5] text-[#4A4A4A] text-[13px] font-medium tracking-tight shadow-sm',
+        'bg-white/80 backdrop-blur-sm border border-[#E5E5E5] text-[#4A4A4A] typo-body shadow-sm',
     dark:
-        'bg-[#1A1A1A] text-white text-[12px] font-semibold tracking-wide',
+        'bg-[#1A1A1A] text-white typo-caption',
 };
 
 const Badge = ({

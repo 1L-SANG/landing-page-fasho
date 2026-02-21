@@ -19,9 +19,9 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-    sm: 'px-6 py-2.5 text-[15px] font-medium',
-    md: 'px-8 py-3 text-[16px] font-semibold',
-    lg: 'px-10 py-4 text-[17px] font-semibold',
+    sm: 'px-6 py-2.5 typo-button font-medium',
+    md: 'px-8 py-3 typo-button font-semibold',
+    lg: 'px-10 py-4 typo-button font-semibold',
 };
 
 const Button = ({

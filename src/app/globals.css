@@ -2,16 +2,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-  font-family: 'Pretendard';
-  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --font-size: 16px;
+  --type-heading-display-size: clamp(2rem, 5.2vw, 3.5rem);
+  --type-heading-display-line-height: 1.12;
+  --type-heading-section-size: clamp(1.75rem, 4.2vw, 3rem);
+  --type-heading-section-line-height: 1.18;
+  --type-heading-card-size: clamp(1.125rem, 2.2vw, 1.375rem);
+  --type-heading-card-line-height: 1.3;
+  --type-body-lead-size: clamp(1rem, 1.9vw, 1.125rem);
+  --type-body-lead-line-height: 1.62;
+  --type-body-size: clamp(0.9375rem, 1.45vw, 1rem);
+  --type-body-line-height: 1.58;
+  --type-caption-size: clamp(0.75rem, 1vw, 0.8125rem);
+  --type-caption-line-height: 1.4;
+  --type-button-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
+  --type-button-line-height: 1.24;
+  --copy-measure-24: 24ch;
+  --copy-measure-28: 28ch;
+  --copy-measure-32: 32ch;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -136,63 +145,124 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-sans), 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    min-height: 100dvh;
+    padding-left: max(env(safe-area-inset-left), 0px);
+    padding-right: max(env(safe-area-inset-right), 0px);
   }
 }
 
-/**
- * Base typography. Not applied to elements which have an ancestor with a Tailwind text class.
- */
 @layer base {
-  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
-    h1 {
-      font-size: var(--text-2xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+  h1, h2, h3, h4 {
+    line-height: 1.3;
+  }
 
-    h2 {
-      font-size: var(--text-xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
+  p, li {
+    line-height: 1.58;
+  }
 
-    h3 {
-      font-size: var(--text-lg);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    h4 {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    label {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    button {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    input {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.5;
-    }
+  button, input, label {
+    line-height: 1.4;
   }
 }
 
 html {
   font-size: var(--font-size);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@layer utilities {
+  .typo-heading-display {
+    font-size: var(--type-heading-display-size);
+    line-height: var(--type-heading-display-line-height);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .typo-heading-section {
+    font-size: var(--type-heading-section-size);
+    line-height: var(--type-heading-section-line-height);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .typo-heading-card {
+    font-size: var(--type-heading-card-size);
+    line-height: var(--type-heading-card-line-height);
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+
+  .typo-body-lead {
+    font-size: var(--type-body-lead-size);
+    line-height: var(--type-body-lead-line-height);
+    font-weight: 500;
+    letter-spacing: -0.002em;
+  }
+
+  .typo-body {
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-line-height);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .typo-caption {
+    font-size: var(--type-caption-size);
+    line-height: var(--type-caption-line-height);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .typo-button {
+    font-size: var(--type-button-size);
+    line-height: var(--type-button-line-height);
+    letter-spacing: -0.002em;
+  }
+
+  .wrap-balance {
+    overflow-wrap: anywhere;
+  }
+
+  @supports (text-wrap: balance) {
+    .wrap-balance {
+      text-wrap: balance;
+    }
+  }
+
+  .wrap-pretty {
+    overflow-wrap: anywhere;
+  }
+
+  @supports (text-wrap: pretty) {
+    .wrap-pretty {
+      text-wrap: pretty;
+    }
+  }
+
+  .text-kor-safe {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  .measure-24ch {
+    max-inline-size: var(--copy-measure-24);
+  }
+
+  .measure-28ch {
+    max-inline-size: var(--copy-measure-28);
+  }
+
+  .measure-32ch {
+    max-inline-size: var(--copy-measure-32);
+  }
+
+  .pb-safe-area {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
 }
 
 /* --- Orb Spin Animation --- */
