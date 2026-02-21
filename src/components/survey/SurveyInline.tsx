@@ -338,7 +338,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="name@company.com"
+                                        placeholder="abc@gmail.com"
                                         className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[15px] text-[#1A1A1A] outline-none placeholder:text-[#bbb]"
                                         autoFocus
                                     />

@@ -4,6 +4,8 @@ import { Footer } from "@/components/common/Footer";
 import { AnalyticsScripts } from "@/components/common/analytics-scripts";
 import "./globals.css";
 
+const GA_MEASUREMENT_ID = "G-VJZ6M7M8G6";
+
 export const metadata: Metadata = {
   title: "Wearless — 쇼핑몰 촬영의 새로운 기준",
   description:
@@ -22,6 +24,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_MEASUREMENT_ID}');
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased">
         <AnalyticsScripts />
         <Header />
