@@ -10,7 +10,7 @@ const FEATURES_VIDEO_URL = '/video/real demo 2.mov';
 
 const FEATURES = [
     { title: '레퍼런스 기반 생성', description: '원하는 느낌의 이미지를 구현해보세요.' },
-    { title: '쇼핑몰 정체성 유지', description: '쇼핑몰에서 그동안 업로드하던 컷들의 무드를 반영해보세요.' },
+    { title: '쇼핑몰 정체성 유지', description: '쇼핑몰에서 그동안 업로드하던 컷들의\n무드를 반영해보세요.' },
     { title: '다양한 컷 종류', description: `고스트컷부터 디테일컷,일상컷,스튜디오컷까지\n원하는 컷을 생성해보세요.` },
     { title: '릴스용 템플릿', description: `인스타그램에서 인기 있는 릴스들을 선택해서\n트렌드에 맞게 AI로 생성해보세요.` },
 ] as const;
@@ -56,7 +56,7 @@ const FeaturesSection = () => {
                 />
 
                 {/* Desktop: 3-col grid with center video */}
-                <div className="mx-auto hidden max-w-[1400px] gap-6 lg:grid lg:grid-cols-3 lg:grid-rows-2 relative">
+                <div className="mx-auto hidden max-w-[1100px] gap-5 lg:grid lg:grid-cols-3 lg:grid-rows-2 relative">
                     {/* SVG Connecting Lines */}
                     <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
                         <line
@@ -109,17 +109,17 @@ const FeaturesSection = () => {
                         style={{ zIndex: 2 }}
                     >
                         <GradientBorderContainer disableHover>
-                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-6 shadow-lg">
-                                <div className="mb-3 flex items-center gap-3">
+                            <div className="flex h-full flex-col justify-center rounded-2xl bg-white p-5 shadow-lg">
+                                <div className="mb-2 flex items-center gap-2.5">
                                     <span
-                                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white"
+                                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[12px] font-bold text-white"
                                         style={NUMBER_BADGE_STYLE}
                                     >
                                         1
                                     </span>
-                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[0].title}</h3>
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A] md:text-[20px]">{FEATURES[0].title}</h3>
                                 </div>
-                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B] whitespace-pre-line">{FEATURES[0].description}</p>
+                                <p className="text-[14px] leading-[1.6] text-[#6B6B6B]">{FEATURES[0].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>
@@ -167,9 +167,9 @@ const FeaturesSection = () => {
                                     >
                                         2
                                     </span>
-                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[1].title}</h3>
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A] md:text-[20px]">{FEATURES[1].title}</h3>
                                 </div>
-                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[1].description}</p>
+                                <p className="text-[14px] leading-[1.6] text-[#6B6B6B]">{FEATURES[1].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>
@@ -188,9 +188,9 @@ const FeaturesSection = () => {
                                     >
                                         3
                                     </span>
-                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[2].title}</h3>
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A] md:text-[20px]">{FEATURES[2].title}</h3>
                                 </div>
-                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[2].description}</p>
+                                <p className="text-[14px] leading-[1.6] text-[#6B6B6B]">{FEATURES[2].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>
@@ -209,9 +209,9 @@ const FeaturesSection = () => {
                                     >
                                         4
                                     </span>
-                                    <h3 className="text-[20px] font-bold text-[#1A1A1A] md:text-[22px]">{FEATURES[3].title}</h3>
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A] md:text-[20px]">{FEATURES[3].title}</h3>
                                 </div>
-                                <p className="text-[15px] leading-[1.7] text-[#6B6B6B]">{FEATURES[3].description}</p>
+                                <p className="text-[14px] leading-[1.6] text-[#6B6B6B]">{FEATURES[3].description}</p>
                             </div>
                         </GradientBorderContainer>
                     </div>

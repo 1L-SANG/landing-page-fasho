@@ -437,7 +437,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                                 }`}
                                             aria-pressed={isSel}
                                         >
-                                            <span className="text-[13px] font-semibold leading-snug text-[#333]">{o.text}</span>
+                                            <span className="text-[13px] font-semibold leading-snug text-[#333] md:whitespace-normal">{o.text}</span>
                                         </button>
                                     );
                                 })}
@@ -534,7 +534,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                                     }`}
                                                 aria-pressed={isSel}
                                             >
-                                                <div className="text-center text-[14px] font-bold leading-snug text-[#222]">{o.text}</div>
+                                                <div className="text-center text-[14px] font-bold leading-snug text-[#222] md:whitespace-normal">{o.text}</div>
                                                 <div className="mt-0.5 text-center text-[11.5px] leading-snug text-[#555]">{o.sub}</div>
                                             </button>
                                         );

@@ -48,7 +48,7 @@ const HowItWorksSection = () => {
                 <SectionHeader
                     label="HOW IT WORKS"
                     title="쉬운 사용법, 남다른 퀄리티"
-                    subtitle="복잡한 설정 없이, 업로드부터 결과물까지 단 3분이면 충분합니다."
+                    subtitle="업로드부터 결과물까지 3분이면 충분합니다."
                 />
 
                 <div className="relative overflow-visible grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">

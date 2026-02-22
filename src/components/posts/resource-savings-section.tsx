@@ -10,7 +10,7 @@ const STATS = [
         icon: TrendingDown,
         value: '90%',
         label: '비용 절감',
-        description: '기존 대비 의류컷 제작 비용',
+        description: `기존 대비 의류컷\n제작 비용`,
         gradient: 'linear-gradient(135deg, #12ADE6, #4C63FC)',
         iconBg: 'linear-gradient(135deg, #12ADE6, #4C63FC)',
     },
@@ -18,7 +18,7 @@ const STATS = [
         icon: Zap,
         value: '10배',
         label: '속도 향상',
-        description: '압도적으로 빨라지는 제작 속도',
+        description: '압도적으로 빨라진 제작 속도',
         gradient: 'linear-gradient(135deg, #4C63FC, #DC4CFC)',
         iconBg: 'linear-gradient(135deg, #4C63FC, #DC4CFC)',
     },
@@ -26,7 +26,7 @@ const STATS = [
         icon: Star,
         value: '4.9',
         label: '고객 만족도',
-        description: '5점 만점 (베타테스터 기준)',
+        description: `5점 만점\n(베타테스터 기준)`,
         gradient: 'linear-gradient(135deg, #DC4CFC, #FF0080)',
         iconBg: 'linear-gradient(135deg, #DC4CFC, #FF0080)',
     },
@@ -111,7 +111,7 @@ const ResourceSavingsSection = () => {
                                     </h3>
 
                                     {/* Description */}
-                                    <p className="text-[11px] leading-[1.5] text-[#6B6B6B] sm:text-[13px] sm:leading-[1.6] md:text-[15px]">
+                                    <p className="text-[11px] leading-[1.5] text-[#6B6B6B] sm:text-[13px] sm:leading-[1.6] md:whitespace-normal md:text-[15px]">
                                         {stat.description}
                                     </p>
 
