@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
+import { getSurveyProgressPercent } from '@/lib/survey-progress';
 import { FaceIcon } from '@/components/survey/icons/face-icon';
 import { NoFaceIcon } from '@/components/survey/icons/no-face-icon';
 
@@ -63,8 +64,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
     const [isVisible, setIsVisible] = useState(false);
 
     const currentStep = SURVEY_STEPS[stepIndex] as SurveyStep;
-    const progress = Math.min((stepIndex / (SURVEY_STEPS.length - 1)) * 100, 100);
     const multiSelectionSet = useMemo(() => new Set(multiSelection), [multiSelection]);
+    const progress = useMemo(() => getSurveyProgressPercent(currentStep.id, answers), [currentStep.id, answers]);
 
     /* Visibility transition */
     useEffect(() => {

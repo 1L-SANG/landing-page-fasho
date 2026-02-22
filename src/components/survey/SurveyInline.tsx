@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
+import { getSurveyProgressPercent } from '@/lib/survey-progress';
 import {
     trackMetaLead,
     trackMetaSubmitApplication,
@@ -73,8 +74,8 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const currentStep = SURVEY_STEPS[stepIndex] as SurveyStep;
-    const progress = Math.min((stepIndex / (SURVEY_STEPS.length - 1)) * 100, 100);
     const multiSelectionSet = useMemo(() => new Set(multiSelection), [multiSelection]);
+    const progress = useMemo(() => getSurveyProgressPercent(currentStep.id, answers), [currentStep.id, answers]);
 
     /* Visibility transition */
     useEffect(() => {
@@ -688,7 +689,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                         <button
                                             type="button"
                                             onClick={handleInputSkip}
-                                            className="w-full rounded-xl bg-transparent px-6 py-2.5 text-[13px] font-normal text-[#ccc] transition-all duration-200 hover:text-[#999]"
+                                            className="w-full rounded-xl bg-transparent px-6 py-2.5 text-[13px] font-normal text-[#444] transition-all duration-200 hover:text-[#222]"
                                         >
                                             건너뛰기
                                         </button>
