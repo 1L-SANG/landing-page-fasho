@@ -142,6 +142,16 @@
   }
 }
 
+/* --- Global whitespace: pre-line (outside @layer to beat Tailwind reset) --- */
+body {
+  white-space: pre-line;
+}
+
+/* --- Whitespace Exception: opt-out class for elements that should NOT preserve \n --- */
+.whitespace-normal {
+  white-space: normal !important;
+}
+
 /**
  * Base typography. Not applied to elements which have an ancestor with a Tailwind text class.
  */

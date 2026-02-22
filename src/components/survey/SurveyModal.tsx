@@ -29,6 +29,10 @@ const INVITE_KEYWORD_GRADIENT_STYLE = {
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
 };
+const INVITE_NOTICE_ITEMS = [
+    '불성실한 답변은 AI 필터링으로 대상에서 제외됩니다.',
+    '선착순 혜택으로, 인원이 마감되면 해당 이벤트창은 사라집니다.',
+];
 
 const getSelectGrid = (count: number): string => {
     if (count === 2) return 'grid-cols-2';
@@ -203,6 +207,11 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
             return [...prev, idx];
         });
     }, [currentStep.maxSelect]);
+    const handleMultiSelectOptionClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const idx = Number(e.currentTarget.dataset.optionIndex);
+        if (Number.isNaN(idx)) return;
+        toggleMultiSelect(idx);
+    }, [toggleMultiSelect]);
 
     const submitMultiSelect = () => {
         if (multiSelection.length === 0) return;
@@ -236,7 +245,7 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
 
     return (
         <div
-            className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${isVisible ? 'bg-black/40 backdrop-blur-sm' : 'pointer-events-none bg-transparent'
+            className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-[background-color,backdrop-filter] duration-300 ${isVisible ? 'bg-black/40 md:backdrop-blur-sm' : 'pointer-events-none bg-transparent'
                 }`}
             onClick={onClose}
             role="dialog"
@@ -366,16 +375,13 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                 </button>
                             </div>
 
-                            <div className="mt-4 flex flex-col items-start gap-1">
-                                {[
-                                    '불성실한 답변은 AI 필터링으로 대상에서 제외됩니다.',
-                                    '선착순 혜택으로, 인원이 마감되면 해당 이벤트창은 사라집니다.',
-                                ].map((text, i) => (
-                                    <div key={i} className="flex items-start gap-1.5 text-left">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-[1px] flex-shrink-0">
+                            <div className="mt-4 flex w-full flex-col items-start gap-1">
+                                {INVITE_NOTICE_ITEMS.map((text) => (
+                                    <div key={text} className="grid w-full grid-cols-[13px_minmax(0,1fr)] items-start gap-x-1.5 text-left">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-[2px] h-[13px] w-[13px] flex-shrink-0">
                                             <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                                         </svg>
-                                        <span className="text-[11px] font-medium leading-snug text-[#888]">{text}</span>
+                                        <span className="text-[11px] font-medium leading-[1.45] text-[#888] [overflow-wrap:anywhere] [word-break:keep-all]">{text}</span>
                                     </div>
                                 ))}
                             </div>
@@ -491,7 +497,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                         return (
                                             <button
                                                 key={i}
-                                                onClick={() => toggleMultiSelect(i)}
+                                                data-option-index={i}
+                                                onClick={handleMultiSelectOptionClick}
                                                 className={`touch-manipulation flex flex-col items-center gap-1 rounded-[14px] px-3 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${isSel
                                                         ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
                                                         : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
@@ -511,7 +518,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                         return (
                                             <button
                                                 key={i}
-                                                onClick={() => toggleMultiSelect(i)}
+                                                data-option-index={i}
+                                                onClick={handleMultiSelectOptionClick}
                                                 className={`touch-manipulation flex flex-col items-start rounded-[14px] px-4 py-3.5 text-left transition-[transform,background-color,border-color] duration-150 ${isSel
                                                         ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
                                                         : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'

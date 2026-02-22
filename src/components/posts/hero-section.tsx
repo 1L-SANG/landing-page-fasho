@@ -71,7 +71,7 @@ const HeroSection = () => {
 
             {/* Sub-headline */}
             <p
-                className="mx-auto mb-10 max-w-[540px] whitespace-nowrap text-center text-[15px] max-[390px]:text-[14px] max-[360px]:text-[13px] font-medium tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:text-[18px] md:text-[20px] animate-fade-in"
+                className="mx-auto mb-10 max-w-[540px] whitespace-nowrap text-center text-[15px] max-[390px]:text-[14px] max-[360px]:text-[13px] font-semibold tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:text-[18px] md:text-[20px] animate-fade-in"
                 style={{ animationDelay: '0.5s', animationDuration: '0.6s', wordSpacing: '0.05em' }}
             >
                 스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요.

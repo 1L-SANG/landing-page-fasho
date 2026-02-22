@@ -41,7 +41,7 @@ const ContactSection = () => {
                                 문의하기
                             </h2>
                             <p className="mb-12 whitespace-pre-line text-[16px] text-white/60">
-                                {'궁금한 점이 있으시다면\n언제든 연락주세요.'}
+                                {'궁금한 점이 있으시다면 언제든 연락주세요.'}
                             </p>
 
                             <div className="flex flex-col gap-8 md:flex-row">

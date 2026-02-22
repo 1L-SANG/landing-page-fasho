@@ -13,10 +13,10 @@ interface Step {
 }
 
 const STEPS: Step[] = [
-    { icon: Upload, number: '1', title: '제품 사진 업로드', description: '스마트폰으로 찍은 사진으로도 충분해요.' },
-    { icon: Sliders, number: '2', title: '기능 선택', description: 'Wearless의 다양한 기능들 중, 원하는 기능을 사용해보세요.' },
-    { icon: Sparkles, number: '3', title: 'AI 이미지 생성', description: '구도, 포즈, 디테일을 직관적으로 수정하며 완성도를 높이세요.' },
-    { icon: Download, number: '4', title: '결과물 다운로드', description: '결과물을 바로 다운로드해서 쇼핑몰에 적용하세요.' },
+    { icon: Upload, number: '1', title: '제품 사진 업로드', description: '스마트폰으로 찍은 사진만으로도 충분해요.' },
+    { icon: Sliders, number: '2', title: '기능 선택', description: 'Wearless의 다양한 기능들 중,\n 원하는 기능을 사용해보세요.' },
+    { icon: Sparkles, number: '3', title: 'AI 이미지 생성', description: '구도, 포즈, 디테일을 직관적으로\n 수정하며 완성도를 높이세요.' },
+    { icon: Download, number: '4', title: '결과물 다운로드', description: '결과물을 바로 다운로드해서 \n쇼핑몰에 적용하세요.' },
 ];
 
 const HowItWorksSection = () => {
@@ -75,7 +75,9 @@ const HowItWorksSection = () => {
                                             />
                                         </div>
                                         <h3 className="mb-3 text-[18px] font-bold text-white">{step.title}</h3>
-                                        <p className="text-[14px] leading-[1.65] text-[#CCC]">{step.description}</p>
+                                        <p className="text-[14px] leading-[1.65] text-[#CCC] whitespace-pre-line">
+                                            {step.description}
+                                        </p>
                                     </div>
                                 </div>
 

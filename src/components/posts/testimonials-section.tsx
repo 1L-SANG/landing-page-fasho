@@ -8,7 +8,7 @@ import { GradientBorderContainer } from '@/components/ui/gradient-border-contain
 
 const TESTIMONIALS = [
     {
-        quote: '적자가 심해서 쇼핑몰을 포기할까 한참 고민했었어요.\nwearless 덕분에 오히려 지금은 매출이 최고점인 상태입니다.',
+        quote: '제가 찍은 컷들을 바탕으로 다양하게\n생성되는게 진짜 너무 효율적이네요.',
         name: '임*현 대표',
         logo: '/teenz-logo.png',
     },
@@ -18,7 +18,7 @@ const TESTIMONIALS = [
         logo: '/eko-logo.png',
     },
     {
-        quote: '제가 찍은 컷들을 바탕으로 다양하게\n생성되는게 진짜 너무 효율적이네요.',
+        quote: '적자가 심해서 쇼핑몰을 포기할까 한참 고민했었어요.\nwearless 덕분에 오히려 지금은 매출이 최고점인 상태입니다.',
         name: '김*지 대표',
         logo: '/oac-logo.png',
     },
