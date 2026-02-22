@@ -51,9 +51,17 @@ const getSelectGrid = (count: number): string => {
 };
 
 const getOptionSpan = (count: number, index: number): string => {
-    if (count === 5 && index < 2) return 'col-span-3';
-    if (count === 5 && index >= 2) return 'col-span-2';
+    if (count === 5 && index < 3) return 'col-span-2';
+    if (count === 5 && index >= 3) return 'col-span-3';
     return '';
+};
+
+/** Render text with mobile-only line breaks: {{mbr}} → <br class="md:hidden" /> */
+const renderMobileBr = (text: string) => {
+    if (!text.includes('{{mbr}}')) return text;
+    return text.split('{{mbr}}').map((part, i) => (
+        <span key={i}>{i > 0 && <br className="md:hidden" />}{part}</span>
+    ));
 };
 
 /* ────────────────────────────────────────────────────
@@ -355,7 +363,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="abc@gmail.com"
-                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[15px] text-[#1A1A1A] outline-none placeholder:text-[#bbb]"
+                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[16px] text-[#1A1A1A] outline-none placeholder:text-[#bbb] md:text-[15px]"
                                         autoFocus
                                     />
                                     <button
@@ -437,7 +445,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                                 }`}
                                             aria-pressed={isSel}
                                         >
-                                            <span className="text-[13px] font-semibold leading-snug text-[#333]">{o.text}</span>
+                                            <span className="text-[13px] font-semibold leading-snug text-[#333]">{renderMobileBr(o.text)}</span>
                                         </button>
                                     );
                                 })}
@@ -534,8 +542,8 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                                     }`}
                                                 aria-pressed={isSel}
                                             >
-                                                <div className="text-center text-[14px] font-bold leading-snug text-[#222] md:whitespace-normal">{o.text}</div>
-                                                <div className="mt-0.5 text-center text-[11.5px] leading-snug text-[#555]">{o.sub}</div>
+                                                <div className="text-center text-[14px] font-bold leading-snug text-[#222] md:whitespace-normal">{renderMobileBr(o.text)}</div>
+                                                <div className="mt-0.5 text-center text-[11.5px] leading-snug text-[#555]">{renderMobileBr(o.sub ?? '')}</div>
                                             </button>
                                         );
                                     })}
@@ -651,7 +659,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
                                         placeholder={currentStep.placeholder ?? ''}
-                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[15px] text-[#1A1A1A] outline-none placeholder:text-[#bbb]"
+                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[16px] text-[#1A1A1A] outline-none placeholder:text-[#bbb] md:text-[15px]"
                                         autoFocus
                                     />
                                 </div>

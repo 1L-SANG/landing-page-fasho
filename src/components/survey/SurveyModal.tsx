@@ -326,7 +326,7 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="name@company.com"
-                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[15px] text-[#1A1A1A] outline-none placeholder:text-[#bbb]"
+                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[16px] text-[#1A1A1A] outline-none placeholder:text-[#bbb] md:text-[15px]"
                                         autoFocus
                                     />
                                     <button
@@ -623,7 +623,7 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
                                         placeholder={currentStep.placeholder ?? ''}
-                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[15px] text-[#1A1A1A] outline-none placeholder:text-[#bbb]"
+                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[16px] text-[#1A1A1A] outline-none placeholder:text-[#bbb] md:text-[15px]"
                                         autoFocus
                                     />
                                 </div>
