@@ -346,7 +346,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                 />
                             </div>
                             <p className="mb-1.5 text-[19px] font-bold tracking-tight text-[#111]">{currentStep.title}</p>
-                            <p className="mb-5 text-[13.5px] leading-relaxed text-[#999]">{currentStep.desc}</p>
+                            <p className="mb-5 text-[13.5px] font-semibold leading-relaxed text-[#003A8F]">{currentStep.desc}</p>
                             <form onSubmit={handleEmailSubmit} className="mt-6 w-full">
                                 <div className="flex gap-1.5 rounded-[14px] border-[1.5px] border-black/[0.08] bg-white/70 p-[5px]">
                                     <input
@@ -366,9 +366,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                     </button>
                                 </div>
                             </form>
-                            <p className="mt-3.5 text-center text-[11px] leading-snug text-[#bbb]">
-                                &apos;완료&apos; 버튼을 누르면 이후의 내용과 이메일 수집에 대해 동의함으로 간주됩니다.
-                            </p>
+
                         </div>
                     )}
 
@@ -398,7 +396,8 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                             <div className="flex flex-col gap-2.5">
                                 <button
                                     onClick={handleSurveyAccept}
-                                    className="w-full rounded-[14px] bg-[#1A1A1A] px-6 py-3.5 text-[15px] font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-[1.02]"
+                                    className="relative w-full overflow-hidden rounded-[14px] bg-[#1A1A1A] px-6 py-3.5 text-[15px] font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-[1.02]"
+                                    style={{ border: '3px solid transparent', backgroundImage: 'linear-gradient(#1A1A1A, #1A1A1A), linear-gradient(135deg, #7465E0, #4F79E8, #87A8F3)', backgroundOrigin: 'border-box', backgroundClip: 'padding-box, border-box' }}
                                 >
                                     1분 설문 참여하고 혜택 받기
                                 </button>
@@ -437,7 +436,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                                 }`}
                                             aria-pressed={isSel}
                                         >
-                                            <span className="text-[13px] font-semibold leading-snug text-[#333] md:whitespace-normal">{o.text}</span>
+                                            <span className="text-[13px] font-semibold leading-snug text-[#333]">{o.text}</span>
                                         </button>
                                     );
                                 })}
