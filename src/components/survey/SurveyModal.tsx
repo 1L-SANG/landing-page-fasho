@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
 import { getSurveyProgressPercent } from '@/lib/survey-progress';
+import { startSurveySession, submitSurveyStep, flushSurveyData } from '@/lib/submit-survey';
 import { FaceIcon } from '@/components/survey/icons/face-icon';
 import { NoFaceIcon } from '@/components/survey/icons/no-face-icon';
 
@@ -70,9 +71,11 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
     /* Visibility transition */
     useEffect(() => {
         if (open) {
+            startSurveySession();
             requestAnimationFrame(() => setIsVisible(true));
         } else {
             setIsVisible(false);
+            flushSurveyData();
         }
     }, [open]);
 
@@ -137,11 +140,19 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
             nextIndex++;
         }
 
-        // If we reached done step, log collected data
-        if (SURVEY_STEPS[nextIndex]?.type === 'done') {
-            // TODO: POST /api/survey { email, answers }
+        const isDone = SURVEY_STEPS[nextIndex]?.type === 'done';
+
+        if (isDone) {                                               // ← 변경
             console.log('Survey completed:', { email, answers: newAnswers });
         }
+
+        // ✅ 구글시트 전송
+        submitSurveyStep(
+            email,
+            newAnswers,
+            SURVEY_STEPS[nextIndex]?.id || 'unknown',
+            isDone
+        );
 
         setStepIndex(nextIndex);
         restoreStepState(nextIndex, newAnswers);
@@ -404,8 +415,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                             key={i}
                                             onClick={() => handleSelect(currentStep.id, i)}
                                             className={`touch-manipulation flex flex-col items-center justify-center gap-1.5 rounded-[14px] px-2.5 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${getOptionSpan(currentStep.options?.length ?? 0, i)} ${isSel
-                                                    ? 'scale-[0.97] border-[1.5px] border-[#1A1A1A]/60 bg-white/80 shadow-[0_2px_12px_rgba(0,0,0,0.06)]'
-                                                    : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                ? 'scale-[0.97] border-[1.5px] border-[#1A1A1A]/60 bg-white/80 shadow-[0_2px_12px_rgba(0,0,0,0.06)]'
+                                                : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                 }`}
                                             aria-pressed={isSel}
                                         >
@@ -440,8 +451,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                             key={i}
                                             onClick={() => handleSelect(currentStep.id, i)}
                                             className={`touch-manipulation flex flex-col items-center gap-3 rounded-2xl px-2.5 pb-3.5 pt-[18px] transition-[transform,background-color,border-color] duration-150 ${isSel
-                                                    ? 'scale-[0.97] border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04] shadow-[0_2px_16px_rgba(76,99,252,0.1)]'
-                                                    : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                ? 'scale-[0.97] border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04] shadow-[0_2px_16px_rgba(76,99,252,0.1)]'
+                                                : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                 }`}
                                             aria-pressed={isSel}
                                         >
@@ -501,8 +512,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                                 data-option-index={i}
                                                 onClick={handleMultiSelectOptionClick}
                                                 className={`touch-manipulation flex flex-col items-center gap-1 rounded-[14px] px-3 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${isSel
-                                                        ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
-                                                        : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                    ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
+                                                    : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                     }`}
                                                 aria-pressed={isSel}
                                             >
@@ -522,8 +533,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                                 data-option-index={i}
                                                 onClick={handleMultiSelectOptionClick}
                                                 className={`touch-manipulation flex flex-col items-start rounded-[14px] px-4 py-3.5 text-left transition-[transform,background-color,border-color] duration-150 ${isSel
-                                                        ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
-                                                        : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                    ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
+                                                    : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                     }`}
                                                 aria-pressed={isSel}
                                             >
@@ -574,8 +585,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                                     key={`${side}-${i}`}
                                                     onClick={() => handleSetSplit(side, i)}
                                                     className={`touch-manipulation flex-1 rounded-lg px-1.5 py-2.5 text-[13px] font-medium transition-[background-color,border-color,color] duration-150 ${splitSelection[side] === i
-                                                            ? 'border border-[#1A1A1A] bg-[#1A1A1A] text-white'
-                                                            : 'border border-transparent bg-white/60 hover:bg-white/80'
+                                                        ? 'border border-[#1A1A1A] bg-[#1A1A1A] text-white'
+                                                        : 'border border-transparent bg-white/60 hover:bg-white/80'
                                                         }`}
                                                 >
                                                     {o.text}

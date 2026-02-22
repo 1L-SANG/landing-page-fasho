@@ -11,6 +11,7 @@ import {
     trackGASurveyStart,
     trackGASurveyComplete,
 } from '@/lib/analytics';
+import { startSurveySession, submitSurveyStep, flushSurveyData } from '@/lib/submit-survey';
 import { FaceIcon } from '@/components/survey/icons/face-icon';
 import { NoFaceIcon } from '@/components/survey/icons/no-face-icon';
 
@@ -93,11 +94,14 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
             setShouldRender(true);
             requestAnimationFrame(() => setIsVisible(true));
 
+            startSurveySession();
+
             /* Analytics: survey opened */
             trackMetaLead();
             trackGASurveyStart();
         } else {
             setIsVisible(false);
+            flushSurveyData();
             closeTimer = setTimeout(() => {
                 setShouldRender(false);
             }, EXIT_ANIMATION_MS);
@@ -164,7 +168,9 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
             nextIndex++;
         }
 
-        if (SURVEY_STEPS[nextIndex]?.type === 'done') {
+        const isDone = SURVEY_STEPS[nextIndex]?.type === 'done';
+
+        if (isDone) {
             console.log('Survey completed:', { email, answers: newAnswers });
 
             /* Analytics: survey completed */
@@ -178,6 +184,14 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                     : 'unknown';
             trackGASurveyComplete(roleName);
         }
+
+        // ✅ 구글시트 전송 (매 스텝마다, 완료 시 포함)
+        submitSurveyStep(
+            email,
+            newAnswers,
+            SURVEY_STEPS[nextIndex]?.id || 'unknown',
+            isDone
+        );
 
         setStepIndex(nextIndex);
         restoreStepState(nextIndex, newAnswers);
