@@ -45,8 +45,8 @@ export interface SurveyStep {
 const FEATURES_OPTIONS: SurveyOption[] = [
     { text: '레퍼런스 응용', sub: `레퍼런스 무드로 새 컷을 생성` },
     { text: '쇼핑몰 정체성 유지', sub: '쇼핑몰 톤앤매너 반영한 이미지 생성' },
-    { text: '체형 조절', sub: '설정한 체형 기준으로{{mbr}}이미지 재생성' },
-    { text: '이미지 다양화', sub: `포즈, 배경을 바꾸어 컷을 다양화` },
+    { text: '체형 조절', sub: '설정한 체형 기준으로{{mbr}} 이미지 재생성' },
+    { text: '이미지 다양화', sub: `포즈, 배경을 바꾸며 컷을 다양화` },
     { text: 'AI 모델', sub: `자연스런 AI모델 얼굴을\nAI컷에 반영하여 생성` },
     { text: '기존 모델 반영', sub: `기존 쇼핑몰 모델 얼굴을\nAI컷에 반영하여 생성` },
 ];
@@ -292,7 +292,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         options: [
             { text: '직접 한다' },
             { text: '직접 하지만 얼굴노출을 최소화한다' },
-            { text: '직원 or 외주를{{mbr}}맡길 생각이다' },
+            { text: `직원 or 외주를\n맡길 생각이다` },
         ],
     },
     {
@@ -302,7 +302,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         q: '아직 쇼핑몰을 안하는 이유는 무엇인가요?',
         condition: (a) => (a.role as number) >= 2,
         options: [
-            { text: '뭐부터 해야할지{{mbr}}모르겠다' },
+            { text: '뭐부터 해야할지{{mbr}} 모르겠다' },
             { text: '시간이 부족하다' },
             { text: '상세페이지 제작이 막막하다' },
             { text: '비용이 부담된다' },
@@ -376,7 +376,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         id: 'prep_barrier',
         type: 'input',
         label: '추가 정보',
-        q: `준비 과정에서 "이것만 해결되면 바로 시작할 수 있다" 싶은 부분은 무엇인가요?`,
+        q: `현재 "이것만 해결되면 바로 시작할 수 있다" 싶은 부분은 무엇인가요?`,
         placeholder: '',
         btnText: '완료',
         skipText: '건너뛰기',
