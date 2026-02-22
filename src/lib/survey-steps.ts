@@ -65,7 +65,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         id: 'volume',
         type: 'select',
         label: '운영 현황',
-        q: '일주일에 신상품을 몇개 정도 업로드하시나요?',
+        q: '일주일에 신상품을 몇 개 업로드하시나요?',
         condition: (a) => (a.role as number) <= 2,
         options: [
             { text: '1~3개' },
@@ -112,9 +112,9 @@ export const SURVEY_STEPS: SurveyStep[] = [
         maxSelect: 2,
         gridLayout: true,
         options: [
-            { text: '레퍼런스 응용', sub: `레퍼런스 무드로 새 컷 생성` },
+            { text: '레퍼런스 응용', sub: `레퍼런스 무드로 새 컷을 생성` },
             { text: '쇼핑몰 정체성 유지', sub: '쇼핑몰 톤앤매너 반영한 이미지 생성' },
-            { text: '체형 조절', sub: '설정한 체형 기준에 맞춰서 이미지 재생성' },
+            { text: '체형 조절', sub: '설정한 체형 기준으로 이미지 재생성' },
             { text: '이미지 다양화', sub: `포즈, 배경을 바꾸어 컷을 다양화` },
             { text: 'AI 모델', sub: '이질감없는 AI모델의\n 얼굴을 AI컷에 반영하여 생성' },
             { text: '기존 모델 반영', sub: '기존에 촬영하던 모델의\n 얼굴을 AI컷에 반영하여 생성' },
@@ -146,7 +146,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         id: 'ai_exp',
         type: 'select',
         label: '서비스 경험',
-        q: '다른 AI 이미지 생성 서비스를 써보신 적 있나요?',
+        q: '쇼핑몰을 위한 타 AI 서비스를 써보신 적 있나요?',
         condition: (a) => (a.role as number) <= 2,
         options: [
             { text: '네, 써봤습니다' },
@@ -175,10 +175,10 @@ export const SURVEY_STEPS: SurveyStep[] = [
         maxSelect: 2,
         gridLayout: true,
         options: [
-            { text: `인위적인 느낌이\n강함`, sub: `자연스러운 결과물이\n나오지 않음` },
-            { text: '제품의 디테일 표현이 안됨', sub: '세밀한 부분이 뭉개지고 변형됨' },
             { text: '기존 업로드물들과 통일감이 없음', sub: '쇼핑몰에 올렸던 작업물들과 결이 다름' },
-            { text: '원하는 모습 구현이 안됨', sub: `의도한 결과를 만들기\n어려움` },
+            { text: '제품의 디테일 표현이 안됨', sub: '세밀한 부분이 뭉개지고 변형됨' },
+            { text: `원하는 모습\n구현이 안됨`, sub: `의도한 결과를 만들기\n어려움` },
+            { text: `인위적인 느낌이\n강함`, sub: `자연스러운 결과물이\n나오지 않음` },
         ],
     },
     {
@@ -188,9 +188,9 @@ export const SURVEY_STEPS: SurveyStep[] = [
         q: '아직 AI 서비스를 사용해보지 않은 이유는?',
         condition: (a) => (a.role as number) <= 2 && (a.ai_exp as number) === 1,
         options: [
-            { text: '사용법이 어렵고 복잡할 것 같아서' },
-            { text: '퀄리티가 별로일 것 같아서' },
-            { text: '기존 촬영 방식이 익숙해서' },
+            { text: `사용법이 어렵고\n복잡할 것 같아서` },
+            { text: `퀄리티가 별로일 것\n같아서` },
+            { text: `기존 촬영 방식이\n익숙해서` },
             { text: '어떤 서비스가 있는지 몰라서' },
         ],
     },

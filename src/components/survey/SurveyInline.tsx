@@ -38,7 +38,7 @@ const INVITE_KEYWORD_GRADIENT_STYLE = {
 };
 const INVITE_NOTICE_ITEMS = [
     '불성실한 답변은 AI 필터링으로 대상에서 제외됩니다.',
-    '선착순 혜택으로, 인원이 마감되면 해당 이벤트창은 사라집니다.',
+    '인원이 마감되면 해당 이벤트창은 사라집니다.(선착순)',
 ];
 
 const getSelectGrid = (count: number): string => {
@@ -406,11 +406,11 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
 
                             <div className="mt-4 flex w-full flex-col items-start gap-1">
                                 {INVITE_NOTICE_ITEMS.map((text) => (
-                                    <div key={text} className="grid w-full grid-cols-[13px_minmax(0,1fr)] items-start gap-x-1.5 text-left">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-[2px] h-[13px] w-[13px] flex-shrink-0">
+                                    <div key={text} className="grid w-full grid-cols-[14px_minmax(0,1fr)] items-start gap-x-1.5 text-left">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-[2px] h-[14px] w-[14px] flex-shrink-0">
                                             <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                                         </svg>
-                                        <span className="text-[11px] font-medium leading-[1.45] text-[#888] [overflow-wrap:anywhere] [word-break:keep-all]">{text}</span>
+                                        <span className="text-[12px] font-medium leading-[1.45] text-[#888] [overflow-wrap:anywhere] [word-break:keep-all]">{text}</span>
                                     </div>
                                 ))}
                             </div>
@@ -641,7 +641,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                             </div>
                             <p className="mb-1.5 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">{currentStep.q}</p>
                             {currentStep.inputSub && (
-                                <p className="mb-3.5 text-left text-[12px] leading-snug text-[#666]">{currentStep.inputSub}</p>
+                                <p className="mb-3.5 text-left text-[13px] leading-snug text-[#555]">{currentStep.inputSub}</p>
                             )}
                             {!currentStep.inputSub && <div className="h-2" />}
                             <form onSubmit={handleInputSubmit}>
