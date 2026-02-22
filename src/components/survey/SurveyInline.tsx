@@ -43,7 +43,8 @@ const INVITE_NOTICE_ITEMS = [
     '인원이 마감되면 해당 이벤트창은 사라집니다.(선착순)',
 ];
 
-const getSelectGrid = (count: number): string => {
+const getSelectGrid = (count: number, stepId: string): string => {
+    if (stepId === 'prep_model' && count === 3) return 'grid-cols-2 md:grid-cols-3';
     if (count === 2) return 'grid-cols-2';
     if (count === 3) return 'grid-cols-3';
     if (count === 5) return 'grid-cols-[repeat(6,1fr)]';
@@ -51,7 +52,8 @@ const getSelectGrid = (count: number): string => {
     return 'grid-cols-2';
 };
 
-const getOptionSpan = (count: number, index: number): string => {
+const getOptionSpan = (count: number, index: number, stepId: string): string => {
+    if (stepId === 'prep_model' && count === 3 && index === 2) return 'col-span-2 md:col-span-1';
     if (count === 5 && index < 3) return 'col-span-2';
     if (count === 5 && index >= 3) return 'col-span-3';
     return '';
@@ -446,14 +448,14 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                 <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#bbb]">{currentStep.label}</span>
                             </div>
                             <p className="mb-3.5 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">{currentStep.q}</p>
-                            <div className={`grid ${getSelectGrid(currentStep.options?.length ?? 0)} gap-2`}>
+                            <div className={`grid ${getSelectGrid(currentStep.options?.length ?? 0, currentStep.id)} gap-2`}>
                                 {currentStep.options?.map((o, i) => {
                                     const isSel = answers[currentStep.id] === i;
                                     return (
                                         <button
                                             key={i}
                                             onClick={() => handleSelect(currentStep.id, i)}
-                                            className={`touch-manipulation flex flex-col items-center justify-center gap-1.5 rounded-[14px] px-2.5 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${getOptionSpan(currentStep.options?.length ?? 0, i)} ${isSel
+                                            className={`touch-manipulation flex flex-col items-center justify-center gap-1.5 rounded-[14px] px-2.5 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${getOptionSpan(currentStep.options?.length ?? 0, i, currentStep.id)} ${isSel
                                                 ? 'scale-[0.97] border-[1.5px] border-[#1A1A1A]/60 bg-white/80 shadow-[0_2px_12px_rgba(0,0,0,0.06)]'
                                                 : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
                                                 }`}
@@ -523,7 +525,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                             <p className="mb-1 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">
                                 {currentStep.q}{' '}
                                 {currentStep.qHighlight && (
-                                    <span
+                                    <><br className="md:hidden" /><span
                                         className="font-semibold"
                                         style={{
                                             background: 'linear-gradient(90deg, #12ADE6, #4C63FC, #DC4CFC, #FF0080, #12ADE6)',
@@ -535,7 +537,7 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                                         }}
                                     >
                                         {currentStep.qHighlight}
-                                    </span>
+                                    </span></>
                                 )}
                             </p>
                             {currentStep.sub && <p className="mb-3.5 text-left text-[12px] leading-snug text-[#666]">{currentStep.sub}</p>}
