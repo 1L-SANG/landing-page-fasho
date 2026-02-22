@@ -175,7 +175,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         id: 'ai_exp',
         type: 'select',
         label: '서비스 경험',
-        q: '쇼핑몰을 위한 타 AI 서비스를 써보신 적 있나요?',
+        q: '의류컷·상세페이지 제작을 위한 AI 서비스를 사용해보셨나요?',
         condition: (a) => (a.role as number) <= 1,
         options: [
             { text: '네, 써봤습니다' },
@@ -334,7 +334,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         id: 'prep_ai_exp',
         type: 'select',
         label: '서비스 경험',
-        q: '쇼핑몰을 위한 타 AI 서비스를 써보신 적 있나요?',
+        q: '의류컷·상세페이지 제작을 위한 AI 서비스를 사용해보셨나요?',
         condition: (a) => (a.role as number) >= 2,
         options: [
             { text: '네, 써봤습니다' },
