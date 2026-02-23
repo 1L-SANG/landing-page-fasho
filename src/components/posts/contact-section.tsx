@@ -64,12 +64,12 @@ const ContactSection = () => {
                                     <div>
                                         <p className="mb-1 text-[13px] text-white/40">이메일</p>
                                         <a
-                                            href="mailto:ilsang@wearless.kr"
+                                            href="mailto:contact@wearless.kr"
                                             className="text-[17px] font-medium text-white transition-opacity hover:opacity-80"
                                             tabIndex={0}
                                             aria-label="이메일 보내기"
                                         >
-                                            ilsang@wearless.kr
+                                            contact@wearless.kr
                                         </a>
                                     </div>
                                 </div>
