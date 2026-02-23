@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { VideoContainer } from '@/components/ui/video-container';
 import { SurveyInline } from '@/components/survey/SurveyInline';
 
-const HERO_VIDEO_URL = '/video/real demo 1.mov';
+const HERO_VIDEO_URL = '/video/optimized/hero-1080.mp4';
+const HERO_VIDEO_POSTER_URL = '/video/optimized/hero-poster.jpg';
 
 const HeroSection = () => {
     const [isSurveyOpen, setIsSurveyOpen] = useState(false);
@@ -127,10 +128,11 @@ const HeroSection = () => {
             {/* Demo Video */}
             <div
                 className="relative z-20 mx-auto mt-4 w-full max-w-[900px] animate-fade-in"
-                style={{ animationDelay: '0.9s', animationDuration: '0.7s' }}
+                style={{ animationDelay: '0s', animationDuration: '0.55s' }}
             >
                 <VideoContainer
                     src={HERO_VIDEO_URL}
+                    poster={HERO_VIDEO_POSTER_URL}
                     aspectRatio="16/9"
                     borderType="gradient"
                     preload="auto"

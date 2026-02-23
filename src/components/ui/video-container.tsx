@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import Image from 'next/image';
 import { GradientBorderContainer } from './gradient-border-container';
 import { MonotoneBorderContainer } from './monotone-border-container';
 import { useVideoAutoplay } from './use-video-autoplay';
@@ -24,6 +26,7 @@ const VideoContainer = ({
     className = '',
 }: VideoContainerProps) => {
     const videoRef = useVideoAutoplay({ threshold: 0.2, rootMargin: '120px 0px' });
+    const [readySrc, setReadySrc] = useState<string | null>(null);
 
     const getVideoType = (url: string): string => {
         const ext = url.split('.').pop()?.toLowerCase();
@@ -32,6 +35,10 @@ const VideoContainer = ({
     };
 
     const isMov = src.toLowerCase().endsWith('.mov');
+    const resolvedPoster =
+        poster ??
+        `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%230A0A0A' width='1600' height='900'/%3E%3C/svg%3E`;
+    const isVideoReady = readySrc === src;
 
     const videoContent = (
         <div
@@ -46,10 +53,9 @@ const VideoContainer = ({
                 autoPlay
                 playsInline
                 preload={preload}
-                poster={
-                    poster ??
-                    `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%230A0A0A' width='1600' height='900'/%3E%3C/svg%3E`
-                }
+                poster={resolvedPoster}
+                onLoadedData={() => setReadySrc(src)}
+                onCanPlay={() => setReadySrc(src)}
             >
                 {isMov ? (
                     <>
@@ -60,6 +66,16 @@ const VideoContainer = ({
                     <source src={src} type={getVideoType(src)} />
                 )}
             </video>
+            {poster && !isVideoReady && (
+                <Image
+                    src={resolvedPoster}
+                    alt=""
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 900px, 100vw"
+                    className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                />
+            )}
         </div>
     );
 
