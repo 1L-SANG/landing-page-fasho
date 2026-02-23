@@ -304,7 +304,7 @@ export const SURVEY_STEPS: SurveyStep[] = [
         options: [
             { text: '뭐부터 해야할지{{mbr}} 모르겠다' },
             { text: '시간이 부족하다' },
-            { text: '상세페이지 제작이 막막하다' },
+            { text: '상세페이지 제작이{{mbr}} 막막하다' },
             { text: '비용이 부담된다' },
         ],
     },
