@@ -3,7 +3,6 @@ import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { AnalyticsScripts } from "@/components/common/analytics-scripts";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 const SITE_URL = 'https://www.wearless.kr';
 
@@ -51,13 +50,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <head />
+      <head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-TGVNWXLW10"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-TGVNWXLW10');
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased" suppressHydrationWarning>
         <AnalyticsScripts />
         <Header />
         <main className="relative">{children}</main>
         <Footer />
-        <GoogleAnalytics gaId="G-TGVNWXLW10" />
       </body>
     </html>
   );
