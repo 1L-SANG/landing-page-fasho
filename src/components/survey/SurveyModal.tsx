@@ -325,8 +325,8 @@ const SurveyModal = ({ open, onClose }: SurveyModalProps) => {
                                 <Image
                                     src="/logo.png"
                                     alt="Wearless Logo"
-                                    width={44}
-                                    height={44}
+                                    width={35}
+                                    height={35}
                                     className="object-contain"
                                 />
                             </div>

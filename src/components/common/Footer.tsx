@@ -19,8 +19,8 @@ const Footer = () => {
                             <Image
                                 src="/logo.png"
                                 alt="Wearless Logo"
-                                width={28}
-                                height={28}
+                                width={22}
+                                height={22}
                                 className="object-contain"
                             />
                             <span className="text-[20px] font-bold text-[#1A1A1A]">

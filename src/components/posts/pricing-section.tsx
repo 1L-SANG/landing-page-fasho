@@ -26,17 +26,17 @@ const PLANS: Plan[] = [
     },
     {
         name: 'Pro',
-        price: '₩29,900',
+        price: '₩49,900',
         priceSuffix: '/월',
-        features: ['Wearless 2.0 모든 기능', '월 생성횟수 200회', '2k 해상도 다운로드', '워터마크 없음'],
+        features: ['Wearless 2.0 모든 기능', '월 생성횟수 30회', '2k 해상도 다운로드', '워터마크 없음'],
         recommended: true,
         ctaLabel: '시작하기',
     },
     {
         name: 'Seller',
-        price: '₩49,900',
+        price: '₩99,900',
         priceSuffix: '/월',
-        features: ['Wearless 2.0 모든 기능', '월 생성횟수 500회', '4k 해상도 다운로드', '워터마크 없음'],
+        features: ['Wearless 2.0 모든 기능', '월 생성횟수 80회', '4k 해상도 다운로드', '워터마크 없음'],
         ctaLabel: '시작하기',
     },
     {

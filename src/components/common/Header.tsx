@@ -55,8 +55,8 @@ const Header = () => {
                         <Image
                             src="/logo.png"
                             alt="Wearless Logo"
-                            width={36}
-                            height={36}
+                            width={45}
+                            height={45}
                             className="object-contain"
                         />
                         <span className="text-[20px] font-bold text-[#1A1A1A]">

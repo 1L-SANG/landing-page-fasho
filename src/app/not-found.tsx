@@ -19,8 +19,8 @@ const NotFound = () => {
                 <Image
                     src="/logo.png"
                     alt="Wearless Logo"
-                    width={40}
-                    height={40}
+                    width={32}
+                    height={32}
                     className="object-contain"
                 />
             </div>
