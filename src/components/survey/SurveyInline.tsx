@@ -398,9 +398,12 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
                     {/* ── SURVEY INVITE ── */}
                     {currentStep.type === 'survey-invite' && (
                         <div className="pt-3.5 text-center">
-                            <p className="mb-2 text-[24px] font-black tracking-tight text-[#111]">
-                                Mystery Gift Event
-                            </p>
+                            <div className="mb-5 inline-flex flex-col items-center">
+                                <p className="px-2 text-[24px] font-black tracking-tight text-[#111]">
+                                    Mystery Gift Event
+                                </p>
+                                <div className="mt-2 h-px w-full rounded-full bg-[#D9D9D9]" aria-hidden="true" />
+                            </div>
                             <p className="mb-7 text-[20px] font-bold leading-snug tracking-tight text-[#111]">
                                 잠깐!
                                 <br className="md:hidden" />
