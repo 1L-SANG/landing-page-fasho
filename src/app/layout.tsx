@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     images: ['/og-image.jpg'],
   },
   icons: {
-    icon: [{ url: "/logo.png?v=20260311", type: "image/png" }],
-    shortcut: ["/logo.png?v=20260311"],
-    apple: [{ url: "/logo.png?v=20260311" }],
+    icon: [{ url: "/favicon.png?v=20260315-card2", type: "image/png" }],
+    shortcut: ["/favicon.png?v=20260315-card2"],
+    apple: [{ url: "/favicon.png?v=20260315-card2" }],
   },
 };
 
