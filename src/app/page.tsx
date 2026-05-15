@@ -9,21 +9,30 @@ import { TestimonialsSection } from '@/components/posts/testimonials-section';
 import { PricingSection } from '@/components/posts/pricing-section';
 import { ContactSection } from '@/components/posts/contact-section';
 import { FAQSection } from '@/components/posts/faq-section';
+import { MaintenanceOverlay } from '@/components/common/maintenance-overlay';
 
 const HomePage = () => {
   return (
-    <div className="relative min-h-screen">
-      <LuminousOrbBackground />
+    <>
+      <div
+        className="relative min-h-screen pointer-events-none select-none"
+        aria-hidden="true"
+        inert
+      >
+        <LuminousOrbBackground />
 
-      <HeroSection />
-      <FeaturesSection />
-      <ResourceSavingsSection />
-      <HowItWorksSection />
-      <TestimonialsSection />
-      <PricingSection />
-      <ContactSection />
-      <FAQSection />
-    </div>
+        <HeroSection />
+        <FeaturesSection />
+        <ResourceSavingsSection />
+        <HowItWorksSection />
+        <TestimonialsSection />
+        <PricingSection />
+        <ContactSection />
+        <FAQSection />
+      </div>
+
+      <MaintenanceOverlay />
+    </>
   );
 };
 
