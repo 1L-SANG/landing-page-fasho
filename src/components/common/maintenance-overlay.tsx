@@ -54,7 +54,15 @@ const MaintenanceOverlay = () => {
             aria-modal="true"
             aria-label="서비스 업데이트 안내"
         >
-            <div className="w-full max-w-[560px] text-center animate-fade-in">
+            <div
+                className="w-full max-w-[560px] text-center animate-fade-in rounded-3xl border border-white/60 px-8 py-10 md:px-12 md:py-12"
+                style={{
+                    background: 'rgba(255, 255, 255, 0.72)',
+                    backdropFilter: 'blur(24px) saturate(1.6)',
+                    WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
+                    boxShadow: '0 20px 60px -20px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.4) inset',
+                }}
+            >
                 <h1 className="text-[26px] md:text-[34px] font-bold leading-[1.3] text-[#1A1A1A]">
                     더 나은 서비스로 찾아뵙기 위해{'\n'}업데이트중입니다.
                 </h1>
@@ -62,7 +70,7 @@ const MaintenanceOverlay = () => {
                     6월 중 새로운 wearless로 찾아올 예정입니다.
                 </p>
 
-                <div className="mt-10">
+                <div className="mt-8">
                     {status === 'success' ? (
                         <div
                             className="rounded-2xl border border-[#E5E5E5] bg-white/85 px-6 py-5 whitespace-normal"
