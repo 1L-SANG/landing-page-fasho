@@ -46,9 +46,9 @@ const MaintenanceOverlay = () => {
         <div
             className="fixed inset-0 z-[9999] flex items-center justify-center px-6"
             style={{
-                backdropFilter: 'blur(28px) saturate(1.4)',
-                WebkitBackdropFilter: 'blur(28px) saturate(1.4)',
-                background: 'rgba(250, 250, 250, 0.55)',
+                backdropFilter: 'blur(10px) saturate(1.1)',
+                WebkitBackdropFilter: 'blur(10px) saturate(1.1)',
+                background: 'rgba(250, 250, 250, 0.25)',
             }}
             role="dialog"
             aria-modal="true"
