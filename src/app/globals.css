@@ -333,3 +333,360 @@ html {
     background-position: 300% 50%;
   }
 }
+
+/* ============================================================
+   WEARLESS DESIGN SYSTEM — ported from src3/styles/tokens.css.
+   Cal.com-style white monochrome + 4-color aurora glow.
+   Glow tokens are background/ring accents ONLY.
+   ============================================================ */
+:root {
+  --font-display: var(--font-cal-sans), "Cal Sans", "Cal Sans UI", system-ui, sans-serif;
+  --font-body: "Pretendard", "Pretendard Variable", "Inter", system-ui, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --fg-1: #0e0d14;
+  --fg-2: #898989;
+  --fg-3: #b4b4b4;
+  --bg-1: #ffffff;
+  --bg-2: #f5f5f5;
+  --ink-overlay: rgba(17, 17, 17, 0.5);
+  --link: #0099ff;
+
+  --cta-bg: #2c2c2c;
+  --cta-bg-hover: #1b1b1b;
+  --cta-fg: #ffffff;
+  --cta-height: 44px;
+  --cta-weight: 540;
+  --cta-transition: 150ms;
+  --cta-focus-ring: 0 0 0 2px #fff, 0 0 0 4px var(--cta-bg);
+
+  --accent-error: #d92d20;
+  --accent-success: #067647;
+
+  --ring: rgba(34, 42, 53, 0.08);
+  --ring-strong: rgba(34, 42, 53, 0.12);
+  --focus: rgba(59, 130, 246, 0.5);
+
+  /* The 4 glow tokens — aurora/orb backgrounds + accent rings only */
+  --glow-sky: #c3dcf6;
+  --glow-sage: #d8e8c6;
+  --glow-sun: #f8d978;
+  --glow-mauve: #ead0e3;
+  --glow-a: 1;
+
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-blur: blur(8px);
+
+  --elev-inset: inset 0 1px 1.9px 0 rgba(0, 0, 0, 0.16);
+  --elev-card: 0 1px 5px -4px rgba(19, 19, 22, 0.7),
+    0 0 0 1px rgba(34, 42, 53, 0.08), 0 4px 8px 0 rgba(34, 42, 53, 0.05);
+  --elev-btn-hi: inset 0 2px 0 rgba(255, 255, 255, 0.15);
+  --elev-soft: 0 4px 8px 0 rgba(34, 42, 53, 0.05);
+  --elev-lift: 0 2px 8px -4px rgba(19, 19, 22, 0.6),
+    0 0 0 1px rgba(34, 42, 53, 0.1), 0 12px 28px -8px rgba(34, 42, 53, 0.12);
+
+  --sp-section: 80px;
+  --sp-section-lg: 96px;
+  --sp-section-mobile: 48px;
+
+  --r-4: 8px;
+  --r-5: 12px;
+  --r-6: 16px;
+  --r-7: 29px;
+  --r-pill: 9999px;
+
+  --container: 1200px;
+}
+
+/* Cal Sans (Latin/wordmark display). Korean headings use Pretendard. */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+/* ---- Semantic type. Korean headings -> Pretendard, weight-led ---- */
+.display-hero {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(34px, 6vw, 60px);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  color: var(--fg-1);
+}
+.t-h1 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(28px, 4.5vw, 44px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--fg-1);
+}
+.t-h2 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--fg-1);
+}
+.t-h3 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--fg-1);
+}
+.t-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--fg-2);
+}
+.t-lead {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(15px, 2vw, 19px);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: var(--fg-2);
+}
+.t-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg-2);
+}
+.t-caption {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+
+/* ============================================================
+   BACKGROUND — single center orb + side aurora wash.
+   --glow-a dims the whole field (set by WearlessBackground on scroll).
+   ============================================================ */
+@property --gen-ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --sp-ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.wearless-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #fff;
+  overflow: hidden;
+  pointer-events: none;
+}
+.orb-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: calc(0.82 * var(--glow-a));
+  transform: translateY(var(--orb-shift, -32%)) scale(var(--orb-scale, 2.7));
+  transform-origin: center;
+}
+.orb-bg > div {
+  position: absolute;
+  border-radius: 50%;
+}
+.orb-bg .l1 {
+  width: 240px;
+  height: 240px;
+  background: conic-gradient(var(--glow-sky), var(--glow-mauve), var(--glow-sage), var(--glow-sky));
+  filter: blur(27px);
+  opacity: 0.85;
+  animation: orbA 12s linear infinite;
+}
+.orb-bg .l2 {
+  width: 185px;
+  height: 185px;
+  background: conic-gradient(var(--glow-sky), var(--glow-mauve), #fff, var(--glow-sun), var(--glow-sage), var(--glow-sky));
+  filter: blur(14px);
+  opacity: 0.8;
+  animation: orbB 17s linear infinite;
+}
+.orb-bg .l3 {
+  width: 130px;
+  height: 130px;
+  background: #fff;
+  filter: blur(12px);
+  opacity: 0.85;
+  animation: orbA 14s linear infinite;
+}
+.orb-bg .hi {
+  width: 74px;
+  height: 74px;
+  background: radial-gradient(#fff 0%, transparent 70%);
+  filter: blur(14px);
+}
+.edge {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(0.34 * var(--glow-a));
+  background: radial-gradient(34% 58% at -10% 38%, var(--glow-sky) 0%, transparent 62%),
+    radial-gradient(30% 52% at -6% 78%, var(--glow-sage) 0%, transparent 60%),
+    radial-gradient(34% 58% at 110% 46%, var(--glow-mauve) 0%, transparent 62%),
+    radial-gradient(30% 52% at 106% 82%, var(--glow-sun) 0%, transparent 60%);
+  filter: blur(34px);
+}
+@keyframes orbA {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes orbB {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@media (min-width: 1280px) {
+  .orb-bg {
+    --orb-scale: 3.1;
+  }
+}
+@media (min-width: 1600px) {
+  .orb-bg {
+    --orb-scale: 3.7;
+  }
+}
+@media (min-width: 2000px) {
+  .orb-bg {
+    --orb-scale: 4.4;
+  }
+}
+
+/* ============================================================
+   GLOW RINGS — chip + CTA. 4-color conic ring, white/near-black fill.
+   ============================================================ */
+.wearless-glow-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  border: 2px solid transparent;
+  border-radius: var(--r-pill);
+  padding: 7px 15px;
+  background: linear-gradient(#fff, #fff) padding-box,
+    conic-gradient(from var(--sp-ang), var(--glow-sky), var(--glow-sage), var(--glow-sun), var(--glow-mauve), var(--glow-sky)) border-box;
+  box-shadow: var(--elev-soft);
+  animation: spChipSpin 9s linear infinite;
+}
+.wearless-glow-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--cta-height);
+  padding: 0 26px;
+  color: var(--cta-fg);
+  font-family: var(--font-body);
+  font-weight: var(--cta-weight);
+  font-size: 16px;
+  border: 2px solid transparent;
+  border-radius: var(--r-pill);
+  background: linear-gradient(var(--cta-bg), var(--cta-bg)) padding-box,
+    conic-gradient(from var(--gen-ang), var(--glow-sky), var(--glow-sage), var(--glow-sun), var(--glow-mauve), var(--glow-sky)) border-box;
+  box-shadow: var(--elev-btn-hi), var(--elev-soft);
+  animation: genRingSpin 9s linear infinite;
+  transition: transform var(--cta-transition) ease, background var(--cta-transition) ease;
+}
+.wearless-glow-cta:hover {
+  background: linear-gradient(var(--cta-bg-hover), var(--cta-bg-hover)) padding-box,
+    conic-gradient(from var(--gen-ang), var(--glow-sky), var(--glow-sage), var(--glow-sun), var(--glow-mauve), var(--glow-sky)) border-box;
+  transform: translateY(-1px);
+}
+.wearless-glow-cta:focus-visible {
+  outline: none;
+  box-shadow: var(--cta-focus-ring);
+}
+@keyframes spChipSpin {
+  to {
+    --sp-ang: 360deg;
+  }
+}
+@keyframes genRingSpin {
+  to {
+    --gen-ang: 360deg;
+  }
+}
+
+/* ---- Glass plate over glow ---- */
+.wearless-glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--r-6);
+  box-shadow: var(--elev-lift);
+}
+
+/* ---- Plain white card ---- */
+.wearless-card {
+  background: var(--bg-1);
+  border-radius: var(--r-6);
+  box-shadow: var(--elev-card);
+}
+
+/* ============================================================
+   MOTION — scroll reveal, card lift, logo marquee.
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.lift {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--elev-lift);
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-bg .l1,
+  .orb-bg .l2,
+  .orb-bg .l3,
+  .wearless-glow-chip,
+  .wearless-glow-cta {
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

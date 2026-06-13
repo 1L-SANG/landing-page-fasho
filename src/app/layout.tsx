@@ -1,22 +1,33 @@
 import type { Metadata } from "next";
+import { Cal_Sans } from "next/font/google";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { AnalyticsScripts } from "@/components/common/analytics-scripts";
 import "./globals.css";
 
+const calSans = Cal_Sans({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-cal-sans",
+  display: "swap",
+});
+
 const SITE_URL = 'https://www.wearless.kr';
 
+const TITLE = 'Wearless — AI 상세페이지 제작 스튜디오';
+const DESCRIPTION =
+  '제품 사진만 올리세요. 분석부터 마네킹컷, 콘티, 에디터까지 — AI가 상세페이지를 완성합니다. 쇼핑몰 셀러를 위한 AI 스튜디오.';
+
 export const metadata: Metadata = {
-  title: "Wearless — 쇼핑몰 촬영의 새로운 기준",
-  description:
-    "스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요. 쇼핑몰 셀러를 위한 AI 서비스.",
+  title: TITLE,
+  description: DESCRIPTION,
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: 'Wearless — 쇼핑몰 촬영의 새로운 기준',
-    description: '스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요. 쇼핑몰 셀러를 위한 AI 서비스.',
+    title: TITLE,
+    description: DESCRIPTION,
     url: SITE_URL,
     siteName: 'Wearless',
     images: [
@@ -24,7 +35,7 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1280,
         height: 720,
-        alt: 'Wearless — 쇼핑몰 촬영의 새로운 기준',
+        alt: TITLE,
       },
     ],
     locale: 'ko_KR',
@@ -32,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Wearless — 쇼핑몰 촬영의 새로운 기준',
-    description: '스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요. 쇼핑몰 셀러를 위한 AI 서비스.',
+    title: TITLE,
+    description: DESCRIPTION,
     images: ['/og-image.jpg'],
   },
   icons: {
@@ -49,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko" className={calSans.variable} suppressHydrationWarning>
       <head>
         <script
           async
