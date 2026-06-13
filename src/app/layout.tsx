@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cal_Sans } from "next/font/google";
+import { Cal_Sans, Roboto_Mono } from "next/font/google";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { AnalyticsScripts } from "@/components/common/analytics-scripts";
@@ -9,6 +9,13 @@ const calSans = Cal_Sans({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-cal-sans",
+  display: "swap",
+});
+
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-roboto-mono",
   display: "swap",
 });
 
@@ -60,8 +67,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={calSans.variable} suppressHydrationWarning>
+    <html
+      lang="ko"
+      className={`${calSans.variable} ${robotoMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
+        {/* Mark JS-on before paint so reveal animations gate on this; content
+            stays visible if JS is disabled or slow. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js');",
+          }}
+        />
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-TGVNWXLW10"

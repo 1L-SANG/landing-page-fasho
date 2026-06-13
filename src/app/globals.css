@@ -145,6 +145,9 @@
 /* --- Global whitespace: pre-line (outside @layer to beat Tailwind reset) --- */
 body {
   white-space: pre-line;
+  /* Korean: break at word boundaries, never mid-word */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* --- Whitespace Exception: opt-out class for elements that should NOT preserve \n --- */
@@ -342,7 +345,7 @@ html {
 :root {
   --font-display: var(--font-cal-sans), "Cal Sans", "Cal Sans UI", system-ui, sans-serif;
   --font-body: "Pretendard", "Pretendard Variable", "Inter", system-ui, sans-serif;
-  --font-mono: "Roboto Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-mono: var(--font-roboto-mono), "Roboto Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   --fg-1: #0e0d14;
   --fg-2: #898989;
@@ -408,26 +411,43 @@ html {
 .display-hero {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: clamp(34px, 6vw, 60px);
-  line-height: 1.14;
-  letter-spacing: -0.02em;
+  font-size: clamp(40px, 7.2vw, 82px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   color: var(--fg-1);
 }
 .t-h1 {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: clamp(28px, 4.5vw, 44px);
-  line-height: 1.18;
-  letter-spacing: -0.02em;
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
   color: var(--fg-1);
 }
 .t-h2 {
   font-family: var(--font-body);
-  font-weight: 600;
-  font-size: clamp(22px, 3vw, 30px);
-  line-height: 1.25;
-  letter-spacing: -0.015em;
+  font-weight: 650;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--fg-1);
+}
+.display-hero,
+.t-h1,
+.t-h2,
+.t-h3,
+.t-lead,
+.t-body,
+.t-caption {
+  word-break: keep-all;
+}
+/* Big editorial section index, mono */
+.t-index {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  color: var(--fg-3);
 }
 .t-h3 {
   font-family: var(--font-body);
@@ -438,10 +458,11 @@ html {
   color: var(--fg-1);
 }
 .t-eyebrow {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.02em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   color: var(--fg-2);
 }
 .t-lead {
@@ -649,16 +670,21 @@ html {
 /* ============================================================
    MOTION — scroll reveal, card lift, logo marquee.
    ============================================================ */
+/* Visible by default (no-JS / pre-hydration). The entrance animation only
+   arms once JS adds `.js` to <html>, so content is never stuck hidden. */
 .reveal {
+  opacity: 1;
+}
+html.js .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(22px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
-.reveal.in {
+html.js .reveal.in {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 .lift {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -684,9 +710,39 @@ html {
   .wearless-glow-cta {
     animation: none;
   }
+  html.js .reveal,
   .reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
+}
+
+/* ---- Subtle film grain: texture over the white/glow, under content ---- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Hairline divider ---- */
+.hairline {
+  height: 1px;
+  background: var(--ring-strong);
+}
+
+/* ---- Section shell: consistent editorial rhythm ---- */
+.section {
+  position: relative;
+  z-index: 10;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.section-inner {
+  margin-inline: auto;
+  max-width: var(--container);
 }

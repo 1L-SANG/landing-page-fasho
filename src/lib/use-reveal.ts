@@ -32,7 +32,15 @@ export const useReveal = <T extends HTMLElement = HTMLDivElement>(
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
+
+    // Safety net: never leave content stuck hidden if the observer never
+    // fires (e.g. non-scrolling render contexts). Reveals without animation.
+    const fallback = window.setTimeout(() => setShown(true), 2500);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, [threshold]);
 
   return { ref, shown };
