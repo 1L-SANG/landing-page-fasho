@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cal_Sans, Roboto_Mono } from "next/font/google";
+import { Cal_Sans, Roboto_Mono, Instrument_Serif } from "next/font/google";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { AnalyticsScripts } from "@/components/common/analytics-scripts";
@@ -16,6 +16,15 @@ const robotoMono = Roboto_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-roboto-mono",
+  display: "swap",
+});
+
+// Editorial Latin accent — elegant high-contrast serif (eyebrows, numerals).
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument",
   display: "swap",
 });
 
@@ -69,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${calSans.variable} ${robotoMono.variable}`}
+      className={`${calSans.variable} ${robotoMono.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >
       <head>

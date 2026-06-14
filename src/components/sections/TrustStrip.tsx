@@ -24,7 +24,7 @@ const TrustStrip = () => {
         ref={ref}
         className={`reveal ${shown ? 'in' : ''} section-inner`}
       >
-        <p className="t-eyebrow text-center">이미 함께하는 브랜드</p>
+        <p className="t-mono text-center">Trusted by</p>
 
         <div className="mt-7 flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
           {LOGOS.map((logo) => (

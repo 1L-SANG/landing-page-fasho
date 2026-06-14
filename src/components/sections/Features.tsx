@@ -9,6 +9,7 @@ import {
   SlidersHorizontal,
 } from 'lucide-react';
 import { useReveal } from '@/lib/use-reveal';
+import { SectionHeader } from '@/components/ui/section-header';
 import type { LucideIcon } from 'lucide-react';
 
 interface Feature {
@@ -50,23 +51,30 @@ const FEATURES: Feature[] = [
   },
 ];
 
-const FeatureCard = ({ feature, index }: { feature: Feature; index: number }) => {
+const Cell = ({ feature, index }: { feature: Feature; index: number }) => {
   const { ref, shown } = useReveal<HTMLDivElement>();
   const Icon = feature.icon;
   return (
     <div
       ref={ref}
-      className={`reveal ${shown ? 'in' : ''} wearless-card lift group relative p-7`}
-      style={{ transitionDelay: `${(index % 3) * 80}ms` }}
+      className={`reveal ${shown ? 'in' : ''} group relative pt-6`}
+      style={{ transitionDelay: `${(index % 3) * 70}ms` }}
     >
-      <span className="absolute right-6 top-6 font-[family-name:var(--font-mono)] text-[12px] text-[var(--fg-3)]">
-        {String(index + 1).padStart(2, '0')}
-      </span>
-      <span className="inline-flex h-12 w-12 items-center justify-center rounded-[14px] bg-[var(--fg-1)] text-white transition-transform duration-200 group-hover:scale-105">
-        <Icon size={21} strokeWidth={1.9} />
-      </span>
+      <span className="hairline absolute left-0 right-0 top-0" />
+      <div className="flex items-center justify-between">
+        <span className="t-num text-[28px]">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <Icon
+          size={20}
+          strokeWidth={1.7}
+          className="text-[var(--fg-3)] transition-colors duration-200 group-hover:text-[var(--fg-1)]"
+        />
+      </div>
       <h3 className="t-h3 whitespace-normal mt-5">{feature.title}</h3>
-      <p className="t-caption whitespace-normal mt-2.5">{feature.desc}</p>
+      <p className="t-caption whitespace-normal mt-2 max-w-[34ch]">
+        {feature.desc}
+      </p>
     </div>
   );
 };
@@ -75,16 +83,11 @@ const Features = () => {
   return (
     <section id="features" className="section py-[var(--sp-section-lg)]">
       <div className="section-inner">
-        <div className="mx-auto max-w-[620px] text-center">
-          <p className="t-eyebrow">Why Wearless</p>
-          <h2 className="t-h1 whitespace-normal mt-4">
-            셀러에게 필요한 것만, 정확하게
-          </h2>
-        </div>
+        <SectionHeader eyebrow="Why Wearless" title="셀러에게 필요한 것만, 정확하게" />
 
-        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-2 grid grid-cols-1 gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((feature, i) => (
-            <FeatureCard key={feature.title} feature={feature} index={i} />
+            <Cell key={feature.title} feature={feature} index={i} />
           ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { GeneratedImage } from '@/components/ui/generated-image';
+import { SectionHeader } from '@/components/ui/section-header';
 import { useReveal } from '@/lib/use-reveal';
 
 const CUTS = [
@@ -33,17 +34,15 @@ const Showcase = () => {
   return (
     <section className="section py-[var(--sp-section-lg)]">
       <div className="section-inner">
-        <div className="mx-auto max-w-[620px] text-center">
-          <p className="t-eyebrow">Output</p>
-          <h2 className="t-h1 whitespace-normal mt-4">한 상품, 여러 컷</h2>
-          <p className="t-lead whitespace-normal mt-4">
-            상세페이지에 필요한 컷 종류를 모두 만들어냅니다.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrow="Output"
+          title="한 상품, 여러 컷"
+          sub="상세페이지에 필요한 컷 종류를 모두 만들어냅니다."
+        />
 
         <div
           ref={ref}
-          className={`reveal ${shown ? 'in' : ''} mt-14 grid grid-cols-1 gap-5 sm:grid-cols-3`}
+          className={`reveal ${shown ? 'in' : ''} mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3`}
         >
           {CUTS.map((cut, i) => (
             <figure

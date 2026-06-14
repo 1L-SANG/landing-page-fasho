@@ -148,6 +148,7 @@ body {
   /* Korean: break at word boundaries, never mid-word */
   word-break: keep-all;
   overflow-wrap: break-word;
+  background: var(--paper);
 }
 
 /* --- Whitespace Exception: opt-out class for elements that should NOT preserve \n --- */
@@ -346,13 +347,15 @@ html {
   --font-display: var(--font-cal-sans), "Cal Sans", "Cal Sans UI", system-ui, sans-serif;
   --font-body: "Pretendard", "Pretendard Variable", "Inter", system-ui, sans-serif;
   --font-mono: var(--font-roboto-mono), "Roboto Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: var(--font-instrument), "Instrument Serif", Georgia, "Times New Roman", serif;
 
-  --fg-1: #0e0d14;
-  --fg-2: #898989;
-  --fg-3: #b4b4b4;
-  --bg-1: #ffffff;
-  --bg-2: #f5f5f5;
-  --ink-overlay: rgba(17, 17, 17, 0.5);
+  --fg-1: #14110f;   /* warm near-black ink */
+  --fg-2: #8a8478;   /* warm muted */
+  --fg-3: #b7b1a6;   /* warm faint */
+  --bg-1: #ffffff;   /* crisp card surface */
+  --bg-2: #f3f0ea;   /* warm soft surface */
+  --paper: #faf8f3;  /* warm gallery-paper canvas */
+  --ink-overlay: rgba(20, 17, 15, 0.5);
   --link: #0099ff;
 
   --cta-bg: #2c2c2c;
@@ -366,8 +369,8 @@ html {
   --accent-error: #d92d20;
   --accent-success: #067647;
 
-  --ring: rgba(34, 42, 53, 0.08);
-  --ring-strong: rgba(34, 42, 53, 0.12);
+  --ring: rgba(40, 34, 28, 0.1);
+  --ring-strong: rgba(40, 34, 28, 0.16);
   --focus: rgba(59, 130, 246, 0.5);
 
   /* The 4 glow tokens — aurora/orb backgrounds + accent rings only */
@@ -457,13 +460,32 @@ html {
   letter-spacing: -0.01em;
   color: var(--fg-1);
 }
+/* Editorial section eyebrow — elegant serif italic (fashion-masthead voice) */
 .t-eyebrow {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(19px, 2.4vw, 24px);
+  letter-spacing: 0;
+  color: var(--fg-2);
+}
+/* Technical micro-label — mono, uppercase, tracked (data/index voice) */
+.t-mono {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg-2);
+}
+/* Editorial serif numeral */
+.t-num {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: var(--fg-1);
+  font-variant-numeric: lining-nums;
 }
 .t-lead {
   font-family: var(--font-body);
@@ -507,7 +529,7 @@ html {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: #fff;
+  background: var(--paper);
   overflow: hidden;
   pointer-events: none;
 }

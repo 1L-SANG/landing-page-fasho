@@ -1,6 +1,7 @@
 'use client';
 
 import { GeneratedImage } from '@/components/ui/generated-image';
+import { SectionHeader } from '@/components/ui/section-header';
 import { useReveal } from '@/lib/use-reveal';
 
 interface Step {
@@ -59,10 +60,8 @@ const StepRow = ({ step, index }: { step: Step; index: number }) => {
       {/* text */}
       <div className={flip ? 'md:order-2 md:pl-6' : 'md:pr-6'}>
         <div className="flex items-baseline gap-4">
-          <span className="font-display text-[46px] leading-none text-[var(--fg-1)] opacity-[0.16] tabular-nums">
-            {step.n}
-          </span>
-          <span className="t-eyebrow pb-1">{step.kicker}</span>
+          <span className="t-num text-[64px] opacity-[0.2]">{step.n}</span>
+          <span className="t-mono pb-1.5">{step.kicker}</span>
         </div>
         <h3 className="t-h2 whitespace-normal mt-4">{step.title}</h3>
         <p className="t-body whitespace-normal mt-3 max-w-[420px]">{step.desc}</p>
@@ -93,15 +92,11 @@ const StudioFlow = () => {
   return (
     <section id="how" className="section py-[var(--sp-section-lg)]">
       <div className="section-inner">
-        <div className="mx-auto max-w-[620px] text-center">
-          <p className="t-eyebrow">How it works</p>
-          <h2 className="t-h1 whitespace-normal mt-4">
-            촬영 없이, 상세페이지까지
-          </h2>
-          <p className="t-lead whitespace-normal mt-4">
-            실제 스튜디오의 흐름 그대로. 네 단계면 완성됩니다.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrow="How it works"
+          title="촬영 없이, 상세페이지까지"
+          sub="실제 스튜디오의 흐름 그대로. 네 단계면 완성됩니다."
+        />
 
         <div className="mt-20 flex flex-col gap-20 md:gap-28">
           {STEPS.map((step, i) => (
