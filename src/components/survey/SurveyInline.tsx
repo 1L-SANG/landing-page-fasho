@@ -1,0 +1,794 @@
+'use client';
+
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import Image from 'next/image';
+import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
+import { getSurveyProgressPercent } from '@/lib/survey-progress';
+import {
+    trackMetaLead,
+    trackMetaSubmitApplication,
+    trackMetaCompleteRegistration,
+    trackGASurveyStart,
+    trackGASurveyComplete,
+} from '@/lib/analytics';
+import { startSurveySession, submitSurveyStep, flushSurveyData } from '@/lib/submit-survey';
+import { FaceIcon } from '@/components/survey/icons/face-icon';
+import { NoFaceIcon } from '@/components/survey/icons/no-face-icon';
+
+/* ────────────────────────────────────────────────────
+ *  Types
+ * ──────────────────────────────────────────────────── */
+
+interface SurveyInlineProps {
+    open: boolean;
+    onClose: () => void;
+}
+
+type Answers = Record<string, unknown>;
+type SplitState = { left: number | null; right: number | null };
+
+/* ────────────────────────────────────────────────────
+ *  Helpers
+ * ──────────────────────────────────────────────────── */
+
+const ACTIVE_TYPES = ['select', 'input', 'multi-select', 'split-select', 'image-select'];
+const INVITE_KEYWORD_GRADIENT_STYLE = {
+    background: 'linear-gradient(135deg, #7465E0, #4F79E8, #87A8F3)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+};
+const INVITE_NOTICE_ITEMS = [
+    '불성실한 답변은 AI 필터링으로 대상에서 제외됩니다.',
+    '인원이 마감되면 해당 이벤트창은 사라집니다.(선착순)',
+];
+
+const getSelectGrid = (count: number, stepId: string): string => {
+    if (stepId === 'prep_model' && count === 3) return 'grid-cols-2 md:grid-cols-3';
+    if (count === 2) return 'grid-cols-2';
+    if (count === 3) return 'grid-cols-3';
+    if (count === 5) return 'grid-cols-[repeat(6,1fr)]';
+    if (count === 6) return 'grid-cols-3';
+    return 'grid-cols-2';
+};
+
+const getOptionSpan = (count: number, index: number, stepId: string): string => {
+    if (stepId === 'prep_model' && count === 3 && index === 2) return 'col-span-2 md:col-span-1';
+    if (count === 5 && index < 3) return 'col-span-2';
+    if (count === 5 && index >= 3) return 'col-span-3';
+    return '';
+};
+
+/** Render text with mobile-only line breaks: {{mbr}} → <br class="md:hidden" /> */
+const renderMobileBr = (text: string) => {
+    if (!text.includes('{{mbr}}')) return text;
+    return text.split('{{mbr}}').map((part, i) => (
+        <span key={i}>{i > 0 && <br className="md:hidden" />}{part}</span>
+    ));
+};
+
+/* ────────────────────────────────────────────────────
+ *  Component
+ * ──────────────────────────────────────────────────── */
+
+const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
+    const EXIT_ANIMATION_MS = 560;
+    const [stepIndex, setStepIndex] = useState(0);
+    const [email, setEmail] = useState('');
+    const [inputValue, setInputValue] = useState('');
+    const [answers, setAnswers] = useState<Answers>({});
+    const [multiSelection, setMultiSelection] = useState<number[]>([]);
+    const [splitSelection, setSplitSelection] = useState<SplitState>({ left: null, right: null });
+    const [cardBounce, setCardBounce] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+    const [shouldRender, setShouldRender] = useState(open);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const currentStep = SURVEY_STEPS[stepIndex] as SurveyStep;
+    const multiSelectionSet = useMemo(() => new Set(multiSelection), [multiSelection]);
+    const progress = useMemo(() => getSurveyProgressPercent(currentStep.id, answers), [currentStep.id, answers]);
+
+    /* Visibility transition */
+    useEffect(() => {
+        let closeTimer: ReturnType<typeof setTimeout> | undefined;
+
+        if (open) {
+            setShouldRender(true);
+            requestAnimationFrame(() => setIsVisible(true));
+
+            startSurveySession();
+
+            /* Analytics: survey opened */
+            trackMetaLead();
+            trackGASurveyStart();
+        } else {
+            setIsVisible(false);
+            flushSurveyData();
+            closeTimer = setTimeout(() => {
+                setShouldRender(false);
+            }, EXIT_ANIMATION_MS);
+        }
+
+        return () => {
+            if (closeTimer) clearTimeout(closeTimer);
+        };
+    }, [open, EXIT_ANIMATION_MS]);
+
+    /* Reset state when fully closed */
+    useEffect(() => {
+        if (!shouldRender) {
+            setStepIndex(0);
+            setEmail('');
+            setAnswers({});
+            setInputValue('');
+            setMultiSelection([]);
+            setSplitSelection({ left: null, right: null });
+        }
+    }, [shouldRender]);
+
+    /* Scroll into view when opened */
+    useEffect(() => {
+        if (open && isVisible && containerRef.current) {
+            setTimeout(() => {
+                containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 200);
+        }
+    }, [open, isVisible]);
+
+    /* ── Navigation Helpers ── */
+
+    const restoreStepState = (idx: number, currentAnswers?: Answers) => {
+        const step = SURVEY_STEPS[idx];
+        const ans = currentAnswers || answers;
+
+        if (step.type === 'multi-select' && ans[step.id]) {
+            setMultiSelection(ans[step.id] as number[]);
+        } else {
+            setMultiSelection([]);
+        }
+
+        if (step.type === 'split-select' && ans[step.id]) {
+            setSplitSelection(ans[step.id] as SplitState);
+        } else {
+            setSplitSelection({ left: null, right: null });
+        }
+
+        if (step.type === 'input' && ans[step.id] && ans[step.id] !== 'skipped') {
+            setInputValue(ans[step.id] as string);
+        } else {
+            setInputValue('');
+        }
+    };
+
+    const goToNextStep = (newAnswers: Answers = answers) => {
+        let nextIndex = stepIndex + 1;
+        while (
+            nextIndex < SURVEY_STEPS.length &&
+            SURVEY_STEPS[nextIndex].condition &&
+            !SURVEY_STEPS[nextIndex].condition!(newAnswers)
+        ) {
+            nextIndex++;
+        }
+
+        const isDone = SURVEY_STEPS[nextIndex]?.type === 'done';
+
+        if (isDone) {
+            console.log('Survey completed:', { email, answers: newAnswers });
+
+            /* Analytics: survey completed */
+            trackMetaCompleteRegistration();
+
+            const roleIndex = newAnswers.role as number | undefined;
+            const roleStep = SURVEY_STEPS.find((s) => s.id === 'role');
+            const roleName =
+                roleIndex !== undefined && roleStep?.options?.[roleIndex]
+                    ? roleStep.options[roleIndex].text
+                    : 'unknown';
+            trackGASurveyComplete(roleName);
+        }
+
+        // ✅ 구글시트 전송 (매 스텝마다, 완료 시 포함)
+        submitSurveyStep(
+            email,
+            newAnswers,
+            SURVEY_STEPS[nextIndex]?.id || 'unknown',
+            isDone
+        );
+
+        setStepIndex(nextIndex);
+        restoreStepState(nextIndex, newAnswers);
+    };
+
+    const goBack = useCallback(() => {
+        let prevIndex = stepIndex - 1;
+        while (
+            prevIndex >= 0 &&
+            SURVEY_STEPS[prevIndex].condition &&
+            !SURVEY_STEPS[prevIndex].condition!(answers)
+        ) {
+            prevIndex--;
+        }
+        if (prevIndex >= 0) {
+            setStepIndex(prevIndex);
+            restoreStepState(prevIndex, answers);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [stepIndex, answers]);
+
+    /* ── Action Handlers ── */
+
+    const handleEmailSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (email.trim() && email.includes('@')) {
+            /* Analytics: email submitted */
+            trackMetaSubmitApplication();
+
+            setCardBounce(true);
+            setTimeout(() => {
+                setCardBounce(false);
+                goToNextStep();
+            }, 350);
+        }
+    };
+
+    const handleSelect = (id: string, idx: number) => {
+        const na = { ...answers, [id]: idx };
+        setAnswers(na);
+        goToNextStep(na);
+    };
+
+    const handleInputSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!inputValue.trim()) return;
+        const na = { ...answers, [currentStep.id]: inputValue.trim() };
+        setAnswers(na);
+        goToNextStep(na);
+    };
+
+    const handleInputSkip = () => {
+        const na = { ...answers, [currentStep.id]: 'skipped' };
+        setAnswers(na);
+        goToNextStep(na);
+    };
+
+    const toggleMultiSelect = useCallback((idx: number) => {
+        const maxSelect = currentStep.maxSelect ?? 2;
+        setMultiSelection((prev) => {
+            if (prev.includes(idx)) {
+                return prev.filter((i) => i !== idx);
+            }
+            if (prev.length >= maxSelect) {
+                return prev;
+            }
+            return [...prev, idx];
+        });
+    }, [currentStep.maxSelect]);
+    const handleMultiSelectOptionClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const idx = Number(e.currentTarget.dataset.optionIndex);
+        if (Number.isNaN(idx)) return;
+        toggleMultiSelect(idx);
+    }, [toggleMultiSelect]);
+
+    const submitMultiSelect = () => {
+        if (multiSelection.length === 0) return;
+        const na = { ...answers, [currentStep.id]: multiSelection };
+        setAnswers(na);
+        goToNextStep(na);
+    };
+
+    const handleSetSplit = (side: 'left' | 'right', idx: number) => {
+        setSplitSelection((p) => ({ ...p, [side]: idx }));
+    };
+
+    const submitSplit = () => {
+        const na = { ...answers, [currentStep.id]: splitSelection };
+        setAnswers(na);
+        goToNextStep(na);
+    };
+
+    const handleSurveyAccept = () => goToNextStep();
+
+    const handleSurveyDecline = () => {
+        setStepIndex(SURVEY_STEPS.length - 1);
+    };
+
+    /* ── Guard ── */
+    if (!shouldRender) return null;
+
+    /* ────────────────────────────────────────────────────
+     *  Render — Inline (not modal)
+     * ──────────────────────────────────────────────────── */
+
+    return (
+        <div
+            ref={containerRef}
+            className="w-full max-w-[500px] mx-auto"
+            style={{
+                transition:
+                    'opacity 0.56s cubic-bezier(0.16,1,0.3,1), transform 0.56s cubic-bezier(0.16,1,0.3,1), max-height 0.56s cubic-bezier(0.16,1,0.3,1)',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.96)',
+                maxHeight: isVisible ? '800px' : '0px',
+                overflow: 'hidden',
+                willChange: 'opacity, transform, max-height',
+            }}
+        >
+            {/* Glass Card */}
+            <div
+                className="relative w-full overflow-hidden rounded-[22px]"
+                style={{
+                    background: 'rgba(245,245,247,0.92)',
+                    backdropFilter: 'blur(40px) saturate(1.6)',
+                    WebkitBackdropFilter: 'blur(40px) saturate(1.6)',
+                    border: '1px solid rgba(0,0,0,0.12)',
+                    boxShadow: '0 24px 80px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.5) inset',
+                    transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1)',
+                    transform: cardBounce ? 'scale(0.97)' : 'scale(1)',
+                }}
+            >
+                {/* Progress Bar */}
+                <div className="h-[2px] bg-black/[0.04]">
+                    <div
+                        className="h-full rounded-sm"
+                        style={{
+                            background:
+                                currentStep.type === 'done'
+                                    ? 'linear-gradient(90deg,#12ADE6,#4C63FC,#DC4CFC,#FF0080,#12B4E6)'
+                                    : '#1A1A1A',
+                            backgroundSize: currentStep.type === 'done' ? '200% 100%' : undefined,
+                            animation: currentStep.type === 'done' ? 'progShimmer 2.5s linear infinite' : undefined,
+                            transition: 'width 0.5s cubic-bezier(0.16,1,0.3,1)',
+                            width: currentStep.type === 'done' ? '100%' : `${progress}%`,
+                            opacity: ACTIVE_TYPES.includes(currentStep.type) || currentStep.type === 'done' ? 1 : 0,
+                        }}
+                    />
+                </div>
+
+                {/* Close Button */}
+                <button
+                    onClick={onClose}
+                    className="absolute right-3.5 top-3.5 z-10 flex items-center justify-center rounded-lg bg-transparent p-1.5 transition-colors hover:bg-black/5"
+                    aria-label="설문 닫기"
+                    tabIndex={0}
+                >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M3 3L11 11M11 3L3 11" stroke="#999" strokeWidth="1.6" strokeLinecap="round" />
+                    </svg>
+                </button>
+
+                {/* Content */}
+                <div key={stepIndex} className="overflow-hidden px-[26px] pb-6 pt-[26px]">
+                    {/* ── EMAIL ── */}
+                    {currentStep.type === 'email' && (
+                        <div className="text-center">
+                            <div className="mx-auto mb-3.5 inline-flex items-center justify-center">
+                                <Image
+                                    src="/logo.svg"
+                                    alt="Wearless 로고"
+                                    width={35}
+                                    height={35}
+                                    className="object-contain"
+                                />
+                            </div>
+                            <p className="mb-1.5 text-[19px] font-bold tracking-tight text-[#111]">{currentStep.title}</p>
+                            <p className="mb-5 text-[13.5px] font-semibold leading-relaxed text-[#003A8F]">{currentStep.desc}</p>
+                            <form onSubmit={handleEmailSubmit} className="mt-6 w-full">
+                                <div className="flex gap-1.5 rounded-[14px] border-[1.5px] border-black/[0.08] bg-white/70 p-[5px]">
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="abc@gmail.com"
+                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[16px] text-[#1A1A1A] outline-none placeholder:text-[#bbb] md:text-[15px]"
+                                        autoFocus
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="flex-shrink-0 whitespace-nowrap rounded-[10px] bg-[#1A1A1A] px-11 py-[11px] text-[14px] font-semibold text-white transition-all duration-200"
+                                        style={{ opacity: email.includes('@') ? 1 : 0.35 }}
+                                    >
+                                        완료
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                    )}
+
+                    {/* ── SURVEY INVITE ── */}
+                    {currentStep.type === 'survey-invite' && (
+                        <div className="pt-3.5 text-center">
+                            <div className="mb-5 inline-flex flex-col items-center">
+                                <p className="px-2 text-[24px] font-black tracking-tight text-[#111]">
+                                    Mystery Gift Event
+                                </p>
+                                <div className="mt-2 h-px w-full rounded-full bg-[#D9D9D9]" aria-hidden="true" />
+                            </div>
+                            <p className="mb-7 text-[20px] font-bold leading-snug tracking-tight text-[#111]">
+                                잠깐!
+                                <br className="md:hidden" />
+                                <span className="hidden md:inline">&nbsp;</span>
+                                <span
+                                    className="font-black"
+                                    style={INVITE_KEYWORD_GRADIENT_STYLE}
+                                >
+                                    Pro 플랜
+                                </span>
+                                을{' '}
+                                <span
+                                    className="font-black"
+                                    style={INVITE_KEYWORD_GRADIENT_STYLE}
+                                >
+                                    무료
+                                </span>
+                                로 써보시겠어요?
+                            </p>
+
+                            <div className="flex flex-col gap-2.5">
+                                <button
+                                    onClick={handleSurveyAccept}
+                                    className="relative w-full overflow-hidden rounded-[14px] bg-[#1A1A1A] px-6 py-3.5 text-[15px] font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-[1.02]"
+                                    style={{ border: '3px solid transparent', backgroundImage: 'linear-gradient(#1A1A1A, #1A1A1A), linear-gradient(135deg, #7465E0, #4F79E8, #87A8F3)', backgroundOrigin: 'border-box', backgroundClip: 'padding-box, border-box' }}
+                                >
+                                    1분 설문 참여하고 혜택 받기
+                                </button>
+                            </div>
+
+                            <div className="mt-4 flex w-full flex-col items-start gap-1">
+                                {INVITE_NOTICE_ITEMS.map((text) => (
+                                    <div key={text} className="grid w-full grid-cols-[14px_minmax(0,1fr)] items-start gap-x-1.5 text-left">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-[2px] h-[14px] w-[14px] flex-shrink-0">
+                                            <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                                        </svg>
+                                        <span className="text-[12px] font-medium leading-[1.45] text-[#888] [overflow-wrap:anywhere] [word-break:keep-all]">{text}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ── SELECT ── */}
+                    {currentStep.type === 'select' && (
+                        <div>
+                            <div className="mb-3">
+                                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#bbb]">{currentStep.label}</span>
+                            </div>
+                            <p className="mb-3.5 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">{currentStep.q}</p>
+                            <div className={`grid ${getSelectGrid(currentStep.options?.length ?? 0, currentStep.id)} gap-2`}>
+                                {currentStep.options?.map((o, i) => {
+                                    const isSel = answers[currentStep.id] === i;
+                                    return (
+                                        <button
+                                            key={i}
+                                            onClick={() => handleSelect(currentStep.id, i)}
+                                            className={`touch-manipulation flex flex-col items-center justify-center gap-1.5 rounded-[14px] px-2.5 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${getOptionSpan(currentStep.options?.length ?? 0, i, currentStep.id)} ${isSel
+                                                ? 'scale-[0.97] border-[1.5px] border-[#1A1A1A]/60 bg-white/80 shadow-[0_2px_12px_rgba(0,0,0,0.06)]'
+                                                : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                }`}
+                                            aria-pressed={isSel}
+                                        >
+                                            <span className="text-[13px] font-semibold leading-snug text-[#333]">{renderMobileBr(o.text)}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            <button
+                                onClick={goBack}
+                                className="mt-3.5 inline-flex border-none bg-transparent px-0 py-1 text-[13px] font-medium text-[#bbb] hover:text-[#888]"
+                                tabIndex={0}
+                                aria-label="이전 질문으로"
+                            >
+                                이전으로
+                            </button>
+                        </div>
+                    )}
+
+                    {/* ── IMAGE SELECT ── */}
+                    {currentStep.type === 'image-select' && (
+                        <div>
+                            <div className="mb-3">
+                                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#bbb]">{currentStep.label}</span>
+                            </div>
+                            <p className="mb-4 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">{currentStep.q}</p>
+                            <div className="grid grid-cols-2 gap-2.5">
+                                {currentStep.options?.map((o, i) => {
+                                    const isSel = answers[currentStep.id] === i;
+                                    return (
+                                        <button
+                                            key={i}
+                                            onClick={() => handleSelect(currentStep.id, i)}
+                                            className={`touch-manipulation flex flex-col items-center gap-3 rounded-2xl px-2.5 pb-3.5 pt-[18px] transition-[transform,background-color,border-color] duration-150 ${isSel
+                                                ? 'scale-[0.97] border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04] shadow-[0_2px_16px_rgba(76,99,252,0.1)]'
+                                                : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                }`}
+                                            aria-pressed={isSel}
+                                        >
+                                            <div className="flex h-[90px] w-[72px] items-center justify-center opacity-70">
+                                                {o.image === 'face' ? <FaceIcon /> : <NoFaceIcon />}
+                                            </div>
+                                            <span className="text-[13px] font-semibold leading-snug text-[#333]">{o.text}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            <button
+                                onClick={goBack}
+                                className="mt-3.5 inline-flex border-none bg-transparent px-0 py-1 text-[13px] font-medium text-[#bbb] hover:text-[#888]"
+                                tabIndex={0}
+                                aria-label="이전 질문으로"
+                            >
+                                이전으로
+                            </button>
+                        </div>
+                    )}
+
+                    {/* ── MULTI SELECT ── */}
+                    {currentStep.type === 'multi-select' && (
+                        <div>
+                            <div className="mb-3">
+                                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#bbb]">{currentStep.label}</span>
+                            </div>
+                            <p className="mb-1 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">
+                                {currentStep.q}{' '}
+                                {currentStep.qHighlight && (
+                                    <><br className="md:hidden" /><span
+                                        className="font-semibold"
+                                        style={{
+                                            background: 'linear-gradient(90deg, #12ADE6, #4C63FC, #DC4CFC, #FF0080, #12ADE6)',
+                                            backgroundSize: '300% 100%',
+                                            WebkitBackgroundClip: 'text',
+                                            WebkitTextFillColor: 'transparent',
+                                            backgroundClip: 'text',
+                                            animation: 'gradText 8s linear infinite',
+                                        }}
+                                    >
+                                        {currentStep.qHighlight}
+                                    </span></>
+                                )}
+                            </p>
+                            {currentStep.sub && <p className="mb-3.5 text-left text-[12px] leading-snug text-[#666]">{currentStep.sub}</p>}
+                            {!currentStep.sub && <div className="h-2.5" />}
+
+                            {currentStep.gridLayout ? (
+                                <div className="grid grid-cols-2 gap-2">
+                                    {currentStep.options?.map((o, i) => {
+                                        const isSel = multiSelectionSet.has(i);
+                                        return (
+                                            <button
+                                                key={i}
+                                                data-option-index={i}
+                                                onClick={handleMultiSelectOptionClick}
+                                                className={`touch-manipulation flex flex-col items-center gap-1 rounded-[14px] px-3 py-3.5 text-center transition-[transform,background-color,border-color] duration-150 ${isSel
+                                                    ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
+                                                    : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                    }`}
+                                                aria-pressed={isSel}
+                                            >
+                                                <div className="text-center text-[14px] font-bold leading-snug text-[#222] md:whitespace-normal">{renderMobileBr(o.text)}</div>
+                                                <div className="mt-0.5 text-center text-[11.5px] leading-snug text-[#555]">{renderMobileBr(o.sub ?? '')}</div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-2">
+                                    {currentStep.options?.map((o, i) => {
+                                        const isSel = multiSelectionSet.has(i);
+                                        return (
+                                            <button
+                                                key={i}
+                                                data-option-index={i}
+                                                onClick={handleMultiSelectOptionClick}
+                                                className={`touch-manipulation flex flex-col items-start rounded-[14px] px-4 py-3.5 text-left transition-[transform,background-color,border-color] duration-150 ${isSel
+                                                    ? 'border-[1.5px] border-[#4C63FC] bg-[#4C63FC]/[0.04]'
+                                                    : 'border-[1.5px] border-black/[0.06] bg-white/55 hover:border-black/20'
+                                                    }`}
+                                                aria-pressed={isSel}
+                                            >
+                                                <div className="text-[14px] font-bold text-[#222]">{o.text}</div>
+                                                {o.sub && <div className="mt-0.5 text-[12px] text-[#666]">{o.sub}</div>}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )}
+
+                            <div className="mt-5 flex items-center justify-between">
+                                <button
+                                    onClick={goBack}
+                                    className="border-none bg-transparent px-0 py-1 text-[13px] font-medium text-[#bbb] hover:text-[#888]"
+                                    tabIndex={0}
+                                    aria-label="이전 질문으로"
+                                >
+                                    이전으로
+                                </button>
+                                <button
+                                    onClick={submitMultiSelect}
+                                    className="rounded-xl bg-[#4C63FC] px-6 py-3 text-[15px] font-semibold text-white shadow-[0_4px_12px_rgba(76,99,252,0.2)] transition-all duration-200"
+                                    style={{ opacity: multiSelection.length > 0 ? 1 : 0.4 }}
+                                >
+                                    다음 ({multiSelection.length})
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ── SPLIT SELECT ── */}
+                    {currentStep.type === 'split-select' && (
+                        <div>
+                            <div className="mb-3">
+                                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#bbb]">{currentStep.label}</span>
+                            </div>
+                            <p className="mb-3.5 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">{currentStep.q}</p>
+                            <div className="mb-5 flex flex-col gap-3">
+                                {(['left', 'right'] as const).map((side) => (
+                                    <div key={side} className="rounded-xl bg-white/30 p-2.5">
+                                        <div className="mb-2 text-center text-[16px] font-bold text-[#111]">
+                                            {side === 'left' ? currentStep.leftLabel : currentStep.rightLabel}
+                                        </div>
+                                        <div className="flex gap-2">
+                                            {currentStep.options?.map((o, i) => (
+                                                <button
+                                                    key={`${side}-${i}`}
+                                                    onClick={() => handleSetSplit(side, i)}
+                                                    className={`touch-manipulation flex-1 rounded-lg px-1.5 py-2.5 text-[13px] font-medium transition-[background-color,border-color,color] duration-150 ${splitSelection[side] === i
+                                                        ? 'border border-[#1A1A1A] bg-[#1A1A1A] text-white'
+                                                        : 'border border-transparent bg-white/60 hover:bg-white/80'
+                                                        }`}
+                                                >
+                                                    {o.text}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <button
+                                    onClick={goBack}
+                                    className="border-none bg-transparent px-0 py-1 text-[13px] font-medium text-[#bbb] hover:text-[#888]"
+                                    tabIndex={0}
+                                    aria-label="이전 질문으로"
+                                >
+                                    이전으로
+                                </button>
+                                <button
+                                    onClick={submitSplit}
+                                    className="rounded-xl bg-[#4C63FC] px-6 py-3 text-[15px] font-semibold text-white shadow-[0_4px_12px_rgba(76,99,252,0.2)] transition-all duration-200"
+                                    style={{ opacity: splitSelection.left !== null && splitSelection.right !== null ? 1 : 0.4 }}
+                                >
+                                    다음
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ── INPUT ── */}
+                    {currentStep.type === 'input' && (
+                        <div>
+                            <div className="mb-3">
+                                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#bbb]">{currentStep.label}</span>
+                            </div>
+                            <p className="mb-1.5 text-left text-[17px] font-bold leading-snug tracking-tight text-[#111]">{currentStep.q}</p>
+                            {currentStep.inputSub && (
+                                <p className="mb-3.5 text-left text-[13px] leading-snug text-[#555]">{currentStep.inputSub}</p>
+                            )}
+                            {!currentStep.inputSub && <div className="h-2" />}
+                            <form onSubmit={handleInputSubmit}>
+                                <div className="flex gap-1.5 rounded-[14px] border-[1.5px] border-black/[0.08] bg-white/70 p-[5px]">
+                                    <input
+                                        type="text"
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        placeholder={currentStep.placeholder ?? ''}
+                                        className="min-w-0 flex-1 border-none bg-transparent px-3.5 py-[11px] text-[16px] text-[#1A1A1A] outline-none placeholder:text-[#bbb] md:text-[15px]"
+                                        autoFocus
+                                    />
+                                </div>
+                                {currentStep.noSkip ? (
+                                    <div className="mt-4 flex gap-2.5">
+                                        <button
+                                            type="submit"
+                                            disabled={!inputValue.trim()}
+                                            className="flex-1 rounded-xl px-6 py-3 text-[15px] font-semibold transition-all duration-200"
+                                            style={{
+                                                background: inputValue.trim() ? '#4C63FC' : 'rgba(76,99,252,0.15)',
+                                                color: inputValue.trim() ? '#fff' : 'rgba(76,99,252,0.4)',
+                                                boxShadow: inputValue.trim() ? '0 4px 12px rgba(76,99,252,0.2)' : 'none',
+                                                cursor: inputValue.trim() ? 'pointer' : 'not-allowed',
+                                            }}
+                                        >
+                                            {currentStep.btnText}
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="mt-4 flex flex-col gap-2.5">
+                                        <button
+                                            type="submit"
+                                            disabled={!inputValue.trim()}
+                                            className="w-full rounded-xl px-6 py-3 text-[15px] font-semibold transition-all duration-200"
+                                            style={{
+                                                background: inputValue.trim() ? '#4C63FC' : 'rgba(76,99,252,0.15)',
+                                                color: inputValue.trim() ? '#fff' : 'rgba(76,99,252,0.4)',
+                                                boxShadow: inputValue.trim() ? '0 4px 12px rgba(76,99,252,0.2)' : 'none',
+                                                cursor: inputValue.trim() ? 'pointer' : 'not-allowed',
+                                            }}
+                                        >
+                                            {currentStep.btnText}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleInputSkip}
+                                            className="w-full rounded-xl bg-transparent px-6 py-2.5 text-[13px] font-normal text-[#444] transition-all duration-200 hover:text-[#222]"
+                                        >
+                                            건너뛰기
+                                        </button>
+                                    </div>
+                                )}
+                            </form>
+                            <button
+                                onClick={goBack}
+                                className="mt-3.5 inline-flex border-none bg-transparent px-0 py-1 text-[13px] font-medium text-[#bbb] hover:text-[#888]"
+                                tabIndex={0}
+                                aria-label="이전 질문으로"
+                            >
+                                이전으로
+                            </button>
+                        </div>
+                    )}
+
+                    {/* ── DONE ── */}
+                    {currentStep.type === 'done' && (
+                        <div className="text-center">
+                            <div
+                                className="mx-auto mb-3.5 inline-flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#1A1A1A]"
+                                style={{ animation: 'checkIn 0.5s cubic-bezier(0.16,1,0.3,1)' }}
+                            >
+                                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                    <path d="M8 14.5L12.5 19L20 10" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </div>
+                            <p className="mb-2 text-[20px] font-extrabold tracking-tight text-[#111]">참여해주셔서 감사합니다!</p>
+                            <p className="mb-7 text-[14px] leading-relaxed text-[#888]">빠른 시일내로 이메일을 보내드리겠습니다.</p>
+                            <div
+                                className="relative overflow-hidden rounded-2xl border border-black/[0.04] bg-white/60 px-5 py-[22px]"
+                            >
+                                <div
+                                    className="absolute inset-x-0 top-0 h-[3px]"
+                                    style={{
+                                        background: 'linear-gradient(90deg, #4C63FC, #DC4CFC, #FF0080, #12ADE6)',
+                                        backgroundSize: '200% 100%',
+                                        animation: 'progShimmer 3s linear infinite',
+                                    }}
+                                />
+                                <p className="mb-3 text-[14px] font-semibold leading-snug text-[#555]">
+                                    <span className="mr-0.5 text-[18px] font-light text-[#bbb]">&ldquo;</span>
+                                    현업 패션 디자이너와 AI 엔지니어가 작정하고 만든 서비스
+                                    <span className="ml-0.5 text-[18px] font-light text-[#bbb]">&rdquo;</span>
+                                </p>
+                                <p
+                                    className="text-[24px] font-extrabold tracking-tight"
+                                    style={{
+                                        background: 'linear-gradient(135deg, #1A1A1A 0%, #4C63FC 50%, #DC4CFC 100%)',
+                                        backgroundSize: '200% 100%',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        backgroundClip: 'text',
+                                        animation: 'gradText 6s linear infinite',
+                                    }}
+                                >
+                                    Wearless
+                                </p>
+                            </div>
+                            <p className="mt-[18px] text-[12px] text-[#bbb]">
+                                <strong className="text-[#999]">{email}</strong>으로 안내드릴게요.
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export { SurveyInline };

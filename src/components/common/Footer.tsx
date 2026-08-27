@@ -3,17 +3,17 @@ import Image from 'next/image';
 const Footer = () => {
     return (
         <footer
-            className="relative z-10 px-6 py-12"
+            className="relative px-6 py-12"
             style={{
-                backgroundColor: 'rgba(255,255,255,0.7)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                boxShadow: '0 -1px 0 0 var(--ring)',
+                backgroundColor: 'rgba(250, 250, 250, 0.6)',
+                backdropFilter: 'blur(30px)',
+                borderTop: '1px solid rgba(107, 107, 107, 0.2)',
             }}
         >
-            <div className="mx-auto max-w-[var(--container)]">
+            <div className="mx-auto max-w-[1200px]">
+                {/* Single Row Layout */}
                 <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-                    {/* Logo & tagline */}
+                    {/* Left - Logo & Tagline */}
                     <div className="text-center md:text-left">
                         <div className="mb-2 flex items-center justify-center gap-2 md:justify-start">
                             <Image
@@ -31,28 +31,30 @@ const Footer = () => {
                                 className="object-contain"
                             />
                         </div>
-                        <p className="text-[13px] text-[var(--fg-3)]">
-                            AI 상세페이지 제작 스튜디오
+                        <p className="text-[14px] text-[#9E9E9E]">
+                            쇼핑몰 촬영의 새로운 기준
                         </p>
                     </div>
 
-                    {/* Company info */}
-                    <div className="space-y-1 text-center text-[13px] text-[var(--fg-2)]">
+                    {/* Center - Company Info */}
+                    <div className="space-y-1 text-center text-[13px] text-[#6B6B6B]">
                         <p>대표자: 정일상</p>
-                        <p>
-                            이메일:{' '}
-                            <a
-                                href="mailto:contact@wearless.kr"
-                                className="underline underline-offset-2 transition-colors hover:text-[var(--fg-1)]"
-                            >
-                                contact@wearless.kr
-                            </a>
-                        </p>
+                        <p>이메일: <a href="mailto:contact@wearless.kr" className="underline hover:text-[#1A1A1A] transition-colors">contact@wearless.kr</a></p>
                     </div>
 
-                    {/* Copyright */}
-                    <div className="text-center md:text-right">
-                        <p className="text-[12px] text-[var(--fg-3)]">
+                    {/* Right - Links & Copyright */}
+                    <div className="space-y-2 text-center md:text-right">
+                        <div className="flex items-center justify-center gap-2 text-[14px] text-[#6B6B6B] md:justify-end">
+                            <a
+                                href="#contact"
+                                className="transition-colors hover:text-[#1A1A1A]"
+                                tabIndex={0}
+                                aria-label="문의하기"
+                            >
+                                문의하기
+                            </a>
+                        </div>
+                        <p className="text-[13px] text-[#9E9E9E]">
                             © 2026 Wearless. All rights reserved.
                         </p>
                     </div>
