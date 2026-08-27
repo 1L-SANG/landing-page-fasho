@@ -17,15 +17,19 @@ const Footer = () => {
                     <div className="text-center md:text-left">
                         <div className="mb-2 flex items-center justify-center gap-2 md:justify-start">
                             <Image
-                                src="/logo.png"
-                                alt="Wearless"
+                                src="/logo.svg"
+                                alt=""
                                 width={20}
                                 height={20}
                                 className="object-contain"
                             />
-                            <span className="font-display text-[18px] text-[var(--fg-1)] whitespace-normal">
-                                Wearless
-                            </span>
+                            <Image
+                                src="/wordmark.svg"
+                                alt="Wearless"
+                                width={71}
+                                height={13}
+                                className="object-contain"
+                            />
                         </div>
                         <p className="text-[13px] text-[var(--fg-3)]">
                             AI 상세페이지 제작 스튜디오

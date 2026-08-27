@@ -45,18 +45,22 @@ const Header = () => {
                     <button
                         onClick={scrollToTop}
                         className="flex items-center gap-2 transition-opacity hover:opacity-70"
-                        aria-label="맨 위로 이동"
+                        aria-label="Wearless 홈, 맨 위로 이동"
                     >
                         <Image
-                            src="/logo.png"
-                            alt="Wearless"
+                            src="/logo.svg"
+                            alt=""
                             width={26}
                             height={26}
                             className="object-contain"
                         />
-                        <span className="font-display text-[20px] text-[var(--fg-1)] whitespace-normal">
-                            Wearless
-                        </span>
+                        <Image
+                            src="/wordmark.svg"
+                            alt=""
+                            width={82}
+                            height={15}
+                            className="object-contain"
+                        />
                     </button>
 
                     {/* Desktop nav */}

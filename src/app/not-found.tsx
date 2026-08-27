@@ -17,8 +17,8 @@ const NotFound = () => {
             {/* Logo */}
             <div className="mb-8 flex items-center gap-2">
                 <Image
-                    src="/logo.png"
-                    alt="Wearless Logo"
+                    src="/logo.svg"
+                    alt="Wearless 로고"
                     width={32}
                     height={32}
                     className="object-contain"
