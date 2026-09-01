@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import { goToApp } from '@/lib/app-url';
 
 const NAV_LINKS = [
     { label: '홈', id: 'home' },
@@ -87,7 +88,7 @@ const Header = () => {
                     {/* Desktop CTA Buttons */}
                     <div className="hidden items-center gap-3 md:flex">
                         <button
-                            onClick={() => handleScrollToSection('contact')}
+                            onClick={goToApp}
                             className="rounded-full bg-[#1A1A1A] px-6 py-2.5 text-[15px] font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#333333]"
                             tabIndex={0}
                             aria-label="시작하기"
@@ -134,7 +135,10 @@ const Header = () => {
                         ))}
                         <div className="mt-8 flex w-full max-w-xs flex-col gap-4 px-6">
                             <button
-                                onClick={() => handleScrollToSection('contact')}
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    goToApp();
+                                }}
                                 className="w-full rounded-full bg-[#1A1A1A] px-6 py-3.5 text-[16px] font-semibold text-white shadow-lg"
                                 tabIndex={0}
                                 aria-label="시작하기"

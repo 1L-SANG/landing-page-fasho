@@ -13,10 +13,10 @@ interface Step {
 }
 
 const STEPS: Step[] = [
-    { icon: Upload, number: '1', title: '제품 사진 업로드', description: '스마트폰으로 찍은 사진만으로도 충분해요.' },
-    { icon: Sliders, number: '2', title: '기능 선택', description: 'Wearless의 다양한 기능들 중,\n 원하는 기능을 사용해보세요.' },
-    { icon: Sparkles, number: '3', title: 'AI 이미지 생성', description: '구도, 포즈, 디테일을 직관적으로\n 수정하며 완성도를 높이세요.' },
-    { icon: Download, number: '4', title: '결과물 다운로드', description: '결과물을 바로 다운로드해서 \n쇼핑몰에 적용하세요.' },
+    { icon: Upload, number: '1', title: '제품 사진 업로드', description: '앞뒤 사진만 있으면\n바로 시작할 수 있어요.' },
+    { icon: Sparkles, number: '2', title: 'AI 분석 & 확인', description: '소재와 색상, 무드를 AI가 읽어내요.\n틀린 부분은 직접 고치면 돼요.' },
+    { icon: Sliders, number: '3', title: '상세페이지 완성', description: '구도와 디테일을 다듬어\n완성도를 끌어올려요.' },
+    { icon: Download, number: '4', title: '다운로드 & 적용', description: '바로 받아서\n쇼핑몰에 올리기만 하면 돼요.' },
 ];
 
 const HowItWorksSection = () => {
@@ -48,7 +48,7 @@ const HowItWorksSection = () => {
                 <SectionHeader
                     label="HOW IT WORKS"
                     title="쉬운 사용법, 남다른 퀄리티"
-                    subtitle="업로드부터 결과물까지 3분이면 충분합니다."
+                    subtitle="올리고 3분이면 상세페이지가 나와요."
                 />
 
                 <div className="relative overflow-visible grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">

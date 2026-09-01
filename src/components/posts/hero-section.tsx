@@ -5,16 +5,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { VideoContainer } from '@/components/ui/video-container';
 import { SurveyInline } from '@/components/survey/SurveyInline';
+import { goToApp } from '@/lib/app-url';
 
-const HERO_VIDEO_URL = '/video/optimized/hero-1080.mp4';
-const HERO_VIDEO_POSTER_URL = '/video/optimized/hero-poster.jpg';
+const HERO_VIDEO_URL = '/video/optimized/wearless-1080.mp4';
+const HERO_VIDEO_POSTER_URL = '/video/optimized/wearless-poster.jpg';
 
 const HeroSection = () => {
     const [isSurveyOpen, setIsSurveyOpen] = useState(false);
-
-    const handleOpenSurvey = () => {
-        setIsSurveyOpen(true);
-    };
 
     const handleCloseSurvey = () => {
         setIsSurveyOpen(false);
@@ -41,7 +38,7 @@ const HeroSection = () => {
                     >
                         200+개
                     </span>
-                    쇼핑몰들이 Wearless와 함께합니다.
+                    쇼핑몰이 Wearless와 함께합니다.
                 </Badge>
             </div>
 
@@ -51,10 +48,10 @@ const HeroSection = () => {
                 style={{ animationDelay: '0.2s', animationDuration: '0.6s', wordSpacing: '0.06em' }}
             >
                 <span className="text-[#1A1A1A]">
-                    촬영에 힘 쏟지 마세요.
+                    상세페이지에 시간 쓰지 마세요.
                     <br />
                     <span className="inline-block whitespace-nowrap">
-                        쇼핑몰 대표님만을 위한 AI,
+                        쇼핑몰 대표님을 위한 AI,
                     </span>
                 </span>
                 <br />
@@ -75,7 +72,7 @@ const HeroSection = () => {
                 className="mx-auto mb-10 max-w-[540px] whitespace-nowrap text-center text-[15px] max-[390px]:text-[14px] max-[360px]:text-[13px] font-semibold tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:text-[18px] md:text-[20px] animate-fade-in"
                 style={{ animationDelay: '0.5s', animationDuration: '0.6s', wordSpacing: '0.05em' }}
             >
-                스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요.
+                사진 몇 장만 올리면, 상세페이지는 AI가 완성해요.
             </p>
 
             {/* CTA + Survey Transition */}
@@ -102,7 +99,12 @@ const HeroSection = () => {
                                 pointerEvents: isSurveyOpen ? 'none' : 'auto',
                             }}
                         >
-                            <Button id="hero-start-cta" variant="cta" size="lg" onClick={handleOpenSurvey}>
+                            <Button
+                                id="hero-start-cta"
+                                variant="cta"
+                                size="lg"
+                                onClick={goToApp}
+                            >
                                 지금 시작하기
                             </Button>
                         </div>

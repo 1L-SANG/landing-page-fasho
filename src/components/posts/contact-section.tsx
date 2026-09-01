@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { User, Mail } from 'lucide-react';
 import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
 import { Button } from '@/components/ui/button';
-import { triggerHeroSurveyFromCta } from '@/lib/hero-survey-scroll';
+import { goToApp } from '@/lib/app-url';
 
 const ContactSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -85,17 +85,17 @@ const ContactSection = () => {
                                 지금 바로 시작하세요
                             </h2>
                             <p className="mb-10 text-[16px] text-white/60">
-                                Wearless Pro plan을 무료로,
+                                사진 몇 장이면 첫 상세페이지가 나와요.
                                 <br />
-                                만날 수 있는 처음이자 마지막 이벤트에요.
+                                지금 무료로 만들어보세요.
                             </p>
                             <Button
                                 variant="ghost"
                                 size="lg"
                                 className="mt-8 rounded-xl border-0 bg-white px-12 py-3 text-[18px] font-bold text-[#1A1A1A] shadow-lg hover:scale-105 hover:bg-white/90 hover:text-[#1A1A1A]"
-                                onClick={triggerHeroSurveyFromCta}
+                                onClick={goToApp}
                             >
-                                할인혜택 받으러가기
+                                무료로 시작하기
                             </Button>
                         </div>
                     </div>

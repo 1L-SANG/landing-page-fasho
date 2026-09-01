@@ -6,48 +6,50 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { triggerHeroSurveyFromCta } from '@/lib/hero-survey-scroll';
 
 interface Plan {
     name: string;
+    billing: string;
     price: string;
     priceSuffix?: string;
     features: string[];
     recommended?: boolean;
     ctaLabel: string;
+    ctaDisabled?: boolean;
 }
 
 const PLANS: Plan[] = [
     {
-        name: 'Free',
-        price: '무료',
-        features: ['Wearless 1.0 (Beta) 기능', '월 생성횟수 10회'],
-        ctaLabel: '시작하기',
+        name: 'Basic',
+        billing: '정기 구독',
+        price: '₩19,900',
+        priceSuffix: '/ 월',
+        features: ['크레딧 200 매달 충전', '2k 해상도 다운로드'],
+        ctaLabel: '이용 중',
+        ctaDisabled: true,
     },
     {
-        name: 'Pro',
+        name: 'Plus',
+        billing: '정기 구독',
         price: '₩49,900',
-        priceSuffix: '/월',
-        features: ['Wearless 2.0 모든 기능', '월 생성횟수 30회', '2k 해상도 다운로드', '워터마크 없음'],
+        priceSuffix: '/ 월',
+        features: ['크레딧 600 매달 충전', '4k 해상도 다운로드', '워터마크 없음'],
         recommended: true,
-        ctaLabel: '시작하기',
+        ctaLabel: '구독하기 (준비 중)',
+        ctaDisabled: true,
     },
     {
         name: 'Seller',
+        billing: '정기 구독',
         price: '₩99,900',
-        priceSuffix: '/월',
-        features: ['Wearless 2.0 모든 기능', '월 생성횟수 80회', '4k 해상도 다운로드', '워터마크 없음'],
-        ctaLabel: '시작하기',
-    },
-    {
-        name: 'Enterprise',
-        price: '맞춤 견적',
-        features: ['상담 문의'],
-        ctaLabel: '문의하기',
+        priceSuffix: '/ 월',
+        features: ['크레딧 1,400 매달 충전', '4k 해상도 다운로드', '워터마크 없음', '우선 생성 처리'],
+        ctaLabel: '구독하기 (준비 중)',
+        ctaDisabled: true,
     },
 ];
 
-const PricingCard = ({ plan, delay, onCtaClick }: { plan: Plan; delay: number; onCtaClick?: () => void }) => {
+const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -64,6 +66,9 @@ const PricingCard = ({ plan, delay, onCtaClick }: { plan: Plan; delay: number; o
 
     const content = (
         <div className={`flex h-full flex-col p-10 ${plan.recommended ? '' : 'rounded-[20px] border-[1.5px] border-[#E5E5E5] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)]'}`}>
+            {/* Billing kicker */}
+            <p className="mb-1 text-[13px] font-medium text-[#9E9E9E]">{plan.billing}</p>
+
             {/* Plan Name */}
             <p className={`mb-2 text-[16px] font-semibold ${plan.recommended ? 'text-[#1A1A1A]' : 'text-[#6B6B6B]'}`}>
                 {plan.name}
@@ -73,7 +78,7 @@ const PricingCard = ({ plan, delay, onCtaClick }: { plan: Plan; delay: number; o
             <div className="mb-6">
                 <span className="text-[36px] font-extrabold text-[#1A1A1A]">{plan.price}</span>
                 {plan.priceSuffix && (
-                    <span className="text-[16px] text-[#9E9E9E]">{plan.priceSuffix}</span>
+                    <span className="text-[16px] text-[#9E9E9E]"> {plan.priceSuffix}</span>
                 )}
             </div>
 
@@ -94,8 +99,8 @@ const PricingCard = ({ plan, delay, onCtaClick }: { plan: Plan; delay: number; o
             <Button
                 variant={plan.recommended ? 'primary' : 'ghost'}
                 size="md"
-                className={`w-full rounded-xl ${plan.recommended ? 'shadow-[0_4px_16px_rgba(0,0,0,0.15)]' : 'hover:border-[#E5E5E5] hover:text-[#6B6B6B]'}`}
-                onClick={onCtaClick}
+                disabled={plan.ctaDisabled}
+                className={`w-full rounded-xl ${plan.ctaDisabled ? 'cursor-not-allowed opacity-50 hover:translate-y-0' : ''} ${plan.recommended && !plan.ctaDisabled ? 'shadow-[0_4px_16px_rgba(0,0,0,0.15)]' : ''}`}
                 aria-label={plan.ctaLabel}
                 tabIndex={0}
             >
@@ -128,13 +133,7 @@ const PricingCard = ({ plan, delay, onCtaClick }: { plan: Plan; delay: number; o
     );
 };
 
-interface PricingSectionProps {
-    onCtaClick?: () => void;
-}
-
-const PricingSection = ({ onCtaClick }: PricingSectionProps) => {
-    const handleCtaClick = onCtaClick ?? triggerHeroSurveyFromCta;
-
+const PricingSection = () => {
     return (
         <section
             id="pricing"
@@ -145,16 +144,16 @@ const PricingSection = ({ onCtaClick }: PricingSectionProps) => {
                 borderTop: '1px solid rgba(235, 230, 220, 0.5)',
             }}
         >
-            <div className="mx-auto max-w-[1200px]">
+            <div className="mx-auto max-w-[1000px]">
                 <SectionHeader
                     label="PRICING"
                     title="합리적인 요금제"
-                    subtitle="비즈니스 규모에 맞는 플랜을 선택하세요."
+                    subtitle="필요한 만큼 골라 쓰세요. 크레딧은 매달 다시 채워져요."
                 />
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                     {PLANS.map((plan, i) => (
-                        <PricingCard key={plan.name} plan={plan} delay={i * 100} onCtaClick={handleCtaClick} />
+                        <PricingCard key={plan.name} plan={plan} delay={i * 100} />
                     ))}
                 </div>
             </div>

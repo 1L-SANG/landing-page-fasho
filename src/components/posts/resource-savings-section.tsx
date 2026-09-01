@@ -10,7 +10,7 @@ const STATS = [
         icon: TrendingDown,
         value: '90%',
         label: '비용 절감',
-        description: `기존 대비 의류컷\n제작 비용`,
+        description: `상세페이지 제작 비용\n(기존 대비)`,
         gradient: 'linear-gradient(135deg, #12ADE6, #4C63FC)',
         iconBg: 'linear-gradient(135deg, #12ADE6, #4C63FC)',
     },
@@ -71,7 +71,7 @@ const ResourceSavingsSection = () => {
 
                 <SectionHeader
                     title="리소스 대폭 절감"
-                    subtitle="Wearless로 촬영 리소스를 획기적으로 줄이고, 비즈니스 성장에 집중하세요."
+                    subtitle="촬영과 편집에 쓰던 시간을 줄이고, 파는 데 집중하세요."
                 />
 
                 {/* Stats Grid */}

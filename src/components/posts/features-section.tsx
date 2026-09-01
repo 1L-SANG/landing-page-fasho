@@ -9,10 +9,10 @@ import { useVideoAutoplay } from '@/components/ui/use-video-autoplay';
 const FEATURES_VIDEO_URL = '/video/real demo 2.mov';
 
 const FEATURES = [
-    { title: '레퍼런스 기반 생성', description: '원하는 느낌의 이미지를 구현해보세요.' },
-    { title: '쇼핑몰 정체성 유지', description: '쇼핑몰에서 그동안 업로드하던 컷들의\n무드를 반영해보세요.' },
-    { title: '다양한 컷 종류', description: `고스트컷부터 디테일컷,일상컷,스튜디오컷까지\n원하는 컷을 생성해보세요.` },
-    { title: '릴스용 템플릿', description: `인스타그램에서 인기 있는 릴스들을 선택해서\n트렌드에 맞게 AI로 생성해보세요.` },
+    { title: '사진 몇 장이면 끝', description: '앞뒤와 디테일 컷만 올리면\n나머지는 AI가 알아서 채워요.' },
+    { title: '쇼핑몰 무드 그대로', description: '그동안 올려온 컷의 분위기를 읽어\n우리 몰 톤에 맞춰줘요.' },
+    { title: '문구까지 AI가', description: '상품명을 안 적어도 괜찮아요.\n소재와 무드를 보고 설명을 써줘요.' },
+    { title: '원하는 컷은 다', description: `고스트컷부터 디테일컷, 착용컷까지\n필요한 구성만 골라 담아요.` },
 ] as const;
 
 const NUMBER_BADGE_STYLE = {
@@ -52,7 +52,7 @@ const FeaturesSection = () => {
                 <SectionHeader
                     label="WHY WEARLESS"
                     title="왜 Wearless인가요?"
-                    subtitle="Wearless만이 가지고 있으니까요."
+                    subtitle="여기서만 되는 게 있으니까요."
                 />
 
                 {/* Desktop: 3-col grid with center video */}
