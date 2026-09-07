@@ -1,4 +1,7 @@
 import Image from 'next/image';
+import Link from 'next/link';
+import documents from '../../../content/legal/manifest.json';
+import company from '../../../content/legal/company-info.json';
 
 const Footer = () => {
     return (
@@ -11,7 +14,7 @@ const Footer = () => {
             }}
         >
             <div className="mx-auto max-w-[1200px]">
-                {/* Single Row Layout */}
+                {/* Brand and contact */}
                 <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
                     {/* Left - Logo & Tagline */}
                     <div className="text-center md:text-left">
@@ -36,27 +39,40 @@ const Footer = () => {
                         </p>
                     </div>
 
-                    {/* Center - Company Info */}
-                    <div className="space-y-1 text-center text-[13px] text-[#6B6B6B]">
-                        <p>대표자: 정일상</p>
-                        <p>이메일: <a href="mailto:contact@wearless.kr" className="underline hover:text-[#1A1A1A] transition-colors">contact@wearless.kr</a></p>
-                    </div>
-
                     {/* Right - Links & Copyright */}
                     <div className="space-y-2 text-center md:text-right">
                         <div className="flex items-center justify-center gap-2 text-[14px] text-[#6B6B6B] md:justify-end">
-                            <a
-                                href="#contact"
+                            <Link
+                                href="/#contact"
                                 className="transition-colors hover:text-[#1A1A1A]"
                                 tabIndex={0}
                                 aria-label="문의하기"
                             >
                                 문의하기
-                            </a>
+                            </Link>
                         </div>
                         <p className="text-[13px] text-[#9E9E9E]">
                             © 2026 Wearless. All rights reserved.
                         </p>
+                    </div>
+                </div>
+                <div className="mt-8 border-t border-border pt-6">
+                    <nav aria-label="법적 고지" className="mb-5 flex flex-wrap justify-center gap-x-6 gap-y-3 text-[14px] text-foreground md:justify-start">
+                        {documents.map((document) => (
+                            <Link key={document.slug} href={document.path} className="underline-offset-4 hover:underline">
+                                {document.label}
+                            </Link>
+                        ))}
+                    </nav>
+                    <div className="space-y-1 text-center text-[13px] leading-relaxed text-muted-foreground md:text-left">
+                        <p>{company.name} · 대표: {company.representative} · 사업자등록번호: {company.businessRegistrationNumber}</p>
+                        <p>주소: {company.address}</p>
+                        <p>
+                            전화: <a href={`tel:${company.phone}`} className="underline underline-offset-2">{company.phone}</a>
+                            {' · 이메일: '}<a href={`mailto:${company.email}`} className="underline underline-offset-2">{company.email}</a>
+                        </p>
+                        <p>통신판매업 신고: {company.mailOrderRegistration}</p>
+                        <p>개인정보 보호책임자: {company.privacyOfficer} ({company.email})</p>
                     </div>
                 </div>
             </div>

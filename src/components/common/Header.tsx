@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type MouseEvent } from 'react';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { goToApp } from '@/lib/app-url';
 
 const NAV_LINKS = [
@@ -23,16 +24,14 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const handleScrollToSection = (id: string) => {
+    const handleSectionClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+        setMobileMenuOpen(false);
         const element = document.getElementById(id);
-        if (element) {
+        if (window.location.pathname === '/' && element) {
+            event.preventDefault();
             element.scrollIntoView({ behavior: 'smooth' });
-            setMobileMenuOpen(false);
         }
-    };
-
-    const handleScrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
@@ -47,8 +46,9 @@ const Header = () => {
             >
                 <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-6 max-md:h-[60px]">
                     {/* Logo */}
-                    <button
-                        onClick={handleScrollToTop}
+                    <Link
+                        href="/#home"
+                        onClick={(event) => handleSectionClick(event, 'home')}
                         className="flex items-center gap-2 transition-opacity hover:opacity-80"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
@@ -67,21 +67,22 @@ const Header = () => {
                             height={15}
                             className="object-contain"
                         />
-                    </button>
+                    </Link>
 
                     {/* Desktop Navigation */}
                     <div className="hidden items-center gap-10 md:flex">
                         {NAV_LINKS.map((link) => (
-                            <button
+                            <Link
                                 key={link.id}
-                                onClick={() => handleScrollToSection(link.id)}
+                                href={`/#${link.id}`}
+                                onClick={(event) => handleSectionClick(event, link.id)}
                                 className="group relative text-[16px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
                                 tabIndex={0}
                                 aria-label={`${link.label} 섹션으로 이동`}
                             >
                                 {link.label}
                                 <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#1A1A1A] transition-all group-hover:w-full" />
-                            </button>
+                            </Link>
                         ))}
                     </div>
 
@@ -95,14 +96,15 @@ const Header = () => {
                         >
                             시작하기
                         </button>
-                        <button
-                            onClick={() => handleScrollToSection('contact')}
+                        <Link
+                            href="/#contact"
+                            onClick={(event) => handleSectionClick(event, 'contact')}
                             className="rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-all hover:border-[#1A1A1A] hover:text-[#1A1A1A]"
                             tabIndex={0}
                             aria-label="문의하기"
                         >
                             문의하기
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -123,15 +125,16 @@ const Header = () => {
                 <div className="fixed inset-0 z-40 bg-[#FAFAFA] md:hidden animate-fade-in">
                     <div className="flex h-full flex-col items-center justify-center gap-8">
                         {NAV_LINKS.map((link) => (
-                            <button
+                            <Link
                                 key={link.id}
-                                onClick={() => handleScrollToSection(link.id)}
+                                href={`/#${link.id}`}
+                                onClick={(event) => handleSectionClick(event, link.id)}
                                 className="text-[24px] font-semibold text-[#1A1A1A]"
                                 tabIndex={0}
                                 aria-label={`${link.label} 섹션으로 이동`}
                             >
                                 {link.label}
-                            </button>
+                            </Link>
                         ))}
                         <div className="mt-8 flex w-full max-w-xs flex-col gap-4 px-6">
                             <button
@@ -145,14 +148,15 @@ const Header = () => {
                             >
                                 시작하기
                             </button>
-                            <button
-                                onClick={() => handleScrollToSection('contact')}
-                                className="w-full rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
+                            <Link
+                                href="/#contact"
+                                onClick={(event) => handleSectionClick(event, 'contact')}
+                                className="w-full rounded-full text-center border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
                                 tabIndex={0}
                                 aria-label="문의하기"
                             >
                                 문의하기
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
