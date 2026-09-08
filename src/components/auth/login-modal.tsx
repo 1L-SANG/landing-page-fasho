@@ -9,9 +9,15 @@
    랜딩에서 로그인한 사람이 곧바로 보게 될 화면이 스튜디오라서, 여기서 다른 인상을 주면
    두 화면이 서로 다른 서비스처럼 보인다. **원본이 바뀌면 여기도 같이 바꿔라.**
 
-   원본과 의도적으로 다른 곳은 두 군데다.
-     · 부제: 원본 셀러 문구는 '마네킹컷 생성으로 이어가세요' 인데, 그건 분석 CTA 에서 모달을
-       띄웠을 때의 다음 단계다. 랜딩에서는 그 맥락이 없어 '상세페이지 제작' 으로 바꿨다.
+   ▶ 회원가입 탭의 동의는 **여기서 서버에 기록되지 않는다.** 원본도 마찬가지다 — 동의는
+     소셜 버튼을 누르기 전에 받지만 그 시점엔 계정이 없어서, 앱은 sessionStorage 표시만
+     남기고 OAuth 복귀 후 SignupCompletion 이 서버에 기록한다(signupConsent.js).
+     sessionStorage 는 origin 별로 갈라지므로 랜딩이 남긴 표시를 앱은 읽지 못한다.
+     그래서 랜딩에서 가입한 신규는 스튜디오에서 가입 완료 화면을 한 번 더 본다 —
+     앱이 '회원가입 탭을 지나지 않고 들어온 신규' 를 위해 이미 갖고 있는 경로다.
+     **동의의 법적 기록은 언제나 앱이 남긴다.** 이 화면은 같은 문장을 같은 자리에서 보여줄 뿐이다.
+
+   원본과 의도적으로 다른 곳은 하나다.
      · 로컬 QA 용 이메일 폼: 랜딩에는 옮기지 않았다(운영은 소셜만 쓴다).
    ============================================================= */
 import { useEffect, useState } from 'react';
@@ -44,6 +50,12 @@ interface LoginModalProps {
 const LoginModal = ({ onClose, onSignIn }: LoginModalProps) => {
     const [pending, setPending] = useState<Provider | null>(null);
     const [error, setError] = useState('');
+    const [mode, setMode] = useState<'login' | 'signup'>('login');
+    const [consent, setConsent] = useState(false);
+
+    const isSignup = mode === 'signup';
+    // 동의 없이는 가입 버튼이 눌리지 않는다 — 원본과 같은 규칙이다.
+    const blocked = isSignup && !consent;
 
     // 원본 Modal 은 document.body 로 포탈한다. 랜딩에도 같은 이유가 있다 —
     // 오버레이의 inset:0 이 transform 을 건 조상(섹션 애니메이션)에 갇히면 화면 일부만 덮는다.
@@ -59,6 +71,7 @@ const LoginModal = ({ onClose, onSignIn }: LoginModalProps) => {
     }, [onClose, pending]);
 
     const handle = async (provider: Provider) => {
+        if (blocked || pending !== null) return;
         setPending(provider);
         setError('');
         const { error: err } = await onSignIn(provider);
@@ -93,35 +106,80 @@ const LoginModal = ({ onClose, onSignIn }: LoginModalProps) => {
                         </div>
                     </div>
 
+                    <div className={s.tabs} role="tablist" aria-label="로그인 또는 회원가입">
+                        <button
+                            type="button"
+                            role="tab"
+                            aria-selected={mode === 'login'}
+                            className={mode === 'login' ? s.tabOn : undefined}
+                            onClick={() => setMode('login')}
+                            disabled={pending !== null}
+                        >
+                            로그인
+                        </button>
+                        <button
+                            type="button"
+                            role="tab"
+                            aria-selected={mode === 'signup'}
+                            className={mode === 'signup' ? s.tabOn : undefined}
+                            onClick={() => setMode('signup')}
+                            disabled={pending !== null}
+                        >
+                            회원가입
+                        </button>
+                    </div>
+
+                    {/* 두 탭이 같은 한 줄을 쓴다(2026-09-08 오너) — 로그인하러 온 사람에게도
+                        같은 약속을 보여준다. 탭마다 다른 말을 걸면 창이 두 제품처럼 읽힌다. */}
                     <p className={s.subtitle}>
-                        소셜 계정으로 로그인하고<br />상세페이지 제작을 이어가세요.
+                        완성형 AI 상세페이지 서비스,<br />팔리는 상세페이지를 만드세요.
                     </p>
+
+                    {isSignup && (
+                        <label className={s.consent}>
+                            <input
+                                type="checkbox"
+                                checked={consent}
+                                onChange={(event) => setConsent(event.target.checked)}
+                            />
+                            <span>
+                                만 19세 이상이며 <a href="/terms" target="_blank" rel="noreferrer">이용약관</a>과{' '}
+                                <a href="/privacy" target="_blank" rel="noreferrer">개인정보 처리방침</a>에 동의합니다.
+                            </span>
+                        </label>
+                    )}
 
                     <div className={s.buttons}>
                         <button
                             type="button"
                             className={`${s.btn} ${s.google}`}
                             onClick={() => handle('google')}
-                            disabled={pending !== null}
+                            disabled={pending !== null || blocked}
                         >
                             <span className={s.icon}><GoogleIcon /></span>
-                            {pending === 'google' ? '이동 중…' : 'Google로 계속하기'}
+                            {pending === 'google' ? '이동 중…' : isSignup ? 'Google로 가입하기' : 'Google로 계속하기'}
                         </button>
                         <button
                             type="button"
                             className={`${s.btn} ${s.kakao}`}
                             onClick={() => handle('kakao')}
-                            disabled={pending !== null}
+                            disabled={pending !== null || blocked}
                         >
                             <span className={s.icon}><KakaoIcon /></span>
-                            {pending === 'kakao' ? '이동 중…' : '카카오로 계속하기'}
+                            {pending === 'kakao' ? '이동 중…' : isSignup ? '카카오로 가입하기' : '카카오로 계속하기'}
                         </button>
                     </div>
 
                     {error && <p className={s.error} role="alert">{error}</p>}
 
-                    {/* 원본과 같은 문구 — 같은 서비스의 같은 동의다. */}
-                    <p className={s.hint}>계속하면 서비스 약관에 동의하는 것으로 간주됩니다.</p>
+                    {mode === 'login' && (
+                        <p className={s.notice}>
+                            Wearless가 처음이라면?{' '}
+                            <button type="button" className={s.linkBtn} onClick={() => setMode('signup')}>
+                                회원가입
+                            </button>
+                        </p>
+                    )}
                 </div>
             </div>
         </div>,
