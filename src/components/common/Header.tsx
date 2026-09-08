@@ -11,6 +11,7 @@ const NAV_LINKS = [
     { label: '홈', id: 'home' },
     { label: '주요 기능', id: 'features' },
     { label: '요금제', id: 'pricing' },
+    { label: '문의하기', id: 'contact' },
 ] as const;
 
 const Header = () => {
@@ -108,24 +109,14 @@ const Header = () => {
                             </button>
                         )}
                         {showEnterApp && (
-                            <>
-                                <button
-                                    onClick={goToApp}
-                                    className="px-2 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
-                                    tabIndex={0}
-                                    aria-label="스튜디오 열기"
-                                >
-                                    스튜디오 열기
-                                </button>
-                                <button
-                                    onClick={signOut}
-                                    className="px-2 py-2.5 text-[15px] font-medium text-[#9E9E9E] transition-colors hover:text-[#1A1A1A]"
-                                    tabIndex={0}
-                                    aria-label="로그아웃"
-                                >
-                                    로그아웃
-                                </button>
-                            </>
+                            <button
+                                onClick={signOut}
+                                className="px-2 py-2.5 text-[15px] font-medium text-[#9E9E9E] transition-colors hover:text-[#1A1A1A]"
+                                tabIndex={0}
+                                aria-label="로그아웃"
+                            >
+                                로그아웃
+                            </button>
                         )}
                         <button
                             onClick={goToApp}
@@ -135,15 +126,6 @@ const Header = () => {
                         >
                             시작하기
                         </button>
-                        <Link
-                            href="/#contact"
-                            onClick={(event) => handleSectionClick(event, 'contact')}
-                            className="rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-all hover:border-[#1A1A1A] hover:text-[#1A1A1A]"
-                            tabIndex={0}
-                            aria-label="문의하기"
-                        >
-                            문의하기
-                        </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -213,17 +195,6 @@ const Header = () => {
                                     로그아웃
                                 </button>
                             )}
-                            {/* 문의는 링크다(main #1) — 약관 페이지에서도 눌리고 새 탭도 열린다.
-                                로그인·로그아웃은 링크가 아니라 동작이라 button 그대로 둔다. */}
-                            <Link
-                                href="/#contact"
-                                onClick={(event) => handleSectionClick(event, 'contact')}
-                                className="w-full rounded-full text-center border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
-                                tabIndex={0}
-                                aria-label="문의하기"
-                            >
-                                문의하기
-                            </Link>
                         </div>
                     </div>
                 </div>
