@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { goToApp } from '@/lib/app-url';
+import { useAuth } from '@/components/auth/auth-provider';
 
 const NAV_LINKS = [
     { label: '홈', id: 'home' },
@@ -14,6 +15,14 @@ const NAV_LINKS = [
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { session, loading, isConfigured, openLogin, signOut } = useAuth();
+    // 로그인한 사람에게 '로그인' 버튼은 잡음이다 — 그 자리를 스튜디오 진입으로 바꾼다.
+    // 환경변수가 없으면(로그인 자체가 불가능) 버튼을 아예 내지 않는다: 눌러도 아무 일이
+    // 없는 버튼보다 없는 편이 낫다.
+    // 세션 확인이 끝나기 전에는 '로그인' 을 그대로 둔다 — 방문자 대부분이 비로그인이고,
+    // loading 동안 버튼을 숨기면 헤더에서 버튼 하나가 늦게 튀어나오는 게 보인다.
+    const showLogin = isConfigured && !session;
+    const showEnterApp = isConfigured && !loading && Boolean(session);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -87,6 +96,36 @@ const Header = () => {
 
                     {/* Desktop CTA Buttons */}
                     <div className="hidden items-center gap-3 md:flex">
+                        {showLogin && (
+                            <button
+                                onClick={openLogin}
+                                className="px-2 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
+                                tabIndex={0}
+                                aria-label="로그인"
+                            >
+                                로그인
+                            </button>
+                        )}
+                        {showEnterApp && (
+                            <>
+                                <button
+                                    onClick={goToApp}
+                                    className="px-2 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
+                                    tabIndex={0}
+                                    aria-label="스튜디오 열기"
+                                >
+                                    스튜디오 열기
+                                </button>
+                                <button
+                                    onClick={signOut}
+                                    className="px-2 py-2.5 text-[15px] font-medium text-[#9E9E9E] transition-colors hover:text-[#1A1A1A]"
+                                    tabIndex={0}
+                                    aria-label="로그아웃"
+                                >
+                                    로그아웃
+                                </button>
+                            </>
+                        )}
                         <button
                             onClick={goToApp}
                             className="rounded-full bg-[#1A1A1A] px-6 py-2.5 text-[15px] font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#333333]"
@@ -145,6 +184,32 @@ const Header = () => {
                             >
                                 시작하기
                             </button>
+                            {showLogin && (
+                                <button
+                                    onClick={() => {
+                                        setMobileMenuOpen(false);
+                                        openLogin();
+                                    }}
+                                    className="w-full rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
+                                    tabIndex={0}
+                                    aria-label="로그인"
+                                >
+                                    로그인
+                                </button>
+                            )}
+                            {showEnterApp && (
+                                <button
+                                    onClick={() => {
+                                        setMobileMenuOpen(false);
+                                        signOut();
+                                    }}
+                                    className="w-full rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#9E9E9E]"
+                                    tabIndex={0}
+                                    aria-label="로그아웃"
+                                >
+                                    로그아웃
+                                </button>
+                            )}
                             <button
                                 onClick={() => handleScrollToSection('contact')}
                                 className="w-full rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
