@@ -86,7 +86,7 @@ const LoginModal = ({ onClose, onSignIn }: LoginModalProps) => {
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
-                aria-label="로그인"
+                aria-label="로그인 또는 회원가입"
             >
                 <div className={s.gate}>
                     <div className={s.brand}>
