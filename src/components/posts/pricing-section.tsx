@@ -6,6 +6,7 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { goToPricing } from '@/lib/app-url';
 
 interface Plan {
     name: string;
@@ -15,7 +16,6 @@ interface Plan {
     features: string[];
     recommended?: boolean;
     ctaLabel: string;
-    ctaDisabled?: boolean;
 }
 
 const PLANS: Plan[] = [
@@ -25,8 +25,7 @@ const PLANS: Plan[] = [
         price: '₩19,900',
         priceSuffix: '/ 월',
         features: ['크레딧 200 매달 충전', '2k 해상도 다운로드'],
-        ctaLabel: '이용 중',
-        ctaDisabled: true,
+        ctaLabel: '선택',
     },
     {
         name: 'Plus',
@@ -35,8 +34,7 @@ const PLANS: Plan[] = [
         priceSuffix: '/ 월',
         features: ['크레딧 600 매달 충전', '4k 해상도 다운로드', '워터마크 없음'],
         recommended: true,
-        ctaLabel: '구독하기 (준비 중)',
-        ctaDisabled: true,
+        ctaLabel: '선택',
     },
     {
         name: 'Seller',
@@ -44,8 +42,7 @@ const PLANS: Plan[] = [
         price: '₩99,900',
         priceSuffix: '/ 월',
         features: ['크레딧 1,400 매달 충전', '4k 해상도 다운로드', '워터마크 없음', '우선 생성 처리'],
-        ctaLabel: '구독하기 (준비 중)',
-        ctaDisabled: true,
+        ctaLabel: '선택',
     },
 ];
 
@@ -99,9 +96,9 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
             <Button
                 variant={plan.recommended ? 'primary' : 'ghost'}
                 size="md"
-                disabled={plan.ctaDisabled}
-                className={`w-full rounded-xl ${plan.ctaDisabled ? 'cursor-not-allowed opacity-50 hover:translate-y-0' : ''} ${plan.recommended && !plan.ctaDisabled ? 'shadow-[0_4px_16px_rgba(0,0,0,0.15)]' : ''}`}
-                aria-label={plan.ctaLabel}
+                onClick={goToPricing}
+                className={`w-full rounded-xl ${plan.recommended ? 'shadow-[0_4px_16px_rgba(0,0,0,0.15)]' : ''}`}
+                aria-label={`${plan.name} 요금제 선택하기`}
                 tabIndex={0}
             >
                 {plan.ctaLabel}

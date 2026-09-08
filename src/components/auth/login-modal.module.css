@@ -1,0 +1,149 @@
+/* =============================================================
+   스튜디오(ai.wearless.kr)의 로그인 모달을 **그대로** 옮긴 것.
+   원본: wearless_studio/src/features/auth/Login.module.css + app.css 의 .overlay/.modal.
+   랜딩에는 그쪽 디자인 토큰(tokens.css)이 없으므로, 토큰이 가리키던 실제 값을 주석으로
+   남기고 그대로 박아 넣는다. 원본 토큰이 바뀌면 여기도 같이 바꿔야 두 화면이 갈라지지 않는다.
+   ============================================================= */
+
+/* app.css .overlay — --ink-overlay: rgba(17,17,17,0.5) */
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: rgba(17, 17, 17, 0.5);
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    animation: fade 0.16s ease;
+}
+@keyframes fade { from { opacity: 0; } }
+
+/* app.css .modal — --r-6: 16px, --elev-lift */
+.modal {
+    width: 100%;
+    max-width: 460px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow:
+        0 2px 8px -4px rgba(19, 19, 22, 0.6),
+        0 0 0 1px rgba(34, 42, 53, 0.10),
+        0 12px 28px -8px rgba(34, 42, 53, 0.12);
+    padding: 26px;
+    animation: pop 0.18s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.98); } }
+
+/* Login.module.css .gate — --sp-16: 16px, --sp-8: 8px, --sp-4: 4px */
+.gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 8px 4px;
+}
+
+/* 브랜드 락업(세로): 심볼 위, 그 아래 wearless 워드마크 + Studio 디스크립터 */
+.brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.mark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.wordmark {
+    height: 34px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* --font-display 는 랜딩에 없다. 원본도 fallback 이 system-ui 라 그 줄을 그대로 쓴다. */
+.suffix {
+    font-family: "Cal Sans", "Cal Sans UI", system-ui, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #b4b4b4; /* --fg-3 */
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #898989; /* --fg-2 */
+    margin: 0;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* --cta-height: 44px, --r-4: 8px */
+.btn {
+    position: relative; /* 아이콘은 좌측 고정, 라벨은 가운데 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:disabled { opacity: 0.6; cursor: default; }
+.btn:not(:disabled):hover { filter: brightness(0.97); }
+
+.icon {
+    position: absolute;
+    left: 14px;
+    display: inline-flex;
+    align-items: center;
+}
+.brandIco { width: 18px; height: 18px; display: block; }
+
+/* 브랜드 버튼색은 구글/카카오 공식 가이드 색이라 토큰이 아닌 브랜드 고정값이다. */
+.google {
+    background: #ffffff;
+    color: #1f1f1f;
+    border-color: #dadce0;
+}
+
+.kakao {
+    background: #fee500;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.hint {
+    font-size: 11px;
+    color: #b4b4b4; /* --fg-3 */
+    text-align: center;
+    margin: 0;
+}
+
+.error {
+    font-size: 12px;
+    color: #c0392b;
+    text-align: center;
+    margin: 0;
+}
