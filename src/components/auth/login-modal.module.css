@@ -88,6 +88,80 @@
     line-height: 1.5;
 }
 
+/* 로그인 / 회원가입 탭 — 셀러에서만 렌더. 동의는 회원가입 탭에서만 받는다.
+   --bg-2: #f5f5f5, --bg-1: #ffffff, --fg-1: #0e0d14, --fg-2: #898989,
+   --ring-strong: rgba(34,42,53,0.12), --focus: rgba(59,130,246,0.5) */
+.tabs {
+    width: 100%;
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+.tabs button {
+    flex: 1;
+    padding: 7px 0;
+    border: 0;
+    background: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: #898989;
+    cursor: pointer;
+}
+.tabs button:hover:not(:disabled) { color: #0e0d14; }
+.tabs button:focus-visible { outline: 2px solid rgba(59, 130, 246, 0.5); outline-offset: 2px; }
+/* `.tabs button` 보다 특이도가 높아야 선택 상태가 실제로 칠해진다 —
+   `.tabOn` 만으로 두면 위의 `.tabs button` 규칙(요소 선택자 포함)에 져서 두 탭이 똑같이 보인다. */
+.tabs button.tabOn { background: #ffffff; color: #0e0d14; box-shadow: 0 1px 2px rgba(34, 42, 53, 0.12); }
+
+/* 가입 동의 체크 — 체크박스는 **첫 줄 글자의 세로 중앙**에 정확히 건다.
+   flex-start + 눈대중 margin 으로 두면 두 줄로 접힐 때 위로 뜬 것처럼 보인다. */
+.consent {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    column-gap: 8px;
+    align-items: start;
+    text-align: left;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #0e0d14;
+    cursor: pointer;
+}
+.consent input {
+    width: 16px;
+    height: 16px;
+    margin: calc((1.55em - 16px) / 2) 0 0;   /* (줄 높이 - 상자) / 2 */
+    accent-color: #0e0d14;
+    cursor: pointer;
+}
+.consent a { color: #0e0d14; font-weight: 600; text-underline-offset: 2px; }
+.consent a:focus-visible { outline: 2px solid rgba(59, 130, 246, 0.5); outline-offset: 2px; border-radius: 4px; }
+
+/* 로그인 탭 하단 안내 — 신규를 가입 탭으로 보낸다. */
+.notice {
+    width: 100%;
+    margin: 4px 0 0;
+    color: #898989;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+}
+.linkBtn {
+    border: 0;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 600;
+    color: #0e0d14;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+
 .buttons {
     width: 100%;
     display: flex;
@@ -132,13 +206,6 @@
 .kakao {
     background: #fee500;
     color: rgba(0, 0, 0, 0.85);
-}
-
-.hint {
-    font-size: 11px;
-    color: #b4b4b4; /* --fg-3 */
-    text-align: center;
-    margin: 0;
 }
 
 .error {
