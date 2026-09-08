@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "terms-seller",
+    "app": "seller",
+    "title": "Wearless 이용약관",
+    "version": "v1.0",
+    "effectiveDate": "2026-09-07",
+    "source": "10_wearless_terms_of_service_v1.md",
+    "path": "/terms",
+    "label": "이용약관",
+    "canonicalUrl": "https://wearless.kr/terms"
+  },
+  {
+    "slug": "privacy-seller",
+    "app": "seller",
+    "title": "Wearless 개인정보 처리방침",
+    "version": "v1.0",
+    "effectiveDate": "2026-09-07",
+    "source": "11_wearless_privacy_policy_v1.md",
+    "path": "/privacy",
+    "label": "개인정보 처리방침",
+    "canonicalUrl": "https://wearless.kr/privacy"
+  },
+  {
+    "slug": "refund",
+    "app": "seller",
+    "title": "Wearless 환불 정책",
+    "version": "v1.0",
+    "effectiveDate": "2026-09-07",
+    "source": "12_wearless_refund_policy_v1.md",
+    "path": "/refund",
+    "label": "환불 정책",
+    "canonicalUrl": "https://wearless.kr/refund"
+  },
+  {
+    "slug": "seller-license-terms",
+    "app": "both",
+    "title": "FaceMarket 셀러 라이선스 이용조건",
+    "version": "v1.0",
+    "effectiveDate": "2026-09-07",
+    "source": "05_facemarket_seller_license_terms_v1.md",
+    "path": "/model-license-terms",
+    "label": "모델 라이선스 이용조건",
+    "canonicalUrl": "https://wearless.kr/model-license-terms"
+  }
+]

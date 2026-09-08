@@ -1,0 +1,171 @@
+.page {
+    min-height: 70vh;
+    padding: 136px 24px 96px;
+    background: var(--background);
+    color: var(--foreground);
+    white-space: normal;
+}
+
+.article {
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+    margin-bottom: 12px;
+    color: var(--muted-foreground);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.header h1 {
+    font-size: clamp(30px, 5vw, 44px);
+    font-weight: 600;
+    line-height: 1.25;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+.meta {
+    margin-top: 16px;
+    color: var(--muted-foreground);
+    font-size: 13px;
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+}
+
+.related {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 24px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.related a,
+.prose a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.related a:focus-visible,
+.prose a:focus-visible,
+.tableWrap:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 3px;
+}
+
+.prose {
+    font-size: 16px;
+    line-height: 1.8;
+    overflow-wrap: break-word;
+}
+
+.prose h2 {
+    margin: 48px 0 16px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.prose h3 {
+    margin: 32px 0 12px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.prose h4 {
+    margin: 24px 0 12px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+    margin-bottom: 16px;
+}
+
+.prose ul,
+.prose ol {
+    padding-left: 24px;
+}
+
+.prose ul {
+    list-style: disc;
+}
+
+.prose ol {
+    list-style: decimal;
+}
+
+.prose li + li {
+    margin-top: 8px;
+}
+
+.prose blockquote {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: var(--secondary);
+    border-left: 3px solid var(--border);
+}
+
+.prose blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+.tableWrap {
+    margin: 24px 0;
+    overflow-x: auto;
+}
+
+.prose table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.prose th,
+.prose td {
+    padding: 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.prose th {
+    background: var(--secondary);
+    font-weight: 600;
+}
+
+.prose hr {
+    margin: 36px 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+}
+
+.prose code {
+    padding: 2px 5px;
+    background: var(--secondary);
+    font-size: 14px;
+}
+
+@media (max-width: 640px) {
+    .page {
+        padding: 100px 20px 64px;
+    }
+
+    .header {
+        margin-bottom: 32px;
+    }
+}
