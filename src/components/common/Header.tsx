@@ -11,16 +11,17 @@ const NAV_LINKS = [
     { label: '홈', id: 'home' },
     { label: '주요 기능', id: 'features' },
     { label: '요금제', id: 'pricing' },
+    { label: '문의하기', id: 'contact' },
 ] as const;
 
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { session, loading, isConfigured, openLogin, signOut } = useAuth();
-    // 로그인한 사람에게 '로그인' 버튼은 잡음이다 — 그 자리를 스튜디오 진입으로 바꾼다.
+    // 로그인한 사람에게 '로그인/회원가입' 버튼은 잡음이다 — 그 자리를 스튜디오 진입으로 바꾼다.
     // 환경변수가 없으면(로그인 자체가 불가능) 버튼을 아예 내지 않는다: 눌러도 아무 일이
     // 없는 버튼보다 없는 편이 낫다.
-    // 세션 확인이 끝나기 전에는 '로그인' 을 그대로 둔다 — 방문자 대부분이 비로그인이고,
+    // 세션 확인이 끝나기 전에는 '로그인/회원가입' 을 그대로 둔다 — 방문자 대부분이 비로그인이고,
     // loading 동안 버튼을 숨기면 헤더에서 버튼 하나가 늦게 튀어나오는 게 보인다.
     const showLogin = isConfigured && !session;
     const showEnterApp = isConfigured && !loading && Boolean(session);
@@ -102,30 +103,20 @@ const Header = () => {
                                 onClick={openLogin}
                                 className="px-2 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
                                 tabIndex={0}
-                                aria-label="로그인"
+                                aria-label="로그인 또는 회원가입"
                             >
-                                로그인
+                                로그인/회원가입
                             </button>
                         )}
                         {showEnterApp && (
-                            <>
-                                <button
-                                    onClick={goToApp}
-                                    className="px-2 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
-                                    tabIndex={0}
-                                    aria-label="스튜디오 열기"
-                                >
-                                    스튜디오 열기
-                                </button>
-                                <button
-                                    onClick={signOut}
-                                    className="px-2 py-2.5 text-[15px] font-medium text-[#9E9E9E] transition-colors hover:text-[#1A1A1A]"
-                                    tabIndex={0}
-                                    aria-label="로그아웃"
-                                >
-                                    로그아웃
-                                </button>
-                            </>
+                            <button
+                                onClick={signOut}
+                                className="px-2 py-2.5 text-[15px] font-medium text-[#9E9E9E] transition-colors hover:text-[#1A1A1A]"
+                                tabIndex={0}
+                                aria-label="로그아웃"
+                            >
+                                로그아웃
+                            </button>
                         )}
                         <button
                             onClick={goToApp}
@@ -135,15 +126,6 @@ const Header = () => {
                         >
                             시작하기
                         </button>
-                        <Link
-                            href="/#contact"
-                            onClick={(event) => handleSectionClick(event, 'contact')}
-                            className="rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-all hover:border-[#1A1A1A] hover:text-[#1A1A1A]"
-                            tabIndex={0}
-                            aria-label="문의하기"
-                        >
-                            문의하기
-                        </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -195,9 +177,9 @@ const Header = () => {
                                     }}
                                     className="w-full rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
                                     tabIndex={0}
-                                    aria-label="로그인"
+                                    aria-label="로그인 또는 회원가입"
                                 >
-                                    로그인
+                                    로그인/회원가입
                                 </button>
                             )}
                             {showEnterApp && (
@@ -213,17 +195,6 @@ const Header = () => {
                                     로그아웃
                                 </button>
                             )}
-                            {/* 문의는 링크다(main #1) — 약관 페이지에서도 눌리고 새 탭도 열린다.
-                                로그인·로그아웃은 링크가 아니라 동작이라 button 그대로 둔다. */}
-                            <Link
-                                href="/#contact"
-                                onClick={(event) => handleSectionClick(event, 'contact')}
-                                className="w-full rounded-full text-center border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
-                                tabIndex={0}
-                                aria-label="문의하기"
-                            >
-                                문의하기
-                            </Link>
                         </div>
                     </div>
                 </div>

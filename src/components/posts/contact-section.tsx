@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { User, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
 import { Button } from '@/components/ui/button';
 import { goToApp } from '@/lib/app-url';
@@ -45,17 +45,6 @@ const ContactSection = () => {
                             </p>
 
                             <div className="flex flex-col gap-8 md:flex-row">
-                                {/* Person */}
-                                <div className="flex items-start gap-4">
-                                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white/5">
-                                        <User size={20} className="text-white/70" aria-hidden="true" />
-                                    </div>
-                                    <div>
-                                        <p className="mb-1 text-[13px] text-white/40">담당자</p>
-                                        <p className="text-[17px] font-medium text-white">정일상 대표</p>
-                                    </div>
-                                </div>
-
                                 {/* Email */}
                                 <div className="flex items-start gap-4">
                                     <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white/5">

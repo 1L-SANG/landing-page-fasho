@@ -72,7 +72,6 @@ const Footer = () => {
                             {' · 이메일: '}<a href={`mailto:${company.email}`} className="underline underline-offset-2">{company.email}</a>
                         </p>
                         <p>통신판매업 신고: {company.mailOrderRegistration}</p>
-                        <p>개인정보 보호책임자: {company.privacyOfficer} ({company.email})</p>
                     </div>
                 </div>
             </div>
