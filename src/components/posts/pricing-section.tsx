@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Check } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/section-header';
-import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
 import { Badge } from '@/components/ui/badge';
 import { goToPricing } from '@/lib/app-url';
 
@@ -40,7 +39,7 @@ const PLANS: Plan[] = [
             '에디터 기능 제공',
             '무제한 다운로드 가능',
         ],
-        ctaLabel: '시작하기',
+        ctaLabel: '구매하기',
     },
     {
         name: 'Seller',
@@ -57,7 +56,7 @@ const PLANS: Plan[] = [
             '충전할 때마다 크레딧 5% 보너스',
         ],
         recommended: true,
-        ctaLabel: '시작하기',
+        ctaLabel: '구매하기',
     },
     {
         name: 'Pro',
@@ -73,7 +72,7 @@ const PLANS: Plan[] = [
             '모든 AI 모델 무료 제공',
             '충전할 때마다 크레딧 10% 보너스',
         ],
-        ctaLabel: '시작하기',
+        ctaLabel: '구매하기',
     },
 ];
 
@@ -105,7 +104,7 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                 </Badge>
             )}
 
-            <div className="flex h-full flex-col rounded-[20px] border-[1.5px] border-[#E5E5E5] bg-white p-10 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+            <div className="flex h-full flex-col rounded-[20px] border-[1.5px] border-[rgba(34,42,53,0.12)] bg-white p-5 min-[381px]:p-7 min-[1001px]:p-[clamp(20px,2.8vw,40px)] shadow-[0_4px_8px_rgba(34,42,53,0.05)]">
                 {/* Billing kicker */}
                 <p className="mb-1 text-[13px] font-medium text-[#9E9E9E]">{plan.billing}</p>
 
@@ -122,32 +121,26 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                     )}
                 </div>
 
-                {/* Divider */}
-                <div className="my-6 h-px bg-[#F0F0F0]" />
-
-                {/* Credits — 증정이 있으면 환산값에 취소선, 지급량에 밑줄, 그 아래 가운데 증정 문구 */}
-                <div className="flex items-baseline gap-2 text-[24px] font-extrabold tracking-[-0.02em] text-[#1A1A1A]">
+                {/* 스튜디오와 동일하게 총 크레딧 오른쪽 위에 증정 태그를 표시한다. */}
+                <div className="relative my-6 border-y border-[rgba(34,42,53,0.08)] pb-6 pt-[52px]">
+                  <div className="flex items-baseline gap-2 whitespace-nowrap text-[24px] font-extrabold tracking-[-0.02em] text-[#1A1A1A]">
                     {plan.baseCredits && (
                         <>
                             <s className="text-[18px] font-semibold text-[#B5B5B5] decoration-2">{plan.baseCredits}</s>
                             <span className="text-[18px] font-medium text-[#B5B5B5]">→</span>
                         </>
                     )}
-                    <span className="relative inline-block">
-                        <span className={plan.bonusNote ? 'underline decoration-[#1A1A1A] decoration-[3px] underline-offset-[5px]' : ''}>
-                            {plan.credits}
-                        </span>
+                    <span className="inline-block">
+                        {plan.credits}
                         {plan.bonusNote && (
-                            <em className="absolute left-1/2 top-full mt-2.5 -translate-x-1/2 whitespace-nowrap text-[13.5px] font-bold italic text-[#1A1A1A]">
+                            <em className="absolute right-0 top-4 inline-flex min-h-7 items-center whitespace-nowrap rounded-[12px_12px_12px_4px] border border-(--pricing-bonus-border) bg-(--pricing-bonus-bg) px-2.5 py-1 text-[12px] leading-[18px] font-semibold not-italic tracking-[-0.01em] text-(--pricing-bonus-fg) shadow-[0_3px_4px_-3px_color-mix(in_srgb,var(--pricing-bonus-fg)_24%,transparent)]">
                                 {plan.bonusNote}
                             </em>
                         )}
                     </span>
                     <span className="text-[14px] font-medium text-[#6B6B6B]">크레딧</span>
+                  </div>
                 </div>
-
-                {/* Divider — 증정 문구 자리를 항상 비워 세 카드의 항목 시작 높이를 맞춘다 */}
-                <div className="mt-12 mb-6 h-px bg-[#F0F0F0]" />
 
                 {/* Features */}
                 <ul className="mb-8 flex-1 space-y-3.5">
@@ -164,18 +157,18 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                     ))}
                 </ul>
 
-                {/* CTA — 세 카드 모두 검정 바탕에 무지개 테두리 링 */}
-                <GradientBorderContainer className="mt-auto !rounded-[13px] !p-[2px]" innerClassName="!rounded-[11px]">
+                {/* 분석 특징 칩과 같은 색상·9초 회전. 다른 섹션의 공용 테두리는 유지한다. */}
+                <div className="mt-auto rounded-[13px] p-0.5 [background:conic-gradient(from_var(--pricing-ring-angle),var(--pricing-glow-sky),var(--pricing-glow-sage),var(--pricing-glow-sun),var(--pricing-glow-mauve),var(--pricing-glow-sky))] motion-safe:animate-[pricingRingRotate_9s_linear_infinite]">
                     <button
                         type="button"
                         onClick={goToPricing}
-                        className="w-full cursor-pointer bg-[#1A1A1A] px-8 py-3 text-[16px] font-semibold text-white transition-colors hover:bg-[#333333]"
+                        className="min-h-11 w-full cursor-pointer rounded-[11px] bg-[#2C2C2C] px-8 py-3 text-[16px] font-semibold text-white transition-colors hover:bg-[#1B1B1B] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7fd0f0] motion-reduce:transition-none"
                         aria-label={`${plan.name} 요금제 선택하기`}
                         tabIndex={0}
                     >
                         {plan.ctaLabel}
                     </button>
-                </GradientBorderContainer>
+                </div>
             </div>
         </div>
     );
@@ -192,14 +185,14 @@ const PricingSection = () => {
                 borderTop: '1px solid rgba(235, 230, 220, 0.5)',
             }}
         >
-            <div className="mx-auto max-w-[1000px]">
+            <div className="mx-auto max-w-[1180px]">
                 <SectionHeader
                     label="PRICING"
                     title="합리적인 요금제"
-                    subtitle="상세페이지 한 개에 13,000원. 사진 10장 기준이에요."
+                    subtitle="매달 자동으로 크레딧이 충전되는 정기 구독이에요."
                 />
 
-                <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-3">
+                <div className="grid grid-cols-1 items-stretch gap-6 min-[1001px]:grid-cols-3">
                     {PLANS.map((plan, i) => (
                         <PricingCard key={plan.name} plan={plan} delay={i * 100} />
                     ))}
