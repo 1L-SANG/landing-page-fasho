@@ -2,6 +2,27 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* 스튜디오 요금제와 동일한 증정 태그·분석 특징 칩 테두리 색상. */
+#pricing {
+  --pricing-bonus-bg: #eef5ff;
+  --pricing-bonus-fg: #3068b4;
+  --pricing-bonus-border: #dce7f6;
+  --pricing-glow-sky: #7fd0f0;
+  --pricing-glow-sage: #b9a5e8;
+  --pricing-glow-sun: #e3ddf3;
+  --pricing-glow-mauve: #5fa7dd;
+}
+
+@property --pricing-ring-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes pricingRingRotate {
+  to { --pricing-ring-angle: 360deg; }
+}
+
 @font-face {
   font-family: 'Pretendard';
   src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
