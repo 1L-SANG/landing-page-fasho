@@ -23,7 +23,7 @@ interface Plan {
 /**
  * 요금제 정본 — `documents/research/2026-09-07-credit-pricing-plans.md` §5 (wearless_studio).
  * 서비스 앱 `/pricing` 화면과 **같은 숫자**여야 한다. 한쪽만 고치지 마라.
- * 취소선 숫자는 그 가격을 Starter 단가(4.98원/크레딧)로 환산한 값이라, 실제 지급량과의
+ * 2026-09-11 환율 개정: 100원 = 2크레딧(1크레딧 50원). 취소선 숫자는 그 가격을 Starter 단가(49.83원/크레딧)로 환산한 값이라, 실제 지급량과의
  * 차이가 그대로 증정으로 읽힌다.
  */
 const PLANS: Plan[] = [
@@ -32,7 +32,7 @@ const PLANS: Plan[] = [
         billing: '정기 구독',
         price: '₩29,900',
         priceSuffix: '/ 월',
-        credits: '6,000',
+        credits: '600',
         features: [
             '기본모델 2명 무료 제공',
             '마네킹컷 1회 무료 수정 가능',
@@ -46,9 +46,9 @@ const PLANS: Plan[] = [
         billing: '정기 구독',
         price: '₩79,900',
         priceSuffix: '/ 월',
-        credits: '18,000',
-        baseCredits: '16,000',
-        bonusNote: '2,000 크레딧 추가 증정',
+        credits: '1,800',
+        baseCredits: '1,600',
+        bonusNote: '200 크레딧 추가 증정',
         features: [
             'Starter의 모든 기능 제공',
             '모든 AI 모델 50% 할인',
@@ -63,9 +63,9 @@ const PLANS: Plan[] = [
         billing: '정기 구독',
         price: '₩159,000',
         priceSuffix: '/ 월',
-        credits: '38,000',
-        baseCredits: '32,000',
-        bonusNote: '6,000 크레딧 추가 증정',
+        credits: '3,800',
+        baseCredits: '3,200',
+        bonusNote: '600 크레딧 추가 증정',
         features: [
             'Seller의 모든 기능 제공',
             '마네킹컷 2회 무료 수정 가능',
