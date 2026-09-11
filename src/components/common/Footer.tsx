@@ -54,7 +54,12 @@ const Footer = () => {
                 <div className="mt-8 border-t border-border pt-6">
                     <nav aria-label="법적 고지" className="mb-5 flex flex-wrap justify-center gap-x-6 gap-y-3 text-[14px] text-foreground md:justify-start">
                         {documents.map((document) => (
-                            <Link key={document.slug} href={document.path} className="underline-offset-4 hover:underline">
+                            <Link
+                                key={document.slug}
+                                href={document.path}
+                                // 개인정보 처리방침은 다른 고지와 구별되게 표시해야 한다(개인정보보호법 시행령 제31조 제3항).
+                                className={`underline-offset-4 hover:underline${document.slug === 'privacy-seller' ? ' font-semibold text-[#1A1A1A]' : ''}`}
+                            >
                                 {document.label}
                             </Link>
                         ))}
