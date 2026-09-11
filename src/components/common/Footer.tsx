@@ -39,21 +39,16 @@ const Footer = () => {
                         </p>
                     </div>
 
-                    {/* Right - Links & Copyright */}
-                    <div className="space-y-2 text-center md:text-right">
-                        <div className="flex items-center justify-center gap-2 text-[14px] text-[#6B6B6B] md:justify-end">
-                            <Link
-                                href="/#contact"
-                                className="transition-colors hover:text-[#1A1A1A]"
-                                tabIndex={0}
-                                aria-label="문의하기"
-                            >
-                                문의하기
-                            </Link>
-                        </div>
-                        <p className="text-[13px] text-[#9E9E9E]">
-                            © 2026 Wearless. All rights reserved.
-                        </p>
+                    {/* Right - Links */}
+                    <div className="flex items-center justify-center gap-2 text-[14px] text-[#6B6B6B] md:justify-end">
+                        <Link
+                            href="/#contact"
+                            className="transition-colors hover:text-[#1A1A1A]"
+                            tabIndex={0}
+                            aria-label="문의하기"
+                        >
+                            문의하기
+                        </Link>
                     </div>
                 </div>
                 <div className="mt-8 border-t border-border pt-6">
@@ -65,13 +60,17 @@ const Footer = () => {
                         ))}
                     </nav>
                     <div className="space-y-1 text-center text-[13px] leading-relaxed text-muted-foreground md:text-left">
-                        <p>{company.name} · 대표: {company.representative} · 사업자등록번호: {company.businessRegistrationNumber}</p>
-                        <p>주소: {company.address}</p>
+                        <p>Copyright © 2026 {company.name}. All rights reserved.</p>
+                        <p>사업자등록번호: {company.businessRegistrationNumber}</p>
+                        <p>통신판매업번호: {company.mailOrderRegistration}</p>
+                        <p>대표자: {company.representative}</p>
                         <p>
-                            전화: <a href={`tel:${company.phone}`} className="underline underline-offset-2">{company.phone}</a>
-                            {' · 이메일: '}<a href={`mailto:${company.email}`} className="underline underline-offset-2">{company.email}</a>
+                            연락처: <a href={`tel:${company.phone}`} className="underline underline-offset-2">{company.phone}</a>
                         </p>
-                        <p>통신판매업 신고: {company.mailOrderRegistration}</p>
+                        <p>
+                            이메일: <a href={`mailto:${company.email}`} className="underline underline-offset-2">{company.email}</a>
+                        </p>
+                        <p>사업자주소: {company.address}</p>
                     </div>
                 </div>
             </div>
