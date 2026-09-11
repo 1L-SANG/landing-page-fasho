@@ -101,7 +101,7 @@ const Header = () => {
                         {showLogin && (
                             <button
                                 onClick={openLogin}
-                                className="px-2 py-2.5 text-[15px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
+                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-2.5 text-[15px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                                 tabIndex={0}
                                 aria-label="로그인 또는 회원가입"
                             >
@@ -111,7 +111,7 @@ const Header = () => {
                         {showEnterApp && (
                             <button
                                 onClick={signOut}
-                                className="px-2 py-2.5 text-[15px] font-medium text-[#9E9E9E] transition-colors hover:text-[#1A1A1A]"
+                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-2.5 text-[15px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                                 tabIndex={0}
                                 aria-label="로그아웃"
                             >
@@ -175,7 +175,7 @@ const Header = () => {
                                         setMobileMenuOpen(false);
                                         openLogin();
                                     }}
-                                    className="w-full rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#6B6B6B]"
+                                    className="w-full rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3.5 text-[16px] font-semibold text-[#1A1A1A] shadow-sm"
                                     tabIndex={0}
                                     aria-label="로그인 또는 회원가입"
                                 >
@@ -188,7 +188,7 @@ const Header = () => {
                                         setMobileMenuOpen(false);
                                         signOut();
                                     }}
-                                    className="w-full rounded-full border-[1.5px] border-[#E5E5E5] px-6 py-3.5 text-[16px] font-medium text-[#9E9E9E]"
+                                    className="w-full rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3.5 text-[16px] font-semibold text-[#1A1A1A] shadow-sm"
                                     tabIndex={0}
                                     aria-label="로그아웃"
                                 >
