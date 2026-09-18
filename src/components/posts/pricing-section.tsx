@@ -44,10 +44,10 @@ const PLANS: Plan[] = [
     {
         name: 'Seller',
         billing: '정기 구독',
-        price: '₩79,900',
+        price: '₩69,900',
         priceSuffix: '/ 월',
-        credits: '1,800',
-        baseCredits: '1,600',
+        credits: '1,600',
+        baseCredits: '1,400',
         bonusNote: '200 크레딧 추가 증정',
         features: [
             'Starter의 모든 기능 제공',
@@ -61,11 +61,11 @@ const PLANS: Plan[] = [
     {
         name: 'Pro',
         billing: '정기 구독',
-        price: '₩159,000',
+        price: '₩119,000',
         priceSuffix: '/ 월',
-        credits: '3,800',
-        baseCredits: '3,200',
-        bonusNote: '600 크레딧 추가 증정',
+        credits: '2,800',
+        baseCredits: '2,400',
+        bonusNote: '400 크레딧 추가 증정',
         features: [
             'Seller의 모든 기능 제공',
             '마네킹컷 2회 무료 수정 가능',
