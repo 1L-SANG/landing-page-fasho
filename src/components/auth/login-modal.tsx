@@ -17,14 +17,20 @@
      앱이 '회원가입 탭을 지나지 않고 들어온 신규' 를 위해 이미 갖고 있는 경로다.
      **동의의 법적 기록은 언제나 앱이 남긴다.** 이 화면은 같은 문장을 같은 자리에서 보여줄 뿐이다.
 
-   원본과 의도적으로 다른 곳은 하나다.
-     · 로컬 QA 용 이메일 폼: 랜딩에는 옮기지 않았다(운영은 소셜만 쓴다).
+   토스 심사용 이메일 로그인도 원본과 같이 옮겼다(2026-09-22 오너: 두 사이트가 달라선 안 된다).
+   '이메일로 로그인하기' 링크 문구를 누르면 그 자리에 폼이 펼쳐진다. 원본과 다른 점은 하나다.
+     · 로컬 QA 자동 펼침(원본의 IS_LOCAL_SUPABASE): 랜딩에는 없다. 항상 접힌 채로 시작한다.
    ============================================================= */
 import { useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
 import { createPortal } from 'react-dom';
 import s from './login-modal.module.css';
 
 type Provider = 'google' | 'kakao';
+
+// 토스 심사용 임시 이메일 로그인. 심사 종료 후 false로 바꾸고 재배포한다. 앱(wearless_studio
+// src/lib/tossKeys.js 의 PG_REVIEW_LOGIN_ENABLED)과 같은 값으로 켜고 끈다.
+const PG_REVIEW_LOGIN_ENABLED = true;
 
 /* 브랜드 로고 — Lucide(단색 스트로크) 세트와 성격이 달라 인라인 SVG 로 둔다. */
 const GoogleIcon = () => (
@@ -45,13 +51,18 @@ const KakaoIcon = () => (
 interface LoginModalProps {
     onClose: () => void;
     onSignIn: (provider: Provider) => Promise<{ error: string | null }>;
+    onSignInWithPassword: (credentials: { email: string; password: string }) => Promise<{ error: string | null }>;
 }
 
-const LoginModal = ({ onClose, onSignIn }: LoginModalProps) => {
-    const [pending, setPending] = useState<Provider | null>(null);
+const LoginModal = ({ onClose, onSignIn, onSignInWithPassword }: LoginModalProps) => {
+    const [pending, setPending] = useState<Provider | 'email' | null>(null);
     const [error, setError] = useState('');
     const [mode, setMode] = useState<'login' | 'signup'>('login');
     const [consent, setConsent] = useState(false);
+    const [emailOpen, setEmailOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailError, setEmailError] = useState('');
 
     const isSignup = mode === 'signup';
     // 동의 없이는 가입 버튼이 눌리지 않는다 — 원본과 같은 규칙이다.
@@ -77,6 +88,26 @@ const LoginModal = ({ onClose, onSignIn }: LoginModalProps) => {
         const { error: err } = await onSignIn(provider);
         // 성공하면 페이지가 통째로 프로바이더로 넘어가 언마운트된다 — 아래는 실패에서만 돈다.
         if (err) { setError(err); setPending(null); }
+    };
+
+    const handleEmail = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!PG_REVIEW_LOGIN_ENABLED || mode !== 'login' || pending !== null) return;
+        setPending('email');
+        setEmailError('');
+        try {
+            const { error: err } = await onSignInWithPassword({ email: email.trim(), password });
+            if (err) {
+                setEmailError('로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.');
+                setPending(null);
+                return;
+            }
+            // 성공 — 세션이 생기면 AuthProvider 가 이 모달을 그리지 않고 앱으로 보낸다.
+            setPassword('');
+        } catch {
+            setEmailError('연결하지 못했어요. 잠시 후 다시 시도해 주세요.');
+            setPending(null);
+        }
     };
 
     return createPortal(
@@ -179,6 +210,36 @@ const LoginModal = ({ onClose, onSignIn }: LoginModalProps) => {
                                 회원가입
                             </button>
                         </p>
+                    )}
+
+                    {PG_REVIEW_LOGIN_ENABLED && mode === 'login' && !emailOpen && (
+                        <p className={s.notice}>
+                            이메일로 로그인하고 싶다면?{' '}
+                            <button type="button" className={s.linkBtn} onClick={() => setEmailOpen(true)}>
+                                이메일로 로그인하기
+                            </button>
+                        </p>
+                    )}
+
+                    {PG_REVIEW_LOGIN_ENABLED && mode === 'login' && emailOpen && (
+                        <div className={s.emailLogin}>
+                            <form className={s.emailForm} onSubmit={handleEmail} aria-label="이메일 로그인" aria-busy={pending === 'email'}>
+                                <label>
+                                    이메일
+                                    <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                                        autoComplete="username" autoCapitalize="none" spellCheck={false} required disabled={pending !== null} />
+                                </label>
+                                <label>
+                                    비밀번호
+                                    <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                                        autoComplete="current-password" required disabled={pending !== null} />
+                                </label>
+                                {emailError && <p className={s.emailError} role="alert">{emailError}</p>}
+                                <button type="submit" className={`${s.btn} ${s.emailSubmit}`} disabled={pending !== null}>
+                                    {pending === 'email' ? '로그인 중…' : '이메일로 로그인'}
+                                </button>
+                            </form>
+                        </div>
                     )}
                 </div>
             </div>
