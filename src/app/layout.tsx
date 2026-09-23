@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: 'Wearless',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.jpg?v=black-250-medium-20260924',
         width: 1280,
         height: 720,
         alt: 'Wearless — 쇼핑몰 촬영의 새로운 기준',
@@ -35,12 +35,12 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Wearless — 쇼핑몰 촬영의 새로운 기준',
     description: '스튜디오, 모델, 조명 없이. 제품 사진만 찍으세요. 쇼핑몰 셀러를 위한 AI 서비스.',
-    images: ['/og-image.jpg'],
+    images: ['/og-image.jpg?v=black-250-medium-20260924'],
   },
   icons: {
-    icon: [{ url: "/favicon.png?v=20260315-card2", type: "image/png" }],
-    shortcut: ["/favicon.png?v=20260315-card2"],
-    apple: [{ url: "/favicon.png?v=20260315-card2" }],
+    icon: [{ url: "/favicon.png?v=black-250-whitebg-20260924", type: "image/png" }],
+    shortcut: ["/favicon.png?v=black-250-whitebg-20260924"],
+    apple: [{ url: "/favicon.png?v=black-250-whitebg-20260924" }],
   },
 };
 

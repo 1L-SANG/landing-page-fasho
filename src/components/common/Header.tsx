@@ -54,39 +54,39 @@ const Header = () => {
                     borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
                 }}
             >
-                <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-6 max-md:h-[60px]">
+                <div className="mx-auto flex h-[var(--site-nav-height)] max-w-[1200px] items-center justify-between gap-6 px-6">
                     {/* Logo */}
                     <Link
                         href="/#home"
                         onClick={(event) => handleSectionClick(event, 'home')}
-                        className="flex items-center gap-2 transition-opacity hover:opacity-80"
+                        className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80 max-md:gap-2"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
                     >
                         <Image
                             src="/logo.svg"
                             alt=""
-                            width={26}
-                            height={26}
-                            className="object-contain"
+                            width={34}
+                            height={34}
+                            className="h-[34px] w-[34px] object-contain max-md:h-[30px] max-md:w-[30px]"
                         />
                         <Image
                             src="/wordmark.svg"
                             alt=""
-                            width={82}
-                            height={15}
-                            className="object-contain"
+                            width={112}
+                            height={23}
+                            className="h-auto w-[112px] object-contain max-md:w-[102px]"
                         />
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden items-center gap-10 md:flex">
+                    <div className="hidden shrink-0 items-center gap-6 md:flex lg:gap-10">
                         {NAV_LINKS.map((link) => (
                             <Link
                                 key={link.id}
                                 href={`/#${link.id}`}
                                 onClick={(event) => handleSectionClick(event, link.id)}
-                                className="group relative text-[16px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
+                                className="group relative whitespace-nowrap text-[16px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
                                 tabIndex={0}
                                 aria-label={`${link.label} 섹션으로 이동`}
                             >
@@ -97,7 +97,7 @@ const Header = () => {
                     </div>
 
                     {/* Desktop CTA Buttons */}
-                    <div className="hidden items-center gap-3 md:flex">
+                    <div className="hidden shrink-0 items-center gap-3 md:flex">
                         {showLogin && (
                             <button
                                 onClick={openLogin}
@@ -131,7 +131,7 @@ const Header = () => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="p-2 text-[#1A1A1A] md:hidden"
+                        className="p-2.5 text-[#1A1A1A] md:hidden"
                         aria-label={mobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
                         aria-expanded={mobileMenuOpen}
                         tabIndex={0}
