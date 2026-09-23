@@ -54,39 +54,39 @@ const Header = () => {
                     borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
                 }}
             >
-                <div className="mx-auto flex h-[var(--site-nav-height)] max-w-[1200px] items-center justify-between gap-6 px-6">
+                <div className="mx-auto flex h-[var(--site-nav-height)] max-w-[1280px] items-center justify-between gap-6 px-8 max-lg:px-5">
                     {/* Logo */}
                     <Link
                         href="/#home"
                         onClick={(event) => handleSectionClick(event, 'home')}
-                        className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80 max-md:gap-2"
+                        className="flex shrink-0 items-center gap-3.5 transition-opacity hover:opacity-80 max-lg:gap-2.5"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
                     >
                         <Image
                             src="/logo.svg"
                             alt=""
-                            width={34}
-                            height={34}
-                            className="h-[34px] w-[34px] object-contain max-md:h-[30px] max-md:w-[30px]"
+                            width={60}
+                            height={60}
+                            className="h-[60px] w-[60px] object-contain max-lg:h-[42px] max-lg:w-[42px]"
                         />
                         <Image
                             src="/wordmark.svg"
                             alt=""
-                            width={112}
-                            height={23}
-                            className="h-auto w-[112px] object-contain max-md:w-[102px]"
+                            width={206}
+                            height={43}
+                            className="h-auto w-[206px] object-contain max-lg:w-[146px]"
                         />
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden shrink-0 items-center gap-6 md:flex lg:gap-10">
+                    <div className="hidden shrink-0 items-center gap-8 lg:flex">
                         {NAV_LINKS.map((link) => (
                             <Link
                                 key={link.id}
                                 href={`/#${link.id}`}
                                 onClick={(event) => handleSectionClick(event, link.id)}
-                                className="group relative whitespace-nowrap text-[16px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
+                                className="group relative whitespace-nowrap text-[18px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
                                 tabIndex={0}
                                 aria-label={`${link.label} 섹션으로 이동`}
                             >
@@ -97,11 +97,11 @@ const Header = () => {
                     </div>
 
                     {/* Desktop CTA Buttons */}
-                    <div className="hidden shrink-0 items-center gap-3 md:flex">
+                    <div className="hidden shrink-0 items-center gap-3 lg:flex">
                         {showLogin && (
                             <button
                                 onClick={openLogin}
-                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-2.5 text-[15px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3 text-[16px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                                 tabIndex={0}
                                 aria-label="로그인 또는 회원가입"
                             >
@@ -111,7 +111,7 @@ const Header = () => {
                         {showEnterApp && (
                             <button
                                 onClick={signOut}
-                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-2.5 text-[15px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3 text-[16px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                                 tabIndex={0}
                                 aria-label="로그아웃"
                             >
@@ -120,7 +120,7 @@ const Header = () => {
                         )}
                         <button
                             onClick={goToApp}
-                            className="rounded-full bg-[#1A1A1A] px-6 py-2.5 text-[15px] font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#333333]"
+                            className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[16px] font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#333333]"
                             tabIndex={0}
                             aria-label="시작하기"
                         >
@@ -131,19 +131,19 @@ const Header = () => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="p-2.5 text-[#1A1A1A] md:hidden"
+                        className="p-2.5 text-[#1A1A1A] lg:hidden"
                         aria-label={mobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
                         aria-expanded={mobileMenuOpen}
                         tabIndex={0}
                     >
-                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
                     </button>
                 </div>
             </nav>
 
             {/* Mobile Menu Overlay */}
             {mobileMenuOpen && (
-                <div className="fixed inset-0 z-40 bg-[#FAFAFA] md:hidden animate-fade-in">
+                <div className="fixed inset-0 z-40 bg-[#FAFAFA] lg:hidden animate-fade-in">
                     <div className="flex h-full flex-col items-center justify-center gap-8">
                         {NAV_LINKS.map((link) => (
                             <Link
