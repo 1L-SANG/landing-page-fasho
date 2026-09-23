@@ -54,12 +54,12 @@ const Header = () => {
                     borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
                 }}
             >
-                <div className="mx-auto flex h-[var(--site-nav-height)] max-w-[1280px] items-center justify-between gap-6 px-8 max-lg:px-5">
+                <div className="mx-auto flex h-[var(--site-nav-height)] max-w-[1280px] items-center justify-between gap-6 px-8 max-lg:px-5 max-md:px-6">
                     {/* Logo */}
                     <Link
                         href="/#home"
                         onClick={(event) => handleSectionClick(event, 'home')}
-                        className="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-80 max-lg:gap-2.5"
+                        className="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-80 max-lg:gap-2.5 max-md:gap-2"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
                     >
@@ -68,14 +68,14 @@ const Header = () => {
                             alt=""
                             width={41}
                             height={41}
-                            className="h-[41px] w-[41px] object-contain max-lg:h-[36px] max-lg:w-[36px]"
+                            className="h-[41px] w-[41px] object-contain max-lg:h-[36px] max-lg:w-[36px] max-md:h-[30px] max-md:w-[30px]"
                         />
                         <Image
                             src="/wordmark.svg"
                             alt=""
                             width={134}
                             height={28}
-                            className="h-auto w-[134px] object-contain max-lg:w-[122px]"
+                            className="h-auto w-[134px] object-contain max-lg:w-[122px] max-md:w-[102px]"
                         />
                     </Link>
 
@@ -136,7 +136,7 @@ const Header = () => {
                         aria-expanded={mobileMenuOpen}
                         tabIndex={0}
                     >
-                        {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                        {mobileMenuOpen ? <X size={28} className="h-6 w-6 md:h-7 md:w-7" /> : <Menu size={28} className="h-6 w-6 md:h-7 md:w-7" />}
                     </button>
                 </div>
             </nav>

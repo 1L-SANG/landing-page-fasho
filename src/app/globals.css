@@ -83,6 +83,12 @@ html {
   }
 }
 
+@media (max-width: 767px) {
+  :root {
+    --site-nav-height: 68px;
+  }
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
