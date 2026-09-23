@@ -101,6 +101,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { error: error?.message ?? null };
     }, []);
 
+    // 토스 심사용 이메일 로그인(앱 Login.jsx 의 handleEmail 과 같은 경로). 성공하면
+    // onAuthStateChange 로 세션이 생기고, 위의 "이 탭에서 시작한 로그인" effect 가 앱으로 보낸다.
+    const signInWithPassword = useCallback(async (credentials: { email: string; password: string }) => {
+        safeSession.set();
+        const { error } = await supabase.auth.signInWithPassword(credentials);
+        if (error) { safeSession.clear(); return { error: error.message }; }
+        return { error: null };
+    }, []);
+
     const signOut = useCallback(async () => {
         safeSession.clear();
         await supabase.auth.signOut();
@@ -118,7 +127,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 잡음이다. 부트스트랩이 끝나기 전에 버튼을 누른 경우와 다른 탭에서 로그인한
                 경우가 여기 걸린다. effect 로 닫지 않고 렌더에서 거르는 이유는, 상태를 두
                 군데(세션·open)에서 관리하면 어긋나기 때문이다. */}
-            {open && !session && <LoginModal onClose={closeLogin} onSignIn={signIn} />}
+            {open && !session && <LoginModal onClose={closeLogin} onSignIn={signIn} onSignInWithPassword={signInWithPassword} />}
         </AuthCtx.Provider>
     );
 };
