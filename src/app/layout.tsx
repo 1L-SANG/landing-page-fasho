@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     images: ['/og-image.jpg?v=black-250-medium-20260924'],
   },
   icons: {
-    icon: [{ url: "/favicon.png?v=black-250-whitebg-20260924", type: "image/png" }],
-    shortcut: ["/favicon.png?v=black-250-whitebg-20260924"],
-    apple: [{ url: "/favicon.png?v=black-250-whitebg-20260924" }],
+    icon: [{ url: "/favicon.png?v=black-250-solid-white-20260924", type: "image/png" }],
+    shortcut: ["/favicon.png?v=black-250-solid-white-20260924"],
+    apple: [{ url: "/favicon.png?v=black-250-solid-white-20260924" }],
   },
 };
 
