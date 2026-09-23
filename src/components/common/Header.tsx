@@ -59,23 +59,23 @@ const Header = () => {
                     <Link
                         href="/#home"
                         onClick={(event) => handleSectionClick(event, 'home')}
-                        className="flex shrink-0 items-center gap-3.5 transition-opacity hover:opacity-80 max-lg:gap-2.5"
+                        className="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-80 max-lg:gap-2.5"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
                     >
                         <Image
                             src="/logo.svg"
                             alt=""
-                            width={60}
-                            height={60}
-                            className="h-[60px] w-[60px] object-contain max-lg:h-[42px] max-lg:w-[42px]"
+                            width={41}
+                            height={41}
+                            className="h-[41px] w-[41px] object-contain max-lg:h-[36px] max-lg:w-[36px]"
                         />
                         <Image
                             src="/wordmark.svg"
                             alt=""
-                            width={206}
-                            height={43}
-                            className="h-auto w-[206px] object-contain max-lg:w-[146px]"
+                            width={134}
+                            height={28}
+                            className="h-auto w-[134px] object-contain max-lg:w-[122px]"
                         />
                     </Link>
 
