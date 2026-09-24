@@ -59,23 +59,23 @@ const Header = () => {
                     <Link
                         href="/#home"
                         onClick={(event) => handleSectionClick(event, 'home')}
-                        className="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-80 max-lg:gap-2.5 max-md:gap-2"
+                        className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80 max-md:gap-2"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
                     >
                         <Image
                             src="/logo.svg"
                             alt=""
-                            width={41}
-                            height={41}
-                            className="h-[41px] w-[41px] object-contain max-lg:h-[36px] max-lg:w-[36px] max-md:h-[30px] max-md:w-[30px]"
+                            width={31}
+                            height={31}
+                            className="h-[31px] w-[31px] object-contain max-lg:h-[30px] max-lg:w-[30px] max-md:h-[28px] max-md:w-[28px]"
                         />
                         <Image
                             src="/wordmark.svg"
                             alt=""
-                            width={134}
-                            height={28}
-                            className="h-auto w-[134px] object-contain max-lg:w-[122px] max-md:w-[102px]"
+                            width={94}
+                            height={20}
+                            className="h-auto w-[94px] object-contain max-lg:w-[90px] max-md:w-[86px]"
                         />
                     </Link>
 
@@ -86,7 +86,7 @@ const Header = () => {
                                 key={link.id}
                                 href={`/#${link.id}`}
                                 onClick={(event) => handleSectionClick(event, link.id)}
-                                className="group relative whitespace-nowrap text-[18px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
+                                className="group relative whitespace-nowrap text-[17px] font-medium text-[#6B6B6B] transition-colors hover:text-[#1A1A1A]"
                                 tabIndex={0}
                                 aria-label={`${link.label} 섹션으로 이동`}
                             >
@@ -101,7 +101,7 @@ const Header = () => {
                         {showLogin && (
                             <button
                                 onClick={openLogin}
-                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3 text-[16px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-5 py-2 text-[15.5px] leading-[1.35] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                                 tabIndex={0}
                                 aria-label="로그인 또는 회원가입"
                             >
@@ -111,7 +111,7 @@ const Header = () => {
                         {showEnterApp && (
                             <button
                                 onClick={signOut}
-                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3 text-[16px] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                                className="rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-5 py-2 text-[15.5px] leading-[1.35] font-semibold text-[#1A1A1A] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                                 tabIndex={0}
                                 aria-label="로그아웃"
                             >
@@ -120,7 +120,7 @@ const Header = () => {
                         )}
                         <button
                             onClick={goToApp}
-                            className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[16px] font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#333333]"
+                            className="rounded-full bg-[#1A1A1A] px-5 py-2 text-[15.5px] leading-[1.35] font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#333333]"
                             tabIndex={0}
                             aria-label="시작하기"
                         >
