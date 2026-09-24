@@ -110,12 +110,12 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                 <p className="mb-1 text-[13px] font-medium text-[#9E9E9E]">{plan.billing}</p>
 
                 {/* Plan Name */}
-                <p className="mb-4 text-[26px] font-extrabold tracking-[-0.02em] text-[#1A1A1A]">
+                <p className="mb-4 text-[26px] font-extrabold tracking-[-0.02em] text-[#1A1A1A] max-md:mb-3 max-md:leading-[1.25]">
                     {plan.name}
                 </p>
 
                 {/* Price */}
-                <div>
+                <div className="max-md:leading-[1.2]">
                     <span className="text-[36px] font-extrabold text-[#1A1A1A]">{plan.price}</span>
                     {plan.priceSuffix && (
                         <span className="text-[16px] text-[#9E9E9E]"> {plan.priceSuffix}</span>
@@ -123,7 +123,7 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                 </div>
 
                 {/* 스튜디오와 동일하게 총 크레딧 오른쪽 위에 증정 태그를 표시한다. */}
-                <div className="relative my-6 border-y border-[rgba(34,42,53,0.08)] pb-6 pt-[52px]">
+                <div className={`relative my-6 border-y border-[rgba(34,42,53,0.08)] pb-6 pt-[52px] ${plan.bonusNote ? '' : 'max-md:pt-6'}`}>
                   <div className="flex items-baseline gap-2 whitespace-nowrap text-[24px] font-extrabold tracking-[-0.02em] text-[#1A1A1A]">
                     {plan.baseCredits && (
                         <>
@@ -179,7 +179,7 @@ const PricingSection = () => {
     return (
         <section
             id="pricing"
-            className="px-6 py-24 md:py-32"
+            className="px-6 py-16 sm:py-24 md:py-32"
             style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 backdropFilter: 'blur(30px)',
@@ -198,21 +198,9 @@ const PricingSection = () => {
                         <PricingCard key={plan.name} plan={plan} delay={i * 100} />
                     ))}
                 </div>
-                <p className="mt-6 text-[14px] leading-7 text-[#6B6B6B]">
-                    해지하지 않으면 매월 자동 갱신 및 결제됩니다. 스튜디오의 구독 관리에서 해지하면
-                    다음 갱신부터 결제되지 않으며, 이미 결제한 기간의 종료일까지 이용할 수 있습니다.
-                    표시 금액은 부가가치세를 포함합니다.{' '}
-                    <Link href="/refund" className="underline underline-offset-4">환불 및 크레딧 이용조건</Link>을 확인해 주세요.
-                </p>
-                <p className="mt-2 text-[14px] leading-7 text-[#6B6B6B]">
-                    미사용 구독 크레딧은 구독 유지 중 다음 달로 이월됩니다. 해지 후 이미 결제한 이용기간이 끝나면
-                    이월분을 포함해 모두 소멸합니다. 갱신 결제 실패 시 3일의 유예기간이 있으며,
-                    그 안에 결제가 완료되지 않으면 구독이 종료되고 구독 크레딧이 소멸합니다.
-                </p>
-                <p className="mt-2 text-[14px] leading-7 text-[#6B6B6B]">
-                    결제일부터 7일 이내에 해당 결제로 지급된 크레딧을 사용하지 않았다면 전액 환불을 신청할 수 있습니다.
-                    사용한 부분의 청약철회는 제한될 수 있지만, 미제공 부분의 법령상 환불 권리는 제한하지 않습니다.
-                    환불 및 중도해지는 <a href="mailto:contact@wearless.kr" className="underline underline-offset-4">contact@wearless.kr</a>로 신청해 주세요.
+                <p className="mt-6 text-center text-[14px] text-[#6B6B6B]">
+                    해지 전까지 매월 자동으로 결제돼요.{' '}
+                    <Link href="/refund" className="whitespace-nowrap underline underline-offset-4">환불 및 크레딧 이용조건</Link>
                 </p>
             </div>
         </section>

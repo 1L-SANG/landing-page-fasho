@@ -25,7 +25,7 @@ const ContactSection = () => {
         <section
             id="contact"
             ref={sectionRef}
-            className="bg-[#1A1A1A] px-6 py-24 md:py-32"
+            className="bg-[#1A1A1A] px-6 py-16 sm:py-24 md:py-32"
         >
             <div
                 className={`mx-auto max-w-[1200px] transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
@@ -33,14 +33,14 @@ const ContactSection = () => {
                 <GradientBorderContainer innerClassName="bg-[#222222]">
                     <div className="grid md:grid-cols-2">
                         {/* Left - Contact Info */}
-                        <div className="border-b border-white/10 p-10 md:border-b-0 md:border-r md:p-14">
+                        <div className="border-b border-white/10 p-7 sm:p-10 md:border-b-0 md:border-r md:p-14">
                             <h2
                                 className="mb-4 text-[28px] font-bold tracking-[0.015em] text-white md:text-[32px]"
                                 style={{ wordSpacing: '0.06em' }}
                             >
                                 문의하기
                             </h2>
-                            <p className="mb-12 whitespace-pre-line text-[16px] text-white/60">
+                            <p className="mb-8 whitespace-pre-line text-[16px] text-white/60 max-md:text-balance sm:mb-12">
                                 {'궁금한 점이 있으시면 언제든 연락주세요.'}
                             </p>
 
@@ -54,7 +54,7 @@ const ContactSection = () => {
                                         <p className="mb-1 text-[13px] text-white/40">이메일</p>
                                         <a
                                             href="mailto:contact@wearless.kr"
-                                            className="text-[17px] font-medium text-white transition-opacity hover:opacity-80"
+                                            className="-my-2.5 inline-block py-2.5 text-[17px] font-medium text-white transition-opacity hover:opacity-80"
                                             tabIndex={0}
                                             aria-label="이메일 보내기"
                                         >
@@ -66,14 +66,14 @@ const ContactSection = () => {
                         </div>
 
                         {/* Right - CTA */}
-                        <div className="flex flex-col items-center justify-center p-10 text-center md:p-14">
+                        <div className="flex flex-col items-center justify-center p-7 text-center sm:p-10 md:p-14">
                             <h2
                                 className="mb-4 text-[28px] font-bold tracking-[0.015em] text-white md:text-[32px]"
                                 style={{ wordSpacing: '0.06em' }}
                             >
                                 지금 바로 시작하세요
                             </h2>
-                            <p className="mb-10 text-[16px] text-white/60">
+                            <p className="mb-10 text-[16px] text-white/60 max-md:text-balance">
                                 사진 몇 장이면 첫 상세페이지가 나와요.
                                 <br />
                                 지금 무료로 만들어보세요.
@@ -81,7 +81,7 @@ const ContactSection = () => {
                             <Button
                                 variant="ghost"
                                 size="lg"
-                                className="mt-8 rounded-xl border-0 bg-white px-12 py-3 text-[18px] font-bold text-[#1A1A1A] shadow-lg hover:scale-105 hover:bg-white/90 hover:text-[#1A1A1A]"
+                                className="w-full rounded-xl border-0 bg-white px-12 py-3 text-[18px] font-bold text-[#1A1A1A] shadow-lg hover:scale-105 hover:bg-white/90 hover:text-[#1A1A1A] sm:w-auto md:mt-8"
                                 onClick={goToApp}
                             >
                                 무료로 시작하기
