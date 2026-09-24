@@ -105,7 +105,7 @@ const EditorPreview = () => (
 );
 
 const StepPreview = ({ index }: { index: number }) => (
-    <div aria-hidden="true" className="relative mb-5 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[12px] border border-[rgba(255,255,255,0.1)] bg-[#1F1F1F] px-3 pt-3 pb-4">
+    <div aria-hidden="true" className="relative mb-5 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[12px] border border-[rgba(255,255,255,0.1)] bg-[#1F1F1F] px-3 pt-3 pb-4 lg:min-h-[192px]">
         <div className={`flex h-full w-full overflow-hidden rounded-[8px] bg-[#F7F7F8] p-[10px] leading-[normal] opacity-[0.94] ${index === 2 ? 'flex-row items-stretch gap-2' : 'flex-col gap-[7px]'}`}>
             {index === 0 ? <UploadPreview /> : index === 1 ? <ShotPreview /> : index === 2 ? <GarmentPreview /> : <EditorPreview />}
         </div>
