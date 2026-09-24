@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { VideoContainer } from '@/components/ui/video-container';
@@ -27,18 +28,36 @@ const HeroSection = () => {
                 className="mb-6 mt-3 animate-fade-in"
                 style={{ animationDelay: '0s', animationDuration: '0.6s' }}
             >
-                <Badge variant="gradient" className="px-5 py-2.5">
+                <Badge variant="gradient" className="py-2.5 pr-5 pl-3.5">
+                    <span className="inline-flex items-center gap-1.5">
+                        <span className="sr-only">Wearless</span>
+                        <Image
+                            src="/logo.svg"
+                            alt=""
+                            width={18}
+                            height={18}
+                            className="max-w-none flex-none"
+                        />
+                        <Image
+                            src="/wordmark.svg"
+                            alt=""
+                            width={1998}
+                            height={415}
+                            className="h-[11.5px] w-auto max-w-none flex-none"
+                        />
+                    </span>
+                    <span className="h-3.5 w-px bg-[#D9D9D9]" aria-hidden="true" />
                     <span
                         className="font-bold"
                         style={{
-                            background: 'linear-gradient(to right, #12ADE6, #4C63FC, #DC4CFC)',
+                            background: 'linear-gradient(90deg, #1FA3DC, #3F7FD6, #8466DC)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                         }}
                     >
                         200+개
                     </span>
-                    쇼핑몰이 Wearless와 함께합니다.
+                    쇼핑몰이 함께합니다.
                 </Badge>
             </div>
 
@@ -52,19 +71,8 @@ const HeroSection = () => {
                     시간 쓰지 마세요.
                     <br />
                     <span className="inline-block whitespace-nowrap">
-                        쇼핑몰 대표님을 위한 AI,
+                        쇼핑몰 대표님을 위한 AI.
                     </span>
-                </span>
-                <br />
-                <span
-                    className="relative inline-block"
-                    style={{
-                        background: 'linear-gradient(135deg, #12ADE6, #4C63FC, #DC4CFC)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                    }}
-                >
-                    Wearless
                 </span>
             </h1>
 
