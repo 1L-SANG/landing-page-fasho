@@ -81,7 +81,8 @@ const HeroSection = () => {
                 className="mx-auto mb-10 max-w-[540px] text-balance text-center text-[15px] font-semibold tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:whitespace-nowrap sm:text-[18px] md:text-[20px] animate-fade-in"
                 style={{ animationDelay: '0.5s', animationDuration: '0.6s', wordSpacing: '0.05em' }}
             >
-                사진 몇 장만 올리면, 상세페이지는 AI가 완성해요.
+                상세페이지 10분이면 뚝딱. <br className="sm:hidden" />
+                지금 바로 경험해보세요.
             </p>
 
             {/* CTA + Survey Transition */}
