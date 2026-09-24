@@ -63,16 +63,13 @@ const HeroSection = () => {
 
             {/* Headline */}
             <h1
-                className="mb-6 text-center text-[32px] font-bold leading-[1.25] tracking-[0.015em] sm:text-[34px] sm:leading-[1.1] md:text-[48px] lg:text-[56px] animate-fade-in"
+                className="mb-6 text-center text-[clamp(26px,8vw,32px)] font-bold leading-[1.25] tracking-[0.015em] sm:text-[34px] sm:leading-[1.1] md:text-[48px] lg:text-[56px] animate-fade-in"
                 style={{ animationDelay: '0.2s', animationDuration: '0.6s', wordSpacing: '0.06em' }}
             >
                 <span className="text-[#1A1A1A]">
-                    상세페이지에 <br className="sm:hidden" />
-                    시간 쓰지 마세요.
+                    좋은 옷만 가져오세요.
                     <br />
-                    <span className="inline-block whitespace-nowrap">
-                        쇼핑몰 대표님을 위한 AI.
-                    </span>
+                    나머지는 Wearless에서.
                 </span>
             </h1>
 
@@ -81,8 +78,7 @@ const HeroSection = () => {
                 className="mx-auto mb-10 max-w-[540px] text-balance text-center text-[15px] font-semibold tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:whitespace-nowrap sm:text-[18px] md:text-[20px] animate-fade-in"
                 style={{ animationDelay: '0.5s', animationDuration: '0.6s', wordSpacing: '0.05em' }}
             >
-                상세페이지 10분이면 뚝딱. <br className="sm:hidden" />
-                지금 바로 경험해보세요.
+                상세페이지 전 과정, 10분이면 뚝딱.
             </p>
 
             {/* CTA + Survey Transition */}
