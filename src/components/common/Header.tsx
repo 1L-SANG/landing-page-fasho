@@ -59,7 +59,7 @@ const Header = () => {
                     <Link
                         href="/#home"
                         onClick={(event) => handleSectionClick(event, 'home')}
-                        className="flex items-center gap-2 transition-opacity hover:opacity-80"
+                        className="flex items-center gap-2 transition-opacity hover:opacity-80 max-md:h-11"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
                     >
@@ -131,7 +131,7 @@ const Header = () => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="p-2 text-[#1A1A1A] md:hidden"
+                        className="-mr-0.5 p-2.5 text-[#1A1A1A] md:hidden"
                         aria-label={mobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
                         aria-expanded={mobileMenuOpen}
                         tabIndex={0}

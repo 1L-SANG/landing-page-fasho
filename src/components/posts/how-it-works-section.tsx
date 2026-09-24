@@ -21,7 +21,7 @@ const SHOT_COLUMNS = [
 
 const UploadPreview = () => (
     <>
-        <span className="text-[9px] font-bold text-[#1A1A1A]">의류 이미지를 올려주세요</span>
+        <span className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">의류 이미지를 올려주세요</span>
         <div className="grid grid-cols-4 gap-[5px]">
             {[0, 1, 2, 3].map((slot) => (
                 <div key={slot} className={`flex aspect-square items-center justify-center rounded-[5px] border border-[#E6E6EA] ${slot < 3 ? 'bg-[#EEF0F4]' : 'border-dashed bg-white'}`}>
@@ -29,13 +29,13 @@ const UploadPreview = () => (
                 </div>
             ))}
         </div>
-        <span className="text-[9px] font-bold text-[#1A1A1A]">AI가 분석한 정보예요</span>
+        <span className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">AI가 분석한 정보예요</span>
         <div className="flex flex-wrap gap-1">
             {['니트', '레귤러 핏', '면 100%', '라운드넥'].map((chip) => (
-                <span key={chip} className="rounded-full border border-[#E3E3E8] bg-white px-[6px] py-0.5 text-[8.5px] font-semibold text-[#1A1A1A]">{chip}</span>
+                <span key={chip} className="rounded-full border border-[#E3E3E8] bg-white px-[6px] py-0.5 text-[10.5px] lg:text-[8.5px] font-semibold text-[#1A1A1A]">{chip}</span>
             ))}
         </div>
-        <div className="flex items-center gap-1 text-[8.5px] text-[#6B6B6B]">
+        <div className="flex items-center gap-1 text-[10.5px] lg:text-[8.5px] text-[#6B6B6B]">
             <span className="size-[14px] shrink-0 rounded-full bg-[#DADAE0] shadow-[0_0_0_1.5px_#1A1A1A]" />
             <span className="size-[14px] shrink-0 rounded-full bg-[#DADAE0]" />
             <span>기본 AI 모델</span>
@@ -48,7 +48,7 @@ const ShotPreview = () => (
         <div className="grid flex-1 grid-cols-4 gap-[5px]">
             {SHOT_COLUMNS.map((column) => (
                 <div key={column.title} className="flex flex-col gap-1">
-                    <b className="text-[8.5px] font-bold text-[#1A1A1A]">{column.title}</b>
+                    <b className="text-[10.5px] lg:text-[8.5px] font-bold text-[#1A1A1A]">{column.title}</b>
                     {Array.from({ length: column.count }, (_, i) => (
                         <div key={i} className="relative min-h-[18px] flex-1 overflow-hidden rounded-[4px] bg-[#E5E5EA]">
                             {i === 0 && column.image && (
@@ -59,7 +59,7 @@ const ShotPreview = () => (
                 </div>
             ))}
         </div>
-        <div className="flex justify-between rounded-[5px] bg-white px-[6px] py-1 text-[8.5px] text-[#6B6B6B]">
+        <div className="flex justify-between rounded-[5px] bg-white px-[6px] py-1 text-[10.5px] lg:text-[8.5px] text-[#6B6B6B]">
             <span>13컷</span><span>카피라이팅 켜짐</span>
         </div>
     </>
@@ -73,28 +73,28 @@ const GarmentPreview = () => (
             <span className="absolute top-[62%] left-[40%] size-[11px] rounded-full bg-white shadow-[0_0_0_3px_rgba(47,128,237,0.35)]" />
         </div>
         <div className="flex flex-1 flex-col justify-center gap-[5px]">
-            <b className="text-[9px] font-bold text-[#1A1A1A]">핏</b>
+            <b className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">핏</b>
             <div className="flex gap-[3px]">
                 {['슬림', '레귤러', '오버'].map((fit) => (
-                    <span key={fit} className={`flex-1 rounded-[4px] border bg-white py-[3px] text-center text-[8px] ${fit === '레귤러' ? 'border-[#1A1A1A] font-bold text-[#1A1A1A]' : 'border-[#E3E3E8] text-[#6B6B6B]'}`}>{fit}</span>
+                    <span key={fit} className={`flex-1 rounded-[4px] border bg-white py-[3px] text-center text-[10px] lg:text-[8px] ${fit === '레귤러' ? 'border-[#1A1A1A] font-bold text-[#1A1A1A]' : 'border-[#E3E3E8] text-[#6B6B6B]'}`}>{fit}</span>
                 ))}
             </div>
-            <b className="text-[9px] font-bold text-[#1A1A1A]">색감</b>
+            <b className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">색감</b>
             <div className="relative mx-0.5 mt-1 mb-[6px] h-[3px] rounded-[3px] bg-[#DCDCE2]">
                 <span className="absolute top-1/2 left-[38%] size-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <div className="mt-[3px] rounded-full bg-[#1A1A1A] py-1 text-center text-[8.5px] font-bold text-white">이대로 진행</div>
+            <div className="mt-[3px] rounded-full bg-[#1A1A1A] py-1 text-center text-[10.5px] lg:text-[8.5px] font-bold text-white">이대로 진행</div>
         </div>
     </>
 );
 
 const EditorPreview = () => (
     <>
-        <div className="flex justify-end gap-1 text-[8.5px] font-bold">
+        <div className="flex justify-end gap-1 text-[10.5px] lg:text-[8.5px] font-bold">
             <span className="rounded-full border border-[#E3E3E8] bg-white px-2 py-[3px] text-[#1A1A1A]">미리보기</span>
             <span className="rounded-full bg-[#1A1A1A] px-2 py-[3px] text-white">다운로드</span>
         </div>
-        <div className="rounded-[5px] border border-[#dce7f6] bg-[#eef5ff] px-[6px] py-1 text-[8.5px] leading-[1.4] text-[#3068b4]">지금도 문구와 배치를 고칠 수 있어요. 창을 닫아도 계속 만들어져요.</div>
+        <div className="rounded-[5px] border border-[#dce7f6] bg-[#eef5ff] px-[6px] py-1 text-[10.5px] lg:text-[8.5px] leading-[1.4] text-[#3068b4]">지금도 문구와 배치를 고칠 수 있어요. 창을 닫아도 계속 만들어져요.</div>
         <div className="grid flex-1 grid-cols-2 gap-1">
             <div className="rounded-[4px] bg-[#E5E5EA]" />
             <div className="rounded-[4px] border border-dashed border-[#B9C9E6] bg-white" />
@@ -129,7 +129,7 @@ const HowItWorksSection = () => {
 
     return (
         <section
-            className="relative z-20 overflow-visible px-6 py-24 break-keep [overflow-wrap:break-word] md:py-32"
+            className="relative z-20 overflow-visible px-6 py-16 sm:py-24 break-keep [overflow-wrap:break-word] md:py-32"
             ref={sectionRef}
             style={{
                 backgroundColor: 'rgba(245, 245, 247, 0.6)',
@@ -140,9 +140,8 @@ const HowItWorksSection = () => {
             <div className="mx-auto max-w-[1100px]">
                 <SectionHeader
                     label="HOW IT WORKS"
-                    title="쉬운 사용법, 네 단계로 만들어요"
+                    title={"쉬운 사용법, 네\u00A0단계로 만들어요"}
                     subtitle="AI가 먼저 만들어 두면, 대표님은 고르고 확인하면 돼요."
-                    className="[&>h2]:leading-[1.25] [&>p]:leading-[1.6] max-[640px]:[&>p]:text-[16px]"
                 />
 
                 <div className="relative overflow-visible grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -162,7 +161,7 @@ const HowItWorksSection = () => {
                                         <StepPreview index={i} />
                                         <div className="px-3">
                                             <h3 className="mb-3 text-[18px] leading-[1.4] font-bold text-white">{step.title}</h3>
-                                            <p className="max-w-[17em] text-[14px] leading-[1.65] text-[#CCC]">
+                                            <p className="lg:max-w-[17em] text-[15px] lg:text-[14px] leading-[1.65] text-[#CCC]">
                                                 {step.description}
                                             </p>
                                         </div>

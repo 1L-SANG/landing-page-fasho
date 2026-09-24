@@ -23,7 +23,7 @@ const FAQ_ITEMS: AccordionItem[] = [
 const FAQSection = () => {
     return (
         <section
-            className="px-6 py-24 md:py-32"
+            className="px-6 py-16 sm:py-24 md:py-32"
             style={{
                 backgroundColor: 'rgba(250, 250, 250, 0.6)',
                 backdropFilter: 'blur(30px)',

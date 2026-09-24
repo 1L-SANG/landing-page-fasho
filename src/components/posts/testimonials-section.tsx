@@ -52,7 +52,7 @@ const TestimonialCard = ({
             style={{ transitionDelay: `${delay}ms` }}
         >
             <GradientBorderContainer innerClassName="bg-white w-full h-full flex">
-                <div className="flex h-full flex-col p-8 transition-transform hover:-translate-y-1">
+                <div className="flex h-full flex-col p-6 md:p-8 transition-transform hover:-translate-y-1">
                     {/* Stars */}
                     <div className="mb-5 flex gap-1">
                         {[...Array(5)].map((_, i) => (
@@ -61,7 +61,7 @@ const TestimonialCard = ({
                     </div>
 
                     {/* Quote */}
-                    <p className="mb-2 min-h-[150px] md:min-h-[170px] whitespace-pre-line text-[18px] font-medium leading-[1.7] text-[#1A1A1A]">
+                    <p className="mb-6 text-[16px] leading-[1.65] md:mb-2 md:min-h-[170px] whitespace-pre-line md:text-[18px] font-medium md:leading-[1.7] text-[#1A1A1A]">
                         &ldquo;{testimonial.quote}&rdquo;
                     </p>
 
@@ -85,7 +85,7 @@ const TestimonialCard = ({
 const TestimonialsSection = () => {
     return (
         <section
-            className="px-6 py-24 md:py-32"
+            className="px-6 py-16 sm:py-24 md:py-32"
             style={{
                 backgroundColor: 'rgba(245, 245, 247, 0.6)',
                 backdropFilter: 'blur(30px)',

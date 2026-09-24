@@ -49,16 +49,16 @@ const GarmentPreview = ({ isVisible }: { isVisible: boolean }) => (
         </div>
         <ul className="flex flex-col gap-[7px]">
             {GARMENT_CHECKS.map((item, i) => (
-                <li key={item.title} className="flex items-start gap-[9px] rounded-[10px] bg-white px-[10px] py-2">
+                <li key={item.title} className="flex items-start gap-[9px] rounded-[10px] bg-white px-3 py-2.5 lg:px-[10px] lg:py-2">
                     <span
-                        className={`mt-px inline-flex size-[18px] shrink-0 items-center justify-center rounded-full bg-[#2F80ED] [transition:scale_.38s_cubic-bezier(.34,1.56,.64,1),opacity_.2s] motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
+                        className={`mt-px inline-flex size-5 lg:size-[18px] shrink-0 items-center justify-center rounded-full bg-[#2F80ED] [transition:scale_.38s_cubic-bezier(.34,1.56,.64,1),opacity_.2s] motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
                         style={{ transitionDelay: `${900 + i * 250}ms` }}
                     >
                         <Check size={11} strokeWidth={3} className="text-white" />
                     </span>
                     <div>
-                        <b className="block text-[12.5px] leading-[1.35] font-bold text-[#1A1A1A]">{item.title}</b>
-                        <small className="mt-px block text-[11px] leading-[1.35] text-[#9E9E9E]">{item.description}</small>
+                        <b className="block text-[14px] lg:text-[12.5px] leading-[1.35] font-bold text-[#1A1A1A]">{item.title}</b>
+                        <small className="mt-px block text-[12px] lg:text-[11px] leading-[1.35] text-[#9E9E9E]">{item.description}</small>
                     </div>
                 </li>
             ))}
@@ -80,29 +80,29 @@ const ColorPreview = () => (
                             className="object-cover"
                         />
                     </div>
-                    <figcaption className="mt-[6px] flex items-center justify-center gap-1 text-[10.5px] font-semibold whitespace-nowrap text-[#6B6B6B]">
+                    <figcaption className="mt-[6px] flex items-center justify-center gap-1 text-[12px] lg:text-[10.5px] font-semibold whitespace-nowrap text-[#6B6B6B]">
                         <span className="size-2 shrink-0 rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]" style={{ backgroundColor: color.color }} />
                         {color.label}
                     </figcaption>
                 </figure>
             ))}
         </div>
-        <div className="mt-[10px] text-center text-[12px] font-semibold text-[#3A3A3A]">색상 4개, 상세페이지 1개</div>
+        <div className="mt-[10px] text-center text-[13px] lg:text-[12px] font-semibold text-[#3A3A3A]">색상 4개, 상세페이지 1개</div>
     </>
 );
 
 const CopyPreview = ({ isVisible }: { isVisible: boolean }) => (
     <>
-        <div className="mb-[14px] flex flex-wrap gap-[6px] text-[11.5px] font-semibold text-[#1A1A1A]">
+        <div className="mb-[14px] flex flex-wrap gap-[6px] text-[12.5px] lg:text-[11.5px] font-semibold text-[#1A1A1A]">
             <span className="py-1 pr-[10px] text-[#9E9E9E]">확인한 정보</span>
             <span className="rounded-full bg-white px-[10px] py-1">소재 면 100%</span>
             <span className="rounded-full bg-white px-[10px] py-1">라운드넥</span>
         </div>
-        <div className="relative rounded-[10px] bg-white px-3 py-[10px] text-[13.5px] leading-[1.45] text-[#9E9E9E]">
+        <div className="relative rounded-[10px] bg-white px-3 py-[10px] text-[14.5px] lg:text-[13.5px] leading-[1.45] text-[#9E9E9E]">
             비 오는 날에도 끄떡없는 방수 소재
             <span className={`absolute top-1/2 left-3 h-[1.5px] bg-[#E0527A] transition-[width] duration-[600ms] ease-[ease] motion-reduce:w-[calc(100%-24px)] motion-reduce:transition-none ${isVisible ? 'w-[calc(100%-24px)]' : 'w-0'}`} style={{ transitionDelay: '1140ms' }} />
         </div>
-        <div className={`mt-2 rounded-[10px] bg-white px-3 py-[10px] text-[13.5px] leading-[1.45] font-semibold text-[#1A1A1A] transition-[opacity,translate] duration-[400ms] ease-[ease] motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'}`} style={{ transitionDelay: '1840ms' }}>
+        <div className={`mt-2 rounded-[10px] bg-white px-3 py-[10px] text-[14.5px] lg:text-[13.5px] leading-[1.45] font-semibold text-[#1A1A1A] transition-[opacity,translate] duration-[400ms] ease-[ease] motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'}`} style={{ transitionDelay: '1840ms' }}>
             면 100%라 피부에 부드럽게 닿아요
         </div>
     </>
@@ -132,14 +132,13 @@ const FeaturesSection = () => {
         <section
             id="features"
             ref={sectionRef}
-            className="relative border-t border-[rgba(235,230,220,0.5)] bg-[rgba(255,255,255,0.5)] px-6 py-24 break-keep [overflow-wrap:break-word] backdrop-blur-[30px] md:py-32"
+            className="relative border-t border-[rgba(235,230,220,0.5)] bg-[rgba(255,255,255,0.5)] px-6 py-16 sm:py-24 break-keep [overflow-wrap:break-word] backdrop-blur-[30px] md:py-32"
         >
             <div className="mx-auto max-w-[1100px]">
                 <SectionHeader
                     label="MADE FOR FASHION"
                     title="의류 쇼핑몰에 최적화된 이유"
                     subtitle="옷은 실제처럼, 색상은 한 번에, 문구는 사실대로."
-                    className="[&>h2]:leading-[1.25] [&>p]:leading-[1.6] max-[640px]:[&>p]:text-[16px]"
                 />
                 <div className="mx-auto grid max-w-[560px] grid-cols-1 gap-5 lg:max-w-none lg:grid-cols-3 lg:gap-6">
                     {FEATURES.map((feature, i) => (
@@ -167,10 +166,10 @@ const FeaturesSection = () => {
                     ))}
                 </div>
                 <div className="mx-auto mt-7 flex max-w-[560px] items-center justify-between gap-4 rounded-[16px] border-[1.5px] border-[rgba(34,42,53,0.12)] bg-white px-[22px] py-4 shadow-[0_4px_8px_rgba(34,42,53,0.05)] max-[640px]:flex-col max-[640px]:items-start lg:max-w-none">
-                    <p className="text-[14.5px] leading-[1.55] text-[#6B6B6B]">
+                    <p className="text-[15px] lg:text-[14.5px] leading-[1.55] text-[#6B6B6B]">
                         <b className="font-bold text-[#1A1A1A]">사람 모델이 필요하면,</b>{' '}사용에 동의하고 라이선스를 받은 실제 모델도 고를 수 있어요. 별도 라이선스 요금이 있어요.
                     </p>
-                    <a href="https://facemarket.wearless.kr" target="_blank" rel="noopener noreferrer" className="shrink-0 text-[14px] font-semibold text-[#1A1A1A] underline underline-offset-4">
+                    <a href="https://facemarket.wearless.kr" target="_blank" rel="noopener noreferrer" className="max-md:inline-block max-md:py-3 max-md:-my-3 shrink-0 text-[14px] font-semibold text-[#1A1A1A] underline underline-offset-4">
                         FaceMarket 알아보기
                     </a>
                 </div>

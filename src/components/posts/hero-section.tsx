@@ -20,7 +20,7 @@ const HeroSection = () => {
     return (
         <section
             id="home"
-            className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 pb-12 pt-[72px]"
+            className="relative z-10 flex flex-col items-center justify-center px-4 pb-12 pt-[88px] sm:min-h-screen sm:px-6 sm:pt-[72px]"
         >
             {/* Stats Badge */}
             <div
@@ -44,11 +44,12 @@ const HeroSection = () => {
 
             {/* Headline */}
             <h1
-                className="mb-6 text-center text-[32px] font-bold leading-[1.1] tracking-[0.015em] sm:text-[34px] md:text-[48px] lg:text-[56px] animate-fade-in"
+                className="mb-6 text-center text-[32px] font-bold leading-[1.25] tracking-[0.015em] sm:text-[34px] sm:leading-[1.1] md:text-[48px] lg:text-[56px] animate-fade-in"
                 style={{ animationDelay: '0.2s', animationDuration: '0.6s', wordSpacing: '0.06em' }}
             >
                 <span className="text-[#1A1A1A]">
-                    상세페이지에 시간 쓰지 마세요.
+                    상세페이지에 <br className="sm:hidden" />
+                    시간 쓰지 마세요.
                     <br />
                     <span className="inline-block whitespace-nowrap">
                         쇼핑몰 대표님을 위한 AI,
@@ -69,7 +70,7 @@ const HeroSection = () => {
 
             {/* Sub-headline */}
             <p
-                className="mx-auto mb-10 max-w-[540px] whitespace-nowrap text-center text-[15px] max-[390px]:text-[14px] max-[360px]:text-[13px] font-semibold tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:text-[18px] md:text-[20px] animate-fade-in"
+                className="mx-auto mb-10 max-w-[540px] text-balance text-center text-[15px] font-semibold tracking-[0.01em] leading-[1.6] text-[#3A3A3A] sm:whitespace-nowrap sm:text-[18px] md:text-[20px] animate-fade-in"
                 style={{ animationDelay: '0.5s', animationDuration: '0.6s', wordSpacing: '0.05em' }}
             >
                 사진 몇 장만 올리면, 상세페이지는 AI가 완성해요.

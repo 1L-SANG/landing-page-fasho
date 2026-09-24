@@ -168,6 +168,31 @@ body {
   white-space: pre-line;
 }
 
+/* --- 모바일 한국어 줄바꿈 (768px 미만) ---
+ * 띄어쓰기 단위로만 줄을 바꾸고, 칸보다 긴 한 단어(메일 주소 등)만 예외로 끊는다.
+ * 제목은 줄 길이를 고르게 나누고, 문단은 마지막 줄에 한 단어만 남지 않게 한다.
+ * base 레이어에 두어 컴포넌트의 Tailwind 유틸리티가 항상 이기게 한다. */
+@layer base {
+  @media (width < 48rem) {
+    body {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      text-wrap-style: balance;
+    }
+
+    p,
+    li {
+      text-wrap-style: pretty;
+    }
+  }
+}
+
 /* --- Whitespace Exception: opt-out class for elements that should NOT preserve \n --- */
 .whitespace-normal {
   white-space: normal !important;

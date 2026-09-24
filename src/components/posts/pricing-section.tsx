@@ -110,12 +110,12 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                 <p className="mb-1 text-[13px] font-medium text-[#9E9E9E]">{plan.billing}</p>
 
                 {/* Plan Name */}
-                <p className="mb-4 text-[26px] font-extrabold tracking-[-0.02em] text-[#1A1A1A]">
+                <p className="mb-4 text-[26px] font-extrabold tracking-[-0.02em] text-[#1A1A1A] max-md:mb-3 max-md:leading-[1.25]">
                     {plan.name}
                 </p>
 
                 {/* Price */}
-                <div>
+                <div className="max-md:leading-[1.2]">
                     <span className="text-[36px] font-extrabold text-[#1A1A1A]">{plan.price}</span>
                     {plan.priceSuffix && (
                         <span className="text-[16px] text-[#9E9E9E]"> {plan.priceSuffix}</span>
@@ -123,7 +123,7 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                 </div>
 
                 {/* 스튜디오와 동일하게 총 크레딧 오른쪽 위에 증정 태그를 표시한다. */}
-                <div className="relative my-6 border-y border-[rgba(34,42,53,0.08)] pb-6 pt-[52px]">
+                <div className={`relative my-6 border-y border-[rgba(34,42,53,0.08)] pb-6 pt-[52px] ${plan.bonusNote ? '' : 'max-md:pt-6'}`}>
                   <div className="flex items-baseline gap-2 whitespace-nowrap text-[24px] font-extrabold tracking-[-0.02em] text-[#1A1A1A]">
                     {plan.baseCredits && (
                         <>
@@ -179,7 +179,7 @@ const PricingSection = () => {
     return (
         <section
             id="pricing"
-            className="px-6 py-24 md:py-32"
+            className="px-6 py-16 sm:py-24 md:py-32"
             style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 backdropFilter: 'blur(30px)',
@@ -200,7 +200,7 @@ const PricingSection = () => {
                 </div>
                 <p className="mt-6 text-center text-[14px] text-[#6B6B6B]">
                     해지 전까지 매월 자동으로 결제돼요.{' '}
-                    <Link href="/refund" className="underline underline-offset-4">환불 및 크레딧 이용조건</Link>
+                    <Link href="/refund" className="whitespace-nowrap underline underline-offset-4">환불 및 크레딧 이용조건</Link>
                 </p>
             </div>
         </section>

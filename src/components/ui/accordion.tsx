@@ -29,12 +29,12 @@ const Accordion = ({ items, className = '' }: AccordionProps) => {
                 >
                     <button
                         onClick={() => handleToggle(index)}
-                        className="flex w-full items-center justify-between px-7 py-6 text-left transition-colors hover:bg-[#FAFAFA]"
+                        className="flex w-full items-center justify-between px-5 py-5 text-left transition-colors hover:bg-[#FAFAFA] md:px-7 md:py-6"
                         aria-expanded={openIndex === index}
                         aria-controls={`accordion-content-${index}`}
                         tabIndex={0}
                     >
-                        <span className="pr-4 text-[16px] font-semibold text-[#1A1A1A] md:text-[18px]">
+                        <span className="pr-4 text-[16px] font-semibold text-[#1A1A1A] max-md:text-balance md:text-[18px]">
                             {item.question}
                         </span>
                         <Plus
@@ -53,7 +53,7 @@ const Accordion = ({ items, className = '' }: AccordionProps) => {
                                 : 'max-h-0 opacity-0'
                             }`}
                     >
-                        <div className="border-t border-[#F0F0F0] px-7 pb-6 pt-0">
+                        <div className="border-t border-[#F0F0F0] px-5 pb-5 pt-0 md:px-7 md:pb-6">
                             <p className="mt-4 text-[16px] leading-[1.7] text-[#6B6B6B]">
                                 {item.answer}
                             </p>
