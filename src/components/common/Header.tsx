@@ -59,7 +59,7 @@ const Header = () => {
                     <Link
                         href="/#home"
                         onClick={(event) => handleSectionClick(event, 'home')}
-                        className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80 max-md:gap-2"
+                        className="flex min-h-11 shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80 max-md:gap-2"
                         aria-label="Wearless 홈, 맨 위로 이동"
                         tabIndex={0}
                     >
