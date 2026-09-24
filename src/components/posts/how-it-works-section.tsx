@@ -21,7 +21,7 @@ const SHOT_COLUMNS = [
 
 const UploadPreview = () => (
     <>
-        <span className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">의류 이미지를 올려주세요</span>
+        <span className="text-[11px] lg:text-[9px] xl:text-[11px] font-bold text-[#1A1A1A]">의류 이미지를 올려주세요</span>
         <div className="grid grid-cols-4 gap-[5px]">
             {[0, 1, 2, 3].map((slot) => (
                 <div key={slot} className={`flex aspect-square items-center justify-center rounded-[5px] border border-[#E6E6EA] ${slot < 3 ? 'bg-[#EEF0F4]' : 'border-dashed bg-white'}`}>
@@ -29,13 +29,13 @@ const UploadPreview = () => (
                 </div>
             ))}
         </div>
-        <span className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">AI가 분석한 정보예요</span>
+        <span className="text-[11px] lg:text-[9px] xl:text-[11px] font-bold text-[#1A1A1A]">AI가 분석한 정보예요</span>
         <div className="flex flex-wrap gap-1">
             {['니트', '레귤러 핏', '면 100%', '라운드넥'].map((chip) => (
-                <span key={chip} className="rounded-full border border-[#E3E3E8] bg-white px-[6px] py-0.5 text-[10.5px] lg:text-[8.5px] font-semibold text-[#1A1A1A]">{chip}</span>
+                <span key={chip} className="rounded-full border border-[#E3E3E8] bg-white px-[6px] py-0.5 text-[10.5px] lg:text-[8.5px] xl:text-[10.5px] font-semibold text-[#1A1A1A]">{chip}</span>
             ))}
         </div>
-        <div className="flex items-center gap-1 text-[10.5px] lg:text-[8.5px] text-[#6B6B6B]">
+        <div className="flex items-center gap-1 text-[10.5px] lg:text-[8.5px] xl:text-[10.5px] text-[#6B6B6B]">
             <span className="size-[14px] shrink-0 rounded-full bg-[#DADAE0] shadow-[0_0_0_1.5px_#1A1A1A]" />
             <span className="size-[14px] shrink-0 rounded-full bg-[#DADAE0]" />
             <span>기본 AI 모델</span>
@@ -48,7 +48,7 @@ const ShotPreview = () => (
         <div className="grid flex-1 grid-cols-4 gap-[5px]">
             {SHOT_COLUMNS.map((column) => (
                 <div key={column.title} className="flex flex-col gap-1">
-                    <b className="text-[10.5px] lg:text-[8.5px] font-bold text-[#1A1A1A]">{column.title}</b>
+                    <b className="text-[10.5px] lg:text-[8.5px] xl:text-[10.5px] font-bold text-[#1A1A1A]">{column.title}</b>
                     {Array.from({ length: column.count }, (_, i) => (
                         <div key={i} className="relative min-h-[18px] flex-1 overflow-hidden rounded-[4px] bg-[#E5E5EA]">
                             {i === 0 && column.image && (
@@ -59,7 +59,7 @@ const ShotPreview = () => (
                 </div>
             ))}
         </div>
-        <div className="flex justify-between rounded-[5px] bg-white px-[6px] py-1 text-[10.5px] lg:text-[8.5px] text-[#6B6B6B]">
+        <div className="flex justify-between rounded-[5px] bg-white px-[6px] py-1 text-[10.5px] lg:text-[8.5px] xl:text-[10.5px] text-[#6B6B6B]">
             <span>13컷</span><span>카피라이팅 켜짐</span>
         </div>
     </>
@@ -73,28 +73,28 @@ const GarmentPreview = () => (
             <span className="absolute top-[62%] left-[40%] size-[11px] rounded-full bg-white shadow-[0_0_0_3px_rgba(47,128,237,0.35)]" />
         </div>
         <div className="flex flex-1 flex-col justify-center gap-[5px]">
-            <b className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">핏</b>
+            <b className="text-[11px] lg:text-[9px] xl:text-[11px] font-bold text-[#1A1A1A]">핏</b>
             <div className="flex gap-[3px]">
                 {['슬림', '레귤러', '오버'].map((fit) => (
-                    <span key={fit} className={`flex-1 rounded-[4px] border bg-white py-[3px] text-center text-[10px] lg:text-[8px] ${fit === '레귤러' ? 'border-[#1A1A1A] font-bold text-[#1A1A1A]' : 'border-[#E3E3E8] text-[#6B6B6B]'}`}>{fit}</span>
+                    <span key={fit} className={`flex-1 rounded-[4px] border bg-white py-[3px] text-center text-[10px] lg:text-[8px] xl:text-[10px] ${fit === '레귤러' ? 'border-[#1A1A1A] font-bold text-[#1A1A1A]' : 'border-[#E3E3E8] text-[#6B6B6B]'}`}>{fit}</span>
                 ))}
             </div>
-            <b className="text-[11px] lg:text-[9px] font-bold text-[#1A1A1A]">색감</b>
+            <b className="text-[11px] lg:text-[9px] xl:text-[11px] font-bold text-[#1A1A1A]">색감</b>
             <div className="relative mx-0.5 mt-1 mb-[6px] h-[3px] rounded-[3px] bg-[#DCDCE2]">
                 <span className="absolute top-1/2 left-[38%] size-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.3)]" />
             </div>
-            <div className="mt-[3px] rounded-full bg-[#1A1A1A] py-1 text-center text-[10.5px] lg:text-[8.5px] font-bold text-white">이대로 진행</div>
+            <div className="mt-[3px] rounded-full bg-[#1A1A1A] py-1 text-center text-[10.5px] lg:text-[8.5px] xl:text-[10.5px] font-bold text-white">이대로 진행</div>
         </div>
     </>
 );
 
 const EditorPreview = () => (
     <>
-        <div className="flex justify-end gap-1 text-[10.5px] lg:text-[8.5px] font-bold">
+        <div className="flex justify-end gap-1 text-[10.5px] lg:text-[8.5px] xl:text-[10.5px] font-bold">
             <span className="rounded-full border border-[#E3E3E8] bg-white px-2 py-[3px] text-[#1A1A1A]">미리보기</span>
             <span className="rounded-full bg-[#1A1A1A] px-2 py-[3px] text-white">다운로드</span>
         </div>
-        <div className="rounded-[5px] border border-[#dce7f6] bg-[#eef5ff] px-[6px] py-1 text-[10.5px] lg:text-[8.5px] leading-[1.4] text-[#3068b4]">지금도 문구와 배치를 고칠 수 있어요. 창을 닫아도 계속 만들어져요.</div>
+        <div className="rounded-[5px] border border-[#dce7f6] bg-[#eef5ff] px-[6px] py-1 text-[10.5px] lg:text-[8.5px] xl:text-[10.5px] leading-[1.4] text-[#3068b4]">지금도 문구와 배치를 고칠 수 있어요. 창을 닫아도 계속 만들어져요.</div>
         <div className="grid flex-1 grid-cols-2 gap-1">
             <div className="rounded-[4px] bg-[#E5E5EA]" />
             <div className="rounded-[4px] border border-dashed border-[#B9C9E6] bg-white" />
@@ -105,7 +105,7 @@ const EditorPreview = () => (
 );
 
 const StepPreview = ({ index }: { index: number }) => (
-    <div aria-hidden="true" className="relative mb-5 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[12px] border border-[rgba(255,255,255,0.1)] bg-[#1F1F1F] px-3 pt-3 pb-4 lg:min-h-[192px]">
+    <div aria-hidden="true" className="relative mb-5 xl:mb-6 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[12px] border border-[rgba(255,255,255,0.1)] bg-[#1F1F1F] px-3 pt-3 pb-4 lg:min-h-[192px]">
         <div className={`flex h-full w-full overflow-hidden rounded-[8px] bg-[#F7F7F8] p-[10px] leading-[normal] opacity-[0.94] ${index === 2 ? 'flex-row items-stretch gap-2' : 'flex-col gap-[7px]'}`}>
             {index === 0 ? <UploadPreview /> : index === 1 ? <ShotPreview /> : index === 2 ? <GarmentPreview /> : <EditorPreview />}
         </div>
@@ -137,7 +137,7 @@ const HowItWorksSection = () => {
                 borderTop: '1px solid rgba(235, 230, 220, 0.5)',
             }}
         >
-            <div className="mx-auto max-w-[1100px]">
+            <div className="mx-auto max-w-[1100px] xl:max-w-[1280px]">
                 <SectionHeader
                     label="HOW IT WORKS"
                     title={"쉬운 사용법, 네\u00A0단계로 만들어요"}
@@ -157,11 +157,11 @@ const HowItWorksSection = () => {
                                     className="h-full rounded-[20px] p-[1px]"
                                     style={{ background: 'linear-gradient(to bottom right, #444, #333, #2A2A2A)' }}
                                 >
-                                    <div className="flex h-full flex-col rounded-[20px] bg-[#2A2A2A] px-4 pt-4 pb-7">
+                                    <div className="flex h-full flex-col rounded-[20px] bg-[#2A2A2A] px-4 pt-4 pb-7 xl:px-5 xl:pt-5 xl:pb-8">
                                         <StepPreview index={i} />
                                         <div className="px-3">
-                                            <h3 className="mb-3 text-[18px] leading-[1.4] font-bold text-white">{step.title}</h3>
-                                            <p className="lg:max-w-[17em] text-[15px] lg:text-[14px] leading-[1.65] text-[#CCC]">
+                                            <h3 className="mb-3 text-[18px] xl:text-[20px] leading-[1.4] font-bold text-white">{step.title}</h3>
+                                            <p className="lg:max-w-[17em] xl:max-w-none text-[15px] lg:text-[14.5px] xl:text-[16px] leading-[1.65] text-[#CCC]">
                                                 {step.description}
                                             </p>
                                         </div>
