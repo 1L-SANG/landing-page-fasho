@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,9 +10,17 @@ import { goToApp } from '@/lib/app-url';
 
 const HERO_VIDEO_URL = '/video/optimized/wearless-1080.mp4';
 const HERO_VIDEO_POSTER_URL = '/video/optimized/wearless-poster.jpg';
+const STATS_BADGE_RESTORE_AT = new Date('2026-09-27T16:00:00Z').getTime();
 
 const HeroSection = () => {
     const [isSurveyOpen, setIsSurveyOpen] = useState(false);
+    const [isStatsBadgeVisible, setIsStatsBadgeVisible] = useState(false);
+
+    useEffect(() => {
+        const delay = Math.max(0, STATS_BADGE_RESTORE_AT - Date.now());
+        const timeout = window.setTimeout(() => setIsStatsBadgeVisible(true), delay);
+        return () => window.clearTimeout(timeout);
+    }, []);
 
     const handleCloseSurvey = () => {
         setIsSurveyOpen(false);
@@ -24,42 +32,44 @@ const HeroSection = () => {
             className="relative z-10 flex flex-col items-center justify-center px-4 pb-12 pt-[calc(var(--site-nav-height)+20px)] sm:min-h-screen sm:px-6 sm:pt-[var(--site-nav-height)]"
         >
             {/* Stats Badge */}
-            <div
-                className="mb-6 mt-3 animate-fade-in"
-                style={{ animationDelay: '0s', animationDuration: '0.6s' }}
-            >
-                <Badge variant="gradient" className="py-2.5 pr-5 pl-3.5">
-                    <span className="inline-flex items-center gap-1.5">
-                        <span className="sr-only">Wearless</span>
-                        <Image
-                            src="/logo.svg"
-                            alt=""
-                            width={18}
-                            height={18}
-                            className="max-w-none flex-none"
-                        />
-                        <Image
-                            src="/wordmark.svg"
-                            alt=""
-                            width={1998}
-                            height={415}
-                            className="h-[11.5px] w-auto max-w-none flex-none"
-                        />
-                    </span>
-                    <span className="h-3.5 w-px bg-[#D9D9D9]" aria-hidden="true" />
-                    <span
-                        className="font-bold"
-                        style={{
-                            background: 'linear-gradient(90deg, #1FA3DC, #3F7FD6, #8466DC)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                        }}
-                    >
-                        200+개
-                    </span>
-                    쇼핑몰이 함께합니다.
-                </Badge>
-            </div>
+            {isStatsBadgeVisible && (
+                <div
+                    className="mb-6 mt-3 animate-fade-in"
+                    style={{ animationDelay: '0s', animationDuration: '0.6s' }}
+                >
+                    <Badge variant="gradient" className="py-2.5 pr-5 pl-3.5">
+                        <span className="inline-flex items-center gap-1.5">
+                            <span className="sr-only">Wearless</span>
+                            <Image
+                                src="/logo.svg"
+                                alt=""
+                                width={18}
+                                height={18}
+                                className="max-w-none flex-none"
+                            />
+                            <Image
+                                src="/wordmark.svg"
+                                alt=""
+                                width={1998}
+                                height={415}
+                                className="h-[11.5px] w-auto max-w-none flex-none"
+                            />
+                        </span>
+                        <span className="h-3.5 w-px bg-[#D9D9D9]" aria-hidden="true" />
+                        <span
+                            className="font-bold"
+                            style={{
+                                background: 'linear-gradient(90deg, #1FA3DC, #3F7FD6, #8466DC)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                            }}
+                        >
+                            200+개
+                        </span>
+                        쇼핑몰이 함께합니다.
+                    </Badge>
+                </div>
+            )}
 
             {/* Headline */}
             <h1
