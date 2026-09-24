@@ -210,6 +210,16 @@ body {
   }
 }
 
+/* 사파리 계열(WebKit, 아이폰의 모든 브라우저 포함)은 줄 길이 고르게(balance)를 한국어 단어 단위 줄바꿈과
+ * 함께 쓰면 강제 줄바꿈으로 나눈 줄을 다시 쪼개거나 단어 안에서 끊는다(2026-09-24 확인).
+ * WebKit 에서만 줄바꿈 방식을 기본값으로 되돌린다. 단어 단위 줄바꿈(keep-all)은 그대로 둔다.
+ * 레이어 밖 !important 라 컴포넌트의 text-balance 유틸리티까지 덮는다. */
+@supports (font: -apple-system-body) {
+  * {
+    text-wrap-style: auto !important;
+  }
+}
+
 /* --- Whitespace Exception: opt-out class for elements that should NOT preserve \n --- */
 .whitespace-normal {
   white-space: normal !important;
