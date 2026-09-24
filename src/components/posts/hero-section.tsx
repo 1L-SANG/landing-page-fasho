@@ -20,7 +20,7 @@ const HeroSection = () => {
     return (
         <section
             id="home"
-            className="relative z-10 flex flex-col items-center justify-center px-4 pb-12 pt-[88px] sm:min-h-screen sm:px-6 sm:pt-[72px]"
+            className="relative z-10 flex flex-col items-center justify-center px-4 pb-12 pt-[calc(var(--site-nav-height)+20px)] sm:min-h-screen sm:px-6 sm:pt-[var(--site-nav-height)]"
         >
             {/* Stats Badge */}
             <div
