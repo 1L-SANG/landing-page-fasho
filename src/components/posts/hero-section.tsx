@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { VideoContainer } from '@/components/ui/video-container';
@@ -105,7 +106,7 @@ const HeroSection = () => {
                 >
                     <div className="overflow-hidden">
                         <div
-                            className="flex justify-center pb-2 transition-all duration-[650ms]"
+                            className="flex flex-col items-center justify-center pb-2 transition-all duration-[650ms]"
                             style={{
                                 transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
                                 opacity: isSurveyOpen ? 0 : 1,
@@ -123,6 +124,37 @@ const HeroSection = () => {
                             >
                                 지금 시작하기
                             </Button>
+                            <div className="mt-4 text-center">
+                                <span className="sr-only">의류 쇼핑몰 대표님들 평균 만족도 5점 만점에 4.9점</span>
+                                <div className="flex items-center justify-center gap-2" aria-hidden="true">
+                                    <div className="flex items-center">
+                                        {['/teenz-logo.png', '/eko-logo.png', '/oac-logo.png'].map((logo) => (
+                                            <Image
+                                                key={logo}
+                                                src={logo}
+                                                alt=""
+                                                width={24}
+                                                height={24}
+                                                className="-ml-1.5 h-6 w-6 rounded-full object-cover ring-2 ring-white first:ml-0"
+                                            />
+                                        ))}
+                                    </div>
+                                    <div className="flex items-center gap-px">
+                                        {[0, 1, 2, 3].map((star) => (
+                                            <Star key={star} size={15} className="fill-[#FFB800] text-[#FFB800]" />
+                                        ))}
+                                        <span className="relative h-[15px] w-[15px]">
+                                            <Star size={15} className="fill-[#E3E3E3] text-[#E3E3E3]" />
+                                            <span className="absolute inset-y-0 left-0 w-[90%] overflow-hidden">
+                                                <Star size={15} className="max-w-none fill-[#FFB800] text-[#FFB800]" />
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <p className="mt-1.5 whitespace-nowrap text-[13px] text-[#6B6B6B] md:text-[14px]" aria-hidden="true">
+                                    의류 쇼핑몰 대표님들 평균 만족도 <span className="font-bold text-[#1A1A1A]">4.9</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
