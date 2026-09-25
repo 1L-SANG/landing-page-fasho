@@ -8,8 +8,8 @@ import { VideoContainer } from '@/components/ui/video-container';
 import { SurveyInline } from '@/components/survey/SurveyInline';
 import { goToApp } from '@/lib/app-url';
 
-const HERO_VIDEO_URL = '/video/optimized/wearless-1080.mp4';
-const HERO_VIDEO_POSTER_URL = '/video/optimized/wearless-poster.jpg';
+const HERO_VIDEO_URL = '/video/optimized/wearless-desktop.mp4';
+const HERO_VIDEO_POSTER_URL = '/video/optimized/wearless-desktop-poster.jpg';
 const STATS_BADGE_RESTORE_AT = new Date('2026-09-27T16:00:00Z').getTime();
 
 const HeroSection = () => {
@@ -151,6 +151,9 @@ const HeroSection = () => {
                 <VideoContainer
                     src={HERO_VIDEO_URL}
                     poster={HERO_VIDEO_POSTER_URL}
+                    mobileSrc="/video/optimized/wearless-mobile.mp4"
+                    mobilePoster="/video/optimized/wearless-mobile-poster.jpg"
+                    mobileAspectRatio="4/3"
                     aspectRatio="16/9"
                     borderType="gradient"
                     preload="auto"
