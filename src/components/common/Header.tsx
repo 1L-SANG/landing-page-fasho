@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, type MouseEvent } from 'react';
+import { useState, useEffect, useRef, type MouseEvent } from 'react';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,9 +14,18 @@ const NAV_LINKS = [
     { label: '문의하기', id: 'contact' },
 ] as const;
 
+const MOBILE_NAV_LINKS = [
+    NAV_LINKS[1],
+    { label: '사용법', id: 'how-it-works' },
+    NAV_LINKS[2],
+    NAV_LINKS[3],
+    { label: '자주 묻는 질문', id: 'faq' },
+] as const;
+
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const mobileMenuRef = useRef<HTMLDivElement>(null);
     const { session, loading, isConfigured, openLogin, signOut } = useAuth();
     // 로그인한 사람에게 '로그인/회원가입' 버튼은 잡음이다 — 그 자리를 스튜디오 진입으로 바꾼다.
     // 환경변수가 없으면(로그인 자체가 불가능) 버튼을 아예 내지 않는다: 눌러도 아무 일이
@@ -34,6 +43,30 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        if (!mobileMenuOpen) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') setMobileMenuOpen(false);
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        const animation = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? undefined
+            : mobileMenuRef.current?.animate(
+                [
+                    { opacity: 0, transform: 'scale(0.96)' },
+                    { opacity: 1, transform: 'scale(1)' },
+                ],
+                { duration: 150, easing: 'ease-out' },
+            );
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            animation?.cancel();
+        };
+    }, [mobileMenuOpen]);
+
     const handleSectionClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
         setMobileMenuOpen(false);
@@ -47,7 +80,7 @@ const Header = () => {
     return (
         <>
             <nav
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80' : 'bg-white/70'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 max-md:bg-white' : 'bg-white/70'
                     }`}
                 style={{
                     backdropFilter: 'blur(20px) saturate(1.8)',
@@ -134,6 +167,7 @@ const Header = () => {
                         className="p-2.5 text-[#1A1A1A] lg:hidden"
                         aria-label={mobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
                         aria-expanded={mobileMenuOpen}
+                        aria-controls="mobile-menu"
                         tabIndex={0}
                     >
                         {mobileMenuOpen ? <X size={28} className="h-6 w-6 md:h-7 md:w-7" /> : <Menu size={28} className="h-6 w-6 md:h-7 md:w-7" />}
@@ -141,29 +175,38 @@ const Header = () => {
                 </div>
             </nav>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu Popup */}
             {mobileMenuOpen && (
-                <div className="fixed inset-0 z-40 bg-[#FAFAFA] lg:hidden animate-fade-in">
-                    <div className="flex h-full flex-col items-center justify-center gap-8">
-                        {NAV_LINKS.map((link) => (
+                <>
+                    <div
+                        className="fixed inset-0 z-40 lg:hidden"
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-hidden="true"
+                    />
+                    <div
+                        ref={mobileMenuRef}
+                        id="mobile-menu"
+                        className="fixed top-[calc(var(--site-nav-height)+8px)] right-6 z-40 max-h-[calc(100dvh-var(--site-nav-height)-24px)] w-[248px] max-w-[calc(100vw-32px)] origin-top-right overflow-y-auto rounded-2xl border border-black/[0.06] bg-white p-2 shadow-[0_12px_40px_rgba(0,0,0,0.14)] md:right-5 lg:hidden"
+                    >
+                        {MOBILE_NAV_LINKS.map((link) => (
                             <Link
                                 key={link.id}
                                 href={`/#${link.id}`}
                                 onClick={(event) => handleSectionClick(event, link.id)}
-                                className="text-[24px] font-semibold text-[#1A1A1A]"
+                                className="flex h-12 w-full items-center rounded-xl px-4 text-[16px] font-medium text-[#1A1A1A] active:bg-[#F2F2F2] hover:bg-[#F7F7F7]"
                                 tabIndex={0}
                                 aria-label={`${link.label} 섹션으로 이동`}
                             >
                                 {link.label}
                             </Link>
                         ))}
-                        <div className="mt-8 flex w-full max-w-xs flex-col gap-4 px-6">
+                        <div className="mt-2 flex flex-col gap-2 border-t border-black/[0.06] px-2 pt-3 pb-2">
                             <button
                                 onClick={() => {
                                     setMobileMenuOpen(false);
                                     goToApp();
                                 }}
-                                className="w-full rounded-full bg-[#1A1A1A] px-6 py-3.5 text-[16px] font-semibold text-white shadow-lg"
+                                className="h-11 w-full rounded-full bg-[#1A1A1A] px-6 text-[15px] font-semibold text-white shadow-lg"
                                 tabIndex={0}
                                 aria-label="시작하기"
                             >
@@ -175,7 +218,7 @@ const Header = () => {
                                         setMobileMenuOpen(false);
                                         openLogin();
                                     }}
-                                    className="w-full rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3.5 text-[16px] font-semibold text-[#1A1A1A] shadow-sm"
+                                    className="h-11 w-full rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 text-[15px] font-semibold text-[#1A1A1A] shadow-sm"
                                     tabIndex={0}
                                     aria-label="로그인 또는 회원가입"
                                 >
@@ -188,7 +231,7 @@ const Header = () => {
                                         setMobileMenuOpen(false);
                                         signOut();
                                     }}
-                                    className="w-full rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 py-3.5 text-[16px] font-semibold text-[#1A1A1A] shadow-sm"
+                                    className="h-11 w-full rounded-full border-[1.5px] border-[#1A1A1A] bg-white px-6 text-[15px] font-semibold text-[#1A1A1A] shadow-sm"
                                     tabIndex={0}
                                     aria-label="로그아웃"
                                 >
@@ -197,7 +240,7 @@ const Header = () => {
                             )}
                         </div>
                     </div>
-                </div>
+                </>
             )}
         </>
     );

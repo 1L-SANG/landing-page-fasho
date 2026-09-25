@@ -4,11 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/section-header';
+import { Button } from '@/components/ui/button';
+import { goToApp } from '@/lib/app-url';
 
 const STEPS = [
     { title: '사진 올리고 확인하기', description: '앞뒤 사진을 올리면 AI가 상품 정보를 채워요. 틀린 부분만 고쳐주면 돼요.' },
     { title: '컷 구성 고르기', description: '상세페이지에 어떤 컷을 어떤 순서로 배치할지 정해요.' },
-    { title: '의류 재현도 높이기', description: '의류컷을 만들기 전, 실제 옷과 다른 핏, 색감 등을 바로잡아요.' },
+    { title: '의류 재현도 높이기', description: '의류컷을 만들기 전, 실제 옷과 다른 핏, 색감\u00A0등을 바로잡아요.' },
     { title: '에디터로 수정하기', description: '문구와 배치를 원하는 대로 고치면서 상세페이지를 완성시켜요.' },
 ] as const;
 
@@ -129,6 +131,7 @@ const HowItWorksSection = () => {
 
     return (
         <section
+            id="how-it-works"
             className="relative z-20 overflow-visible px-6 py-16 sm:py-24 break-keep [overflow-wrap:break-word] md:py-32"
             ref={sectionRef}
             style={{
@@ -188,6 +191,11 @@ const HowItWorksSection = () => {
                             </div>
                         );
                     })}
+                </div>
+                <div className="mt-12 flex justify-center md:mt-16 lg:hidden">
+                    <Button id="howto-start-cta" variant="cta" size="lg" onClick={goToApp}>
+                        지금 시작하기
+                    </Button>
                 </div>
             </div>
         </section>

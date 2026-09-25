@@ -7,6 +7,9 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { Badge } from '@/components/ui/badge';
 import { goToPricing } from '@/lib/app-url';
 
+// 2026-09-07-credit-pricing-plans.md v8: 마네킹컷 45 + 무료 수정 1회 0 + AI 컷 10장 190(19씩) + 에디터 수정 1회 19.
+const STANDARD_PAGE_CREDITS = 254;
+
 interface Plan {
     name: string;
     billing: string;
@@ -80,6 +83,7 @@ const PLANS: Plan[] = [
 const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
+    const standardPageCount = Math.floor(Number(plan.credits.replaceAll(',', '')) / STANDARD_PAGE_CREDITS);
 
     useEffect(() => {
         const el = cardRef.current;
@@ -141,6 +145,9 @@ const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
                     </span>
                     <span className="text-[14px] font-medium text-[#6B6B6B]">크레딧</span>
                   </div>
+                  <p className="mt-2 text-[15px] font-medium text-[#6B6B6B]">
+                    상세페이지 약 <span className="font-bold text-[#1A1A1A]">{standardPageCount}개</span>
+                  </p>
                 </div>
 
                 {/* Features */}
@@ -199,6 +206,10 @@ const PricingSection = () => {
                     ))}
                 </div>
                 <p className="mt-6 text-center text-[14px] text-[#6B6B6B]">
+                    <span className="block">상세페이지 1개의 제작을 처음부터 끝까지 진행했을 때{' '}<br className="max-[359px]:hidden md:hidden" />평균적으로 약{'\u00A0'}250크레딧이 소모됩니다.</span>
+                    <span className="block">컷수에 따라 소모되는 비용은 상이합니다.</span>
+                </p>
+                <p className="mt-1.5 text-center text-[14px] text-[#6B6B6B]">
                     해지 전까지 매월 자동으로 결제돼요.{' '}
                     <Link href="/refund" className="whitespace-nowrap underline underline-offset-4">환불 및 크레딧 이용조건</Link>
                 </p>
