@@ -43,6 +43,17 @@ const VideoContainer = ({
         }
     }, [src, videoRef]);
 
+    useEffect(() => {
+        if (!mobileSrc) return;
+        const breakpoint = window.matchMedia('(min-width: 768px)');
+        const reloadForViewport = () => {
+            setReadySrc(null);
+            videoRef.current?.load();
+        };
+        breakpoint.addEventListener('change', reloadForViewport);
+        return () => breakpoint.removeEventListener('change', reloadForViewport);
+    }, [mobileSrc, videoRef]);
+
     const getVideoType = (url: string): string => {
         const ext = url.split('.').pop()?.toLowerCase();
         if (ext === 'webm') return 'video/webm';
