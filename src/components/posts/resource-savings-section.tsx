@@ -1,34 +1,74 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { TrendingDown, Zap, Star, Plus } from 'lucide-react';
+import Image from 'next/image';
+import { Timer } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/section-header';
-import { GradientBorderContainer } from '@/components/ui/gradient-border-container';
+
+const RatingStar = ({ className }: { className: string }) => (
+    <svg width={14} height={14} viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <path fill="currentColor" d="M12 2.5l2.94 5.96 6.56.95-4.75 4.63 1.12 6.54L12 17.5l-5.87 3.08 1.12-6.54L2.5 9.41l6.56-.95z" />
+    </svg>
+);
 
 const STATS = [
     {
-        icon: TrendingDown,
         value: '90%',
         label: '비용 절감',
-        description: `상세페이지 제작 비용\n(기존 대비)`,
-        gradient: 'linear-gradient(135deg, #12ADE6, #4C63FC)',
-        iconBg: 'linear-gradient(135deg, #12ADE6, #4C63FC)',
+        description: '상세페이지 제작 비용 (기존 대비)',
+        chip: (
+            <>
+                <svg width={16} height={16} viewBox="0 0 24 24" className="shrink-0" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" fill="#F5C542" />
+                    <circle cx="12" cy="12" r="5.5" fill="none" stroke="#C99A1B" strokeWidth="1.6" />
+                </svg>
+                상세페이지 한 장에 6,000원부터
+            </>
+        ),
     },
     {
-        icon: Zap,
         value: '10배',
         label: '속도 향상',
         description: '압도적으로 빨라진 제작 속도',
-        gradient: 'linear-gradient(135deg, #4C63FC, #DC4CFC)',
-        iconBg: 'linear-gradient(135deg, #4C63FC, #DC4CFC)',
+        chip: (
+            <>
+                <Timer size={16} strokeWidth={2} className="shrink-0" aria-hidden="true" />
+                전 과정 약 10분
+            </>
+        ),
     },
     {
-        icon: Star,
         value: '4.9',
         label: '고객 만족도',
-        description: `5점 만점\n(베타테스터 기준)`,
-        gradient: 'linear-gradient(135deg, #DC4CFC, #FF0080)',
-        iconBg: 'linear-gradient(135deg, #DC4CFC, #FF0080)',
+        description: '5점 만점 (베타테스터 기준)',
+        chip: (
+            <>
+                <span className="flex" aria-hidden="true">
+                    {['/teenz-logo.png', '/eko-logo.png', '/oac-logo.png'].map((logo) => (
+                        <Image
+                            key={logo}
+                            src={logo}
+                            alt=""
+                            width={20}
+                            height={20}
+                            className="-ml-1.5 h-5 w-5 shrink-0 rounded-full border-[1.5px] border-white object-cover first:ml-0"
+                        />
+                    ))}
+                </span>
+                <span className="flex items-center gap-px" aria-hidden="true">
+                    {[0, 1, 2, 3].map((star) => (
+                        <RatingStar key={star} className="text-[#FFB800]" />
+                    ))}
+                    <span className="relative h-[14px] w-[14px]">
+                        <RatingStar className="text-[#E3E3E3]" />
+                        <span className="absolute inset-y-0 left-0 w-[90%] overflow-hidden">
+                            <RatingStar className="max-w-none text-[#FFB800]" />
+                        </span>
+                    </span>
+                </span>
+                <span className="sr-only">쇼핑몰 대표님들이 준 별점</span>
+            </>
+        ),
     },
 ] as const;
 
@@ -57,77 +97,34 @@ const ResourceSavingsSection = () => {
             }}
         >
             <div className="mx-auto max-w-[1200px]">
-                {/* Plus Icon */}
-                <div className="mb-6 flex justify-center sm:mb-10">
-                    <div
-                        className={`relative transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}
-                    >
-                        <div className="absolute inset-0 rounded-full opacity-30 blur-2xl"
-                            style={{ background: 'linear-gradient(135deg, #12ADE6, #4C63FC, #DC4CFC)' }}
-                        />
-                        <Plus size={80} strokeWidth={2.5} className="relative h-14 w-14 text-[#1A1A1A] sm:h-20 sm:w-20" aria-hidden="true" />
-                    </div>
-                </div>
-
                 <SectionHeader
                     title="리소스 대폭 절감"
                     subtitle="촬영과 편집에 쓰던 시간을 줄이고, 파는 데 집중하세요."
                 />
 
                 {/* Stats Grid */}
-                <GradientBorderContainer innerClassName="bg-white">
-                    <div className="grid grid-cols-1 sm:grid-cols-3">
-                        {STATS.map((stat, i) => {
-                            const Icon = stat.icon;
-                            return (
-                                <div
-                                    key={i}
-                                    className={`group flex items-center gap-4 px-5 py-4 text-left transition-all duration-700 hover:bg-gradient-to-b hover:from-[#FAFAFA] hover:to-white sm:block sm:p-5 sm:text-center md:p-12 ${i < STATS.length - 1 ? 'border-b border-[#E5E5E5] sm:border-b-0 sm:border-r' : ''
-                                        } ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                                    style={{ transitionDelay: `${i * 100}ms` }}
-                                >
-                                    {/* Icon */}
-                                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-transform hover:scale-110 sm:mx-auto sm:mb-4 sm:h-12 sm:w-12 sm:rounded-2xl md:mb-5 md:h-16 md:w-16"
-                                        style={{ background: stat.iconBg }}
-                                    >
-                                        <Icon className="h-5 w-5 text-white sm:h-6 sm:w-6 md:h-8 md:w-8" aria-hidden="true" />
-                                    </div>
-
-                                    <div className="min-w-0 flex-1">
-                                        <div className="flex items-baseline gap-2 sm:block">
-                                            {/* Value */}
-                                            <div
-                                                className="text-[28px] font-bold sm:mb-2 sm:text-[38px] md:mb-3 md:text-[58px]"
-                                                style={{
-                                                    background: stat.gradient,
-                                                    WebkitBackgroundClip: 'text',
-                                                    WebkitTextFillColor: 'transparent',
-                                                }}
-                                            >
-                                                {stat.value}
-                                            </div>
-
-                                            {/* Label */}
-                                            <h3 className="mb-1 text-[16px] font-bold text-[#1A1A1A] sm:text-[19px] md:mb-2 md:text-[24px]">
-                                                {stat.label}
-                                            </h3>
-                                        </div>
-
-                                        {/* Description */}
-                                        <p className="text-[14px] leading-[1.6] text-[#6B6B6B] sm:text-[13px] md:whitespace-normal md:text-[15px]">
-                                            {stat.description}
-                                        </p>
-                                    </div>
-
-                                    {/* Bottom gradient line */}
-                                    <div className="mx-auto mt-2 hidden h-[2px] w-8 scale-x-0 transition-transform group-hover:scale-x-100 sm:mt-4 sm:block sm:w-14 md:mt-6 md:w-24"
-                                        style={{ background: stat.gradient }}
-                                    />
-                                </div>
-                            );
-                        })}
-                    </div>
-                </GradientBorderContainer>
+                <div className="grid grid-cols-1 gap-0 overflow-hidden rounded-[24px] border border-[#ECECEC] bg-white whitespace-normal break-keep leading-[normal] md:grid-cols-3">
+                    {STATS.map((stat, i) => (
+                        <div
+                            key={stat.label}
+                            className={`px-[22px] py-6 text-left transition-all duration-700 md:px-4 md:pt-11 md:pb-10 md:text-center lg:px-9 ${i > 0 ? 'border-t border-[#F0F0F0] md:border-t-0 md:border-l' : ''} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                            style={{ transitionDelay: `${i * 100}ms` }}
+                        >
+                            <div className="mb-2 text-[40px] font-bold leading-none tracking-[-0.035em] text-[#1A1A1A] md:mb-4 md:text-[64px]">
+                                {stat.value}
+                            </div>
+                            <h3 className="mb-1.5 text-[17px] font-bold leading-[normal] text-[#1A1A1A] md:text-[19px]">
+                                {stat.label}
+                            </h3>
+                            <p className="mb-3.5 text-balance text-[14px] text-[#6B6B6B] md:mb-[22px] lg:text-[15px]">
+                                {stat.description}
+                            </p>
+                            <span className="inline-flex h-[34px] items-center gap-[7px] whitespace-nowrap rounded-[99px] bg-[#F4F5F7] px-3.5 text-[13px] font-semibold md:max-lg:gap-1.5 md:max-lg:px-3 md:max-lg:text-[12px] text-[#3A3A3A]">
+                                {stat.chip}
+                            </span>
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     );
