@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
-import { AnalyticsScripts } from "@/components/common/analytics-scripts";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import "./globals.css";
 
@@ -68,7 +67,6 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased" suppressHydrationWarning>
-        <AnalyticsScripts />
         {/* AuthProvider 가 Header 를 감싸야 한다 — 로그인 버튼이 이 컨텍스트의 openLogin 을
             부르고, 모달도 이 안에서 렌더된다. */}
         <AuthProvider>
