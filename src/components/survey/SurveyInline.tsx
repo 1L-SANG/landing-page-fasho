@@ -5,9 +5,6 @@ import Image from 'next/image';
 import { SURVEY_STEPS, type SurveyStep } from '@/lib/survey-steps';
 import { getSurveyProgressPercent } from '@/lib/survey-progress';
 import {
-    trackMetaLead,
-    trackMetaSubmitApplication,
-    trackMetaCompleteRegistration,
     trackGASurveyStart,
     trackGASurveyComplete,
 } from '@/lib/analytics';
@@ -99,7 +96,6 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
             startSurveySession();
 
             /* Analytics: survey opened */
-            trackMetaLead();
             trackGASurveyStart();
         } else {
             setIsVisible(false);
@@ -175,9 +171,6 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
         if (isDone) {
             console.log('Survey completed:', { email, answers: newAnswers });
 
-            /* Analytics: survey completed */
-            trackMetaCompleteRegistration();
-
             const roleIndex = newAnswers.role as number | undefined;
             const roleStep = SURVEY_STEPS.find((s) => s.id === 'role');
             const roleName =
@@ -220,9 +213,6 @@ const SurveyInline = ({ open, onClose }: SurveyInlineProps) => {
     const handleEmailSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (email.trim() && email.includes('@')) {
-            /* Analytics: email submitted */
-            trackMetaSubmitApplication();
-
             setCardBounce(true);
             setTimeout(() => {
                 setCardBounce(false);
