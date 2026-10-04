@@ -222,7 +222,7 @@ const HowItWorksSection = () => {
                 </ol>
                 <div className="mt-10 flex justify-center md:mt-12 xl:hidden">
                     <Button id="howto-start-cta" variant="primary" size="lg" onClick={goToApp}>
-                        지금 시작하기
+                        무료로 시작하기
                     </Button>
                 </div>
             </div>

@@ -17,9 +17,15 @@ const termsLink = legalLink('terms-seller');
 const modelLicenseLink = legalLink('seller-license-terms');
 
 // 답변은 환불 정책(content/legal/refund.md)과 요금제 정본(pricing-section.tsx PLANS)에 적힌 사실만 쓴다. 정책이 바뀌면 함께 고친다.
+// 가입 시 무료 크레딧 지급은 2026-10 운영 결정이다(지급량은 아직 표기하지 않는다).
 // 질문·답변의 ' '(NBSP, U+00A0)은 '할 수 있나요?', '다음 결제일부터'처럼 의존명사·보조용언·꾸밈말과 그 뒤 말이 줄 끝에서
 // 갈라지지 않게 묶는다. balance·pretty가 꺼지는 사파리와, balance가 앞 단어를 끌어내리는 크롬 모바일 모두에 듣는다.
 const FAQ_ITEMS: AccordionItem[] = [
+    {
+        question: '결제 전에 써볼 수 있나요?',
+        answer:
+            '네. 가입하면 무료 크레딧을 드리므로, 결제하기 전에 직접 상세페이지를 만들어 볼 수 있습니다.',
+    },
     {
         question: '언제든 해지할 수 있나요?',
         answer:

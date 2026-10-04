@@ -59,9 +59,10 @@ const HeroSection = () => {
                 style={{ animationDelay: '0.2s', animationDuration: '0.5s' }}
             >
                 <Button id="hero-start-cta" variant="primary" size="lg" onClick={goToApp}>
-                    지금 시작하기
+                    무료로 시작하기
                 </Button>
-                <div className="mt-4 text-center md:flex md:items-center md:justify-center md:gap-3">
+                <p className="mt-3 text-[14px] leading-[1.6] text-[#5C5C5C]">가입하면 무료 크레딧을 드려요.</p>
+                <div className="mt-3 text-center md:flex md:items-center md:justify-center md:gap-3">
                     <span className="sr-only">베타테스터 평균 만족도 5점 만점에 4.9점</span>
                     <div className="flex items-center justify-center gap-2" aria-hidden="true">
                         {/* 로고를 겹쳐 한 줄로 잇는다. 흰 링이 마디를 나누고, 가운데 로고만 양옆 아래로 들어간다. */}
