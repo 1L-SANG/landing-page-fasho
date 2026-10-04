@@ -2,11 +2,16 @@
 
 import { useEffect, useState, type CSSProperties } from 'react';
 import Image, { getImageProps } from 'next/image';
-import { GradientBorderContainer } from './gradient-border-container';
+import { cn } from './cn';
+import { GradientBorderContainer, type GradientTone } from './gradient-border-container';
 import { MonotoneBorderContainer } from './monotone-border-container';
 import { useVideoAutoplay } from './use-video-autoplay';
 
 type BorderType = 'gradient' | 'monotone' | 'none';
+
+// 768~1023은 데스크톱 16:9 녹화가 너무 작아져 4:3 모바일 원본을 쓴다(Media frame: 1024 이상만 16:9).
+const DESKTOP_SOURCE_MEDIA = '(min-width: 1024px)';
+const POSTER_SIZES = '(min-width: 1024px) 900px, (min-width: 768px) 640px, 100vw';
 
 interface VideoContainerProps {
     src: string;
@@ -16,7 +21,11 @@ interface VideoContainerProps {
     mobilePoster?: string;
     mobileAspectRatio?: string;
     borderType?: BorderType;
+    /** borderType="gradient"일 때 테두리 색 톤 */
+    borderTone?: GradientTone;
     preload?: 'none' | 'metadata' | 'auto';
+    /** 영상 내용을 설명하는 접근 가능한 이름 */
+    label?: string;
     className?: string;
 }
 
@@ -28,10 +37,15 @@ const VideoContainer = ({
     mobilePoster,
     mobileAspectRatio,
     borderType = 'gradient',
+    borderTone = 'brand',
     preload = 'metadata',
+    label,
     className = '',
 }: VideoContainerProps) => {
-    const videoRef = useVideoAutoplay({ threshold: 0.2, rootMargin: '120px 0px' });
+    const videoRef = useVideoAutoplay({
+        threshold: 0.2,
+        rootMargin: '120px 0px',
+    });
     const [readySrc, setReadySrc] = useState<string | null>(null);
 
     useEffect(() => {
@@ -45,10 +59,15 @@ const VideoContainer = ({
 
     useEffect(() => {
         if (!mobileSrc) return;
-        const breakpoint = window.matchMedia('(min-width: 768px)');
+        const breakpoint = window.matchMedia(DESKTOP_SOURCE_MEDIA);
         const reloadForViewport = () => {
             setReadySrc(null);
-            videoRef.current?.load();
+            const video = videoRef.current;
+            if (!video) return;
+            const wasPaused = video.paused;
+            video.load();
+            // load()는 autoPlay를 다시 켜므로, 동작 줄이기로 멈춰 둔 영상은 그대로 멈춰 둔다.
+            if (wasPaused) video.pause();
         };
         breakpoint.addEventListener('change', reloadForViewport);
         return () => breakpoint.removeEventListener('change', reloadForViewport);
@@ -65,13 +84,19 @@ const VideoContainer = ({
         poster ??
         `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%230A0A0A' width='1600' height='900'/%3E%3C/svg%3E`;
     const isVideoReady = readySrc === src;
+    // 동작 줄이기 설정이면 영상 대신 포스터를 계속 보여 준다. CSS 미디어 쿼리라 하이드레이션 전후로 깜빡이지 않는다.
+    const showPoster = Boolean(poster || mobilePoster);
+    const posterClassName = cn(
+        'pointer-events-none absolute inset-0 h-full w-full object-cover',
+        isVideoReady && 'motion-safe:hidden'
+    );
     const posterImageProps = {
         alt: '',
         fill: true,
         loading: 'eager' as const,
         fetchPriority: 'high' as const,
-        sizes: '(min-width: 1024px) 900px, 100vw',
-        className: 'pointer-events-none absolute inset-0 h-full w-full object-cover',
+        sizes: POSTER_SIZES,
+        className: posterClassName,
     };
     const desktopImage = mobilePoster
         ? getImageProps({ ...posterImageProps, src: resolvedPoster }).props
@@ -82,7 +107,7 @@ const VideoContainer = ({
 
     const videoContent = (
         <div
-            className="relative overflow-hidden bg-[#0A0A0A] aspect-(--video-ar-mobile) md:aspect-(--video-ar)"
+            className="relative overflow-hidden bg-[#0A0A0A] aspect-(--video-ar-mobile) lg:aspect-(--video-ar)"
             style={{
                 '--video-ar': aspectRatio,
                 '--video-ar-mobile': mobileAspectRatio ?? aspectRatio,
@@ -91,6 +116,7 @@ const VideoContainer = ({
             <video
                 ref={videoRef}
                 className="absolute inset-0 h-full w-full object-cover video-no-controls"
+                aria-label={label}
                 muted
                 loop
                 autoPlay
@@ -107,17 +133,17 @@ const VideoContainer = ({
                     </>
                 ) : mobileSrc ? (
                     <>
-                        <source src={src} type="video/mp4" media="(min-width: 768px)" />
+                        <source src={src} type="video/mp4" media={DESKTOP_SOURCE_MEDIA} />
                         <source src={mobileSrc} type="video/mp4" />
                     </>
                 ) : (
                     <source src={src} type={getVideoType(src)} />
                 )}
             </video>
-            {(poster || mobilePoster) && !isVideoReady && (desktopImage && mobileImage ? (
+            {showPoster && (desktopImage && mobileImage ? (
                 <picture>
                     <source
-                        media="(min-width: 768px)"
+                        media={DESKTOP_SOURCE_MEDIA}
                         srcSet={desktopImage.srcSet ?? desktopImage.src}
                         sizes={desktopImage.sizes}
                     />
@@ -130,8 +156,8 @@ const VideoContainer = ({
                     alt=""
                     fill
                     priority
-                    sizes="(min-width: 1024px) 900px, 100vw"
-                    className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                    sizes={POSTER_SIZES}
+                    className={posterClassName}
                 />
             ))}
         </div>
@@ -139,7 +165,7 @@ const VideoContainer = ({
 
     if (borderType === 'gradient') {
         return (
-            <GradientBorderContainer className={className}>
+            <GradientBorderContainer className={className} tone={borderTone}>
                 {videoContent}
             </GradientBorderContainer>
         );

@@ -35,28 +35,31 @@
   --site-nav-height: 72px;
   --font-size: 16px;
   --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
+  /* 브랜드 잉크(#1A1A1A)와 맞춘다. 토큰을 쓰는 곳(푸터 링크·본문 기본색)만 다르게 보이던 문제. */
+  --foreground: #1a1a1a;
   --card: #ffffff;
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
+  --primary: #1a1a1a;
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.95 0.0058 264.53);
   --secondary-foreground: #030213;
   --muted: #ececf0;
-  --muted-foreground: #717182;
+  --muted-foreground: #6b6b6b;
   --accent: #e9ebef;
   --accent-foreground: #030213;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
+  /* line 토큰(0.12, consistency-07). 랜딩은 테두리 색을 모두 직접 적어 이 값을 읽지 않는다.
+   * 실제로 읽는 곳은 법적 문서(legal.module.css)의 표 격자·hr·헤더 구분선·인용문이라 이전(#E6E6E6)만큼 보이게 둔다. */
+  --border: rgba(34, 42, 53, 0.12);
   --input: transparent;
   --input-background: #f3f3f5;
   --switch-background: #cbced4;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
+  --ring: #1a1a1a;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -73,8 +76,9 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* 앵커 착지점을 내비 하단선(높이 + 1px 테두리)에 정확히 맞춰 이전 섹션 띠가 드러나지 않게 한다. */
 html {
-  scroll-padding-top: calc(var(--site-nav-height) + 16px);
+  scroll-padding-top: calc(var(--site-nav-height) + 1px);
 }
 
 @media (max-width: 1023px) {
@@ -169,7 +173,7 @@ html {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
@@ -178,6 +182,36 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Tailwind v4 기본값은 버튼 커서가 화살표라 클릭 가능한 버튼을 손가락으로 되돌린다. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* --- 키보드 포커스 링 ---
+   * 밝은 면은 #1A1A1A 2px, 바깥 2px. 어두운 면(#contact)은 흰색.
+   * overflow-hidden 안에서 잘리는 요소는 호출부에 focus-visible:-outline-offset-2 를 준다.
+   * base 레이어라 컴포넌트의 focus-visible:* 유틸리티가 항상 이긴다. */
+  :where(a, button, [tabindex], input, select, textarea, summary):focus-visible {
+    outline: 2px solid #1a1a1a;
+    outline-offset: 2px;
+  }
+
+  #contact :focus-visible {
+    outline-color: #ffffff;
+  }
+
+  /* 포커스로 스크롤될 때 링(바깥 4px)까지 고정 헤더 아래·화면 끝 안쪽에 들어오게 8px 더 띄운다.
+   * 앵커 착지(섹션, tabindex=-1)는 빠지므로 html 의 scroll-padding-top(내비 + 1px) 위치 그대로다. */
+  :where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])) {
+    scroll-margin-block: 8px;
+  }
+
+  /* 앵커 이동 뒤 포커스를 받은 섹션(tabindex=-1) 전체에 링이 그려지지 않게 한다. */
+  [tabindex='-1']:focus-visible {
+    outline: none;
+  }
 }
 
 /* --- Global whitespace: pre-line (outside @layer to beat Tailwind reset) --- */
@@ -185,28 +219,27 @@ body {
   white-space: pre-line;
 }
 
-/* --- 모바일 한국어 줄바꿈 (768px 미만) ---
+/* --- 한국어 줄바꿈 (전 뷰포트) ---
  * 띄어쓰기 단위로만 줄을 바꾸고, 칸보다 긴 한 단어(메일 주소 등)만 예외로 끊는다.
+ * 768px 이상에서도 '시작하세/요'처럼 음절 중간에서 끊기지 않게 모든 폭에 적용한다.
  * 제목은 줄 길이를 고르게 나누고, 문단은 마지막 줄에 한 단어만 남지 않게 한다.
  * base 레이어에 두어 컴포넌트의 Tailwind 유틸리티가 항상 이기게 한다. */
 @layer base {
-  @media (width < 48rem) {
-    body {
-      word-break: keep-all;
-      overflow-wrap: break-word;
-    }
+  body {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
 
-    h1,
-    h2,
-    h3,
-    h4 {
-      text-wrap-style: balance;
-    }
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap-style: balance;
+  }
 
-    p,
-    li {
-      text-wrap-style: pretty;
-    }
+  p,
+  li {
+    text-wrap-style: pretty;
   }
 }
 
@@ -223,55 +256,6 @@ body {
 /* --- Whitespace Exception: opt-out class for elements that should NOT preserve \n --- */
 .whitespace-normal {
   white-space: normal !important;
-}
-
-/**
- * Base typography. Not applied to elements which have an ancestor with a Tailwind text class.
- */
-@layer base {
-  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
-    h1 {
-      font-size: var(--text-2xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    h2 {
-      font-size: var(--text-xl);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    h3 {
-      font-size: var(--text-lg);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    h4 {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    label {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    button {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    input {
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.5;
-    }
-  }
 }
 
 html {
@@ -311,6 +295,49 @@ html {
 
   100% {
     filter: brightness(1);
+  }
+}
+
+/* --- Aurora edges ---
+ * 화면 양 끝의 세로 오로라 리본(aurora-edges.tsx). 세로 중심·기울기는 개별 translate/rotate 속성에 두고,
+ * 흐름은 transform, 숨쉬기는 opacity 만 움직여 합성 단계에서 끝난다(큰 레이어에 blur 필터를 걸지 않는다).
+ * transform 은 rotate 뒤에 적용되므로 리본은 자기 기울기 방향으로 위아래로 흐른다.
+ * 동작 줄이기에서는 애니메이션 없이 중간 밝기(0.8)로 멈춘다. */
+.aurora-ribbon {
+  position: absolute;
+  translate: 0 -50%;
+  opacity: 0.8;
+}
+
+@keyframes auroraFlow {
+  0% {
+    transform: translate3d(0, -6vh, 0) scale(0.96, 0.92);
+  }
+
+  50% {
+    transform: translate3d(2%, 1vh, 0) scale(1.04, 1.06);
+  }
+
+  100% {
+    transform: translate3d(-1%, 7vh, 0) scale(1, 0.98);
+  }
+}
+
+@keyframes auroraBreathe {
+  from {
+    opacity: 0.6;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aurora-ribbon {
+    animation:
+      auroraFlow var(--aurora-flow, 48s) ease-in-out var(--aurora-delay, 0s) infinite alternate,
+      auroraBreathe var(--aurora-breathe, 20s) ease-in-out var(--aurora-delay, 0s) infinite alternate;
   }
 }
 
@@ -358,51 +385,27 @@ html {
   will-change: opacity, transform;
 }
 
-/* --- Survey Modal Keyframes --- */
-@keyframes progShimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
+/* 동작 줄이기: 인라인 animationDelay(0.2~0.7s) 동안 히어로가 투명하게 남지 않도록 처음부터 보이게 한다.
+ * 위 기본 규칙보다 뒤에 있어야 한다. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
     opacity: 1;
-  }
-
-  50% {
-    opacity: 0.35;
+    transform: none;
+    will-change: auto;
   }
 }
 
-@keyframes checkIn {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-
-  60% {
-    transform: scale(1.15);
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes gradText {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  100% {
-    background-position: 300% 50%;
+/* --- 동작 줄이기 (전역) ---
+ * 무한 회전·그라데이션·등장 전환을 사실상 즉시 끝나게 한다. 개별 컴포넌트의 motion-safe/motion-reduce 와 함께 쓴다.
+ * 파일 끝에 두어 위의 애니메이션 규칙보다 늦게 온다. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

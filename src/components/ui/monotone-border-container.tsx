@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { cn } from './cn';
 
 interface MonotoneBorderContainerProps {
     children: ReactNode;
@@ -8,25 +9,16 @@ interface MonotoneBorderContainerProps {
     innerClassName?: string;
 }
 
-const MonotoneBorderContainer = ({
-    children,
-    className = '',
-    innerClassName = '',
-}: MonotoneBorderContainerProps) => {
+const MonotoneBorderContainer = ({ children, className, innerClassName }: MonotoneBorderContainerProps) => {
     return (
         <div
-            className={`group rounded-[24px] p-[2px] transition-all duration-300 hover:p-[3px] hover:shadow-[0_0_30px_rgba(26,26,26,0.2)] ${className}`}
+            className={cn('rounded-[24px] p-[2px] motion-safe:animate-[monotoneShift_8s_linear_infinite]', className)}
             style={{
                 background:
                     'conic-gradient(from 180deg, #1A1A1A, #4A4A4A, #6B6B6B, #9E9E9E, #6B6B6B, #4A4A4A, #1A1A1A)',
-                animation: 'monotoneShift 8s linear infinite',
             }}
         >
-            <div
-                className={`overflow-hidden rounded-[22px] ${innerClassName}`}
-            >
-                {children}
-            </div>
+            <div className={cn('overflow-hidden rounded-[22px]', innerClassName)}>{children}</div>
         </div>
     );
 };

@@ -3,6 +3,10 @@
    원본: wearless_studio/src/features/auth/Login.module.css + app.css 의 .overlay/.modal.
    랜딩에는 그쪽 디자인 토큰(tokens.css)이 없으므로, 토큰이 가리키던 실제 값을 주석으로
    남기고 그대로 박아 넣는다. 원본 토큰이 바뀌면 여기도 같이 바꿔야 두 화면이 갈라지지 않는다.
+
+   ▶ 2026-10: 오버레이 스크롤·작은 화면 여백·닫기 버튼·보조문 14px #6b6b6b·탭 40px(히트 44)·
+     버튼 48px·포커스 링 #1a1a1a 를 랜딩이 먼저 바꿨다. 스튜디오 쪽은 --fg-2 토큰을 통째로
+     바꾸지 말고 이 셀렉터 값만 옮긴다.
    ============================================================= */
 
 /* app.css .overlay — --ink-overlay: rgba(17,17,17,0.5) */
@@ -14,12 +18,17 @@
     display: grid;
     place-items: center;
     padding: 24px;
+    /* 이메일 폼을 펼친 모달(약 670px)이 짧은 화면을 넘치면 오버레이가 스크롤된다.
+       auto 행이 내용 높이로 커지므로 center 를 둬도 위쪽은 잘리지 않고 아래로만 넘친다. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
     animation: fade 0.16s ease;
 }
 @keyframes fade { from { opacity: 0; } }
 
 /* app.css .modal — --r-6: 16px, --elev-lift */
 .modal {
+    position: relative; /* 닫기 버튼 기준 */
     width: 100%;
     max-width: 460px;
     background: #fff;
@@ -33,6 +42,27 @@
 }
 @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.98); } }
 
+/* 닫기 — 44px 탭 영역, 모서리에서 8px. 이동 중(pending)에는 비활성. */
+.close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: #6b6b6b;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.close:hover:not(:disabled) { background: #f5f5f5; color: #0e0d14; }
+.close:focus-visible { outline: 2px solid #1a1a1a; outline-offset: 2px; }
+.close:disabled { opacity: 0.4; cursor: default; }
+
 /* Login.module.css .gate — --sp-16: 16px, --sp-8: 8px, --sp-4: 4px */
 .gate {
     display: flex;
@@ -40,6 +70,15 @@
     align-items: center;
     gap: 16px;
     padding: 8px 8px 4px;
+}
+
+/* 탭 아래 내용(role=tabpanel) — .gate 와 같은 16px 리듬을 이어 간다. */
+.panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
 /* 브랜드 락업(세로): 심볼 위, 그 아래 wearless 워드마크 + Studio 디스크립터 */
@@ -81,76 +120,88 @@
 }
 
 .subtitle {
-    font-size: 13px;
-    color: #898989; /* --fg-2 */
+    font-size: 14px;
+    color: #6b6b6b; /* --fg-2(#898989)는 흰 바탕 3.5:1 이라 AA 미달 → 5.3:1 */
     margin: 0;
     text-align: center;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* 로그인 / 회원가입 탭 — 셀러에서만 렌더. 동의는 회원가입 탭에서만 받는다.
-   --bg-2: #f5f5f5, --bg-1: #ffffff, --fg-1: #0e0d14, --fg-2: #898989,
-   --ring-strong: rgba(34,42,53,0.12), --focus: rgba(59,130,246,0.5) */
+   --bg-2: #f5f5f5, --bg-1: #ffffff, --fg-1: #0e0d14,
+   --ring-strong: rgba(34,42,53,0.12). 보이는 탭 40px(9+22+9), ::after 로 히트 44px, 트랙 48px. */
 .tabs {
     width: 100%;
     display: flex;
     gap: 4px;
-    padding: 3px;
+    padding: 4px;
     background: #f5f5f5;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 .tabs button {
+    position: relative;
     flex: 1;
-    padding: 7px 0;
+    min-height: 40px;
+    padding: 9px 0;
     border: 0;
     background: none;
     border-radius: 8px;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 15px;
+    line-height: 22px;
     font-weight: 600;
-    color: #898989;
+    color: #6b6b6b; /* 트랙(#f5f5f5) 위 4.9:1 */
     cursor: pointer;
 }
+.tabs button::after {
+    content: "";
+    position: absolute;
+    inset: -2px 0;
+}
 .tabs button:hover:not(:disabled) { color: #0e0d14; }
-.tabs button:focus-visible { outline: 2px solid rgba(59, 130, 246, 0.5); outline-offset: 2px; }
+.tabs button:focus-visible { outline: 2px solid #1a1a1a; outline-offset: 2px; }
 /* `.tabs button` 보다 특이도가 높아야 선택 상태가 실제로 칠해진다 —
    `.tabOn` 만으로 두면 위의 `.tabs button` 규칙(요소 선택자 포함)에 져서 두 탭이 똑같이 보인다. */
 .tabs button.tabOn { background: #ffffff; color: #0e0d14; box-shadow: 0 1px 2px rgba(34, 42, 53, 0.12); }
 
 /* 가입 동의 체크 — 체크박스는 **첫 줄 글자의 세로 중앙**에 정확히 건다.
-   flex-start + 눈대중 margin 으로 두면 두 줄로 접힐 때 위로 뜬 것처럼 보인다. */
+   flex-start + 눈대중 margin 으로 두면 두 줄로 접힐 때 위로 뜬 것처럼 보인다.
+   동의 문구는 법적 문장이라 보조색으로 흐리지 않고 본문색(#0e0d14)을 유지한다. */
 .consent {
     width: 100%;
     display: grid;
-    grid-template-columns: 16px 1fr;
-    column-gap: 8px;
+    grid-template-columns: 18px 1fr;
+    column-gap: 10px;
     align-items: start;
+    padding: 6px 0;
     text-align: left;
-    font-size: 12.5px;
-    line-height: 1.55;
+    font-size: 14px;
+    line-height: 1.6;
     color: #0e0d14;
     cursor: pointer;
 }
 .consent input {
-    width: 16px;
-    height: 16px;
-    margin: calc((1.55em - 16px) / 2) 0 0;   /* (줄 높이 - 상자) / 2 */
+    width: 18px;
+    height: 18px;
+    margin: calc((1.6em - 18px) / 2) 0 0;   /* (줄 높이 - 상자) / 2 */
     accent-color: #0e0d14;
     cursor: pointer;
 }
 .consent a { color: #0e0d14; font-weight: 600; text-underline-offset: 2px; }
-.consent a:focus-visible { outline: 2px solid rgba(59, 130, 246, 0.5); outline-offset: 2px; border-radius: 4px; }
+.consent a:focus-visible { outline: 2px solid #1a1a1a; outline-offset: 2px; border-radius: 4px; }
 
 /* 로그인 탭 하단 안내 — 신규를 가입 탭으로 보낸다. */
 .notice {
     width: 100%;
     margin: 4px 0 0;
-    color: #898989;
-    font-size: 12px;
-    line-height: 1.5;
+    color: #6b6b6b;
+    font-size: 14px;
+    line-height: 1.6;
     text-align: center;
 }
+/* 문장 속 인라인 버튼이라 레이아웃은 그대로 두고 ::after 로 히트만 44px 로 넓힌다. */
 .linkBtn {
+    position: relative;
     border: 0;
     background: none;
     padding: 0;
@@ -158,9 +209,18 @@
     font-weight: 600;
     color: #0e0d14;
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-underline-offset: 4px;
     cursor: pointer;
 }
+.linkBtn::after {
+    content: "";
+    position: absolute;
+    left: -6px;
+    right: -6px;
+    top: calc(50% - 22px);
+    height: 44px;
+}
+.linkBtn:disabled { opacity: 0.6; cursor: default; }
 
 .buttons {
     width: 100%;
@@ -170,17 +230,17 @@
     margin-top: 8px;
 }
 
-/* --cta-height: 44px, --r-4: 8px */
+/* --r-4: 8px. 높이·글자는 랜딩 Button md(48px / 16px)에 맞춘다(원본 --cta-height 44px, 14px). */
 .btn {
     position: relative; /* 아이콘은 좌측 고정, 라벨은 가운데 정렬 */
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 44px;
+    height: 48px;
     border-radius: 8px;
     border: 1px solid transparent;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: filter 0.15s ease, box-shadow 0.15s ease;
@@ -190,11 +250,11 @@
 
 .icon {
     position: absolute;
-    left: 14px;
+    left: 16px;
     display: inline-flex;
     align-items: center;
 }
-.brandIco { width: 18px; height: 18px; display: block; }
+.brandIco { width: 20px; height: 20px; display: block; }
 
 /* 브랜드 버튼색은 구글/카카오 공식 가이드 색이라 토큰이 아닌 브랜드 고정값이다. */
 .google {
@@ -209,7 +269,8 @@
 }
 
 .error {
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 1.5;
     color: #c0392b;
     text-align: center;
     margin: 0;
@@ -217,19 +278,43 @@
 
 /* 토스 심사용 이메일 로그인 폼 — 원본 Login.module.css .emailLogin/.emailForm 을 값 그대로.
    '이메일로 로그인하기' 링크(.notice + .linkBtn)를 누르면 이 자리에 펼쳐진다. */
-.notice + .notice { margin-top: 4px; }                       /* --sp-4 */
-.emailLogin { width: 100%; font-size: 12px; color: #898989; margin-top: 4px; }   /* --fg-2, --sp-4 */
+/* 두 안내 줄의 44px 히트가 겹치지 않게 간격 24px(gap 16 + 8). */
+.notice + .notice { margin-top: 8px; }
+/* 펼친 폼은 소셜 로그인과 다른 경로라 얇은 선으로 나눈다. */
+.emailLogin {
+    width: 100%;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(34, 42, 53, 0.08);
+    font-size: 14px;
+    color: #4a4a4a;
+}
 .emailForm { display: grid; gap: 12px; margin-top: 8px; }   /* --sp-12, --sp-8 */
-.emailForm label { display: grid; gap: 4px; }               /* --sp-4 */
+.emailForm label { display: grid; gap: 4px; font-weight: 500; }
 .emailForm input {
     width: 100%; min-width: 0; box-sizing: border-box;
-    padding: 8px 12px;                                      /* --sp-8 --sp-12 */
+    min-height: 44px;
+    padding: 10px 12px;
     border: 1px solid rgba(34, 42, 53, 0.12);               /* --ring-strong */
     border-radius: 8px;                                     /* --r-4 */
     background: #ffffff; color: #0e0d14;                    /* --bg-1, --fg-1 */
-    font: inherit; font-size: 16px;
+    font: inherit; font-size: 16px; font-weight: 400;       /* 16px 미만이면 iOS 가 입력 때 확대한다 */
 }
+.emailForm input[aria-invalid="true"] { border-color: #c0392b; }
 .emailForm input:focus-visible,
-.emailSubmit:focus-visible { outline: 2px solid rgba(59, 130, 246, 0.5); outline-offset: 2px; }
+.emailSubmit:focus-visible { outline: 2px solid #1a1a1a; outline-offset: 2px; }
 .emailSubmit { background: #0e0d14; color: #ffffff; }       /* --fg-1, --bg-1 */
-.emailError { margin: 0; color: #0e0d14; line-height: 1.5; }
+.emailError { margin: 0; color: #c0392b; font-size: 14px; line-height: 1.5; }
+
+/* 작은 화면: 바깥 여백 16, 모달 안쪽 24 로 줄여 360px 에서도 콘텐츠 폭 280px 을 확보한다.
+   반경은 16px 그대로. 짧은 화면은 브랜드 락업도 줄여 펼친 폼이 덜 넘치게 한다. */
+@media (max-width: 480px), (max-height: 720px) {
+    .overlay { padding: 16px; }
+    .brand { gap: 8px; }
+    .logo { height: 40px; }
+    .wordmark { height: 28px; }
+}
+@media (max-width: 480px) {
+    .modal { padding: 24px; }
+    .gate { padding: 0; }
+}
