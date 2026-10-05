@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { buttonStyles } from '@/components/ui/button';
@@ -251,24 +250,6 @@ const PricingSection = () => {
                     ))}
                 </div>
 
-                <div className="mx-auto mt-6 max-w-[560px] text-center text-[14px] leading-[1.6] text-[#5C5C5C] md:mt-8">
-                    <p className="text-balance">
-                        <span className="block">
-                            {/* 괄호 속 구성은 한 덩어리로 묶어 '+' 앞뒤에서 갈리지 않게 한다. */}
-                            상세페이지 1개를 표준 구성
-                            <span className="inline-block">(마네킹컷 + AI 컷 10장 + 에디터 수정 1회)으로</span>{' '}
-                            만들면 평균 약{' '}250크레딧이 들어요.
-                        </span>
-                        <span className="block">컷 수에 따라 달라질 수 있어요.</span>
-                    </p>
-                    <p className="mt-2">해지 전까지 매월 자동으로 결제돼요.</p>
-                    <Link
-                        href="/refund"
-                        className="inline-flex min-h-11 items-center font-medium text-[#4A4A4A] underline decoration-black/20 underline-offset-4 transition-colors hover:text-[#1A1A1A] hover:decoration-current"
-                    >
-                        환불 및 크레딧 이용조건
-                    </Link>
-                </div>
             </div>
         </Section>
     );
