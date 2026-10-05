@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { goToApp } from '@/lib/app-url';
+import { isModifiedClick, prefersReducedMotion, scrollToSection } from '@/lib/scroll-to-section';
 import { useAuth } from '@/components/auth/auth-provider';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
@@ -26,8 +27,6 @@ const subscribeScroll = (onChange: () => void) => {
 };
 const getIsScrolled = () => window.scrollY > 20;
 const getIsScrolledOnServer = () => false;
-
-const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const Header = () => {
     const isScrolled = useSyncExternalStore(subscribeScroll, getIsScrolled, getIsScrolledOnServer);
@@ -101,16 +100,9 @@ const Header = () => {
     };
 
     const handleSectionClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+        if (isModifiedClick(event)) return;
         setMobileMenuOpen(false);
-        const element = document.getElementById(id);
-        if (window.location.pathname === '/' && element) {
-            event.preventDefault();
-            element.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-            // 키보드 사용자가 이동한 섹션에서 이어서 탐색하도록 포커스도 옮긴다(링은 globals.css 에서 숨김).
-            if (!element.hasAttribute('tabindex')) element.setAttribute('tabindex', '-1');
-            element.focus({ preventScroll: true });
-        }
+        scrollToSection(event, id);
     };
 
     // 포커스가 메뉴와 트리거 밖으로 나가면 닫는다. 포커스는 옮기지 않아 Tab 으로 나간 자리에 그대로 머문다.

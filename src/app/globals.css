@@ -130,6 +130,12 @@ html {
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+/* 히어로를 좌우(문구 | 영상)로 나누는 폭(1180px). sm·md·lg 와 같은 rem 단위여야 Tailwind가 lg 뒤에 규칙을 놓아
+ * lg: 값을 덮어쓴다(px로 적은 min-[1180px]: 는 sm 보다 앞에 나와 덮어쓰지 못한다). */
+@theme {
+  --breakpoint-split: 73.75rem;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -338,6 +344,34 @@ html {
     animation:
       auroraFlow var(--aurora-flow, 48s) ease-in-out var(--aurora-delay, 0s) infinite alternate,
       auroraBreathe var(--aurora-breathe, 20s) ease-in-out var(--aurora-delay, 0s) infinite alternate;
+  }
+}
+
+/* --- 분할 히어로의 오브 자리 (luminous-orb-background.tsx) ---
+ * 1180px(split) 이상에서 히어로가 좌우로 나뉘면, 첫 화면의 오브를 왼쪽 문구 칸(제목·버튼) 뒤로 옮기고 조금 키운다.
+ * 원래 디자인의 '제목 뒤 오브' 구도를 지키고, 오른쪽 영상과 좌우 무게를 맞춘다.
+ * 한 화면을 스크롤하는 동안(--hero-progress 0→1) 화면 가운데·원래 크기로 돌아와 아래 섹션은 지금처럼 가운데 오브 위에 놓인다.
+ * 가로 이동량은 문구 칸 중심과 화면 중심의 거리(1200px 그리드에서 -360px), 세로 이동량은 히어로 내용 중심
+ * (페이지 위에서 약 370px)과 화면 중심의 거리다. */
+.orb-hero-shift {
+  --orb-hero: calc(1 - var(--hero-progress, 0));
+  translate: calc(var(--orb-shift-x, 0px) * var(--orb-hero)) calc(var(--orb-shift-y, 0px) * var(--orb-hero));
+  scale: calc(1 + var(--orb-grow, 0) * var(--orb-hero));
+}
+
+@media (min-width: 73.75rem) {
+  .orb-hero-shift {
+    --orb-shift-x: -360px;
+    --orb-shift-y: calc(370px - 50vh);
+    --orb-grow: 0.15;
+  }
+}
+
+/* 동작 줄이기: 스크롤에 따라 움직이지 않도록 지금처럼 가운데에 둔다. */
+@media (prefers-reduced-motion: reduce) {
+  .orb-hero-shift {
+    translate: none;
+    scale: none;
   }
 }
 
