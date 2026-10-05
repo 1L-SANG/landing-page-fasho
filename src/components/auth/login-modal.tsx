@@ -127,13 +127,17 @@ const LoginModal = ({ onClose, onSignIn, onSignInWithPassword }: LoginModalProps
             bg.forEach((el) => el.removeAttribute('inert'));
             const canFocus = (el: HTMLElement | null | undefined): el is HTMLElement =>
                 !!el && el !== document.body && el.isConnected && el.getClientRects().length > 0;
+            // 다른 탭에서 로그인이 끝나 로그인 버튼까지 사라졌다면, 헤더에 지금 보이는 버튼(로그아웃·시작하기)으로 보낸다.
+            const fallbacks = [
+                'header button[aria-label="로그인 또는 회원가입"]',
+                'header button[aria-expanded]',
+                'header button',
+            ];
             const target = canFocus(prev)
                 ? prev
-                : Array.from(
-                    document.querySelectorAll<HTMLElement>(
-                        'header button[aria-label="로그인 또는 회원가입"], header button[aria-expanded]',
-                    ),
-                ).find(canFocus);
+                : fallbacks
+                    .map((sel) => Array.from(document.querySelectorAll<HTMLElement>(sel)).find(canFocus))
+                    .find(Boolean);
             target?.focus();
         };
     }, []);
