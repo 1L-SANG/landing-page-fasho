@@ -1,27 +1,34 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
-import { SectionHeader } from '@/components/ui/section-header';
 import { Badge } from '@/components/ui/badge';
-import { goToPricing } from '@/lib/app-url';
+import { buttonStyles } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/components/ui/cn';
+import { Section } from '@/components/ui/section';
+import { SectionHeader } from '@/components/ui/section-header';
+import { useInViewOnce } from '@/components/ui/use-in-view-once';
+import { APP_PRICING_URL } from '@/lib/app-url';
 
-// 2026-09-07-credit-pricing-plans.md v8: 마네킹컷 45 + 무료 수정 1회 0 + AI 컷 10장 190(19씩) + 에디터 수정 1회 19.
-const STANDARD_PAGE_CREDITS = 254;
+interface PlanFeature {
+    text: string;
+    /** 플랜 간 차이를 만드는 수치·혜택. text 안의 이 부분만 진하게 보인다. */
+    highlight?: string;
+    /** '…의 모든 기능 제공'처럼 아래 플랜을 물려받는 줄. 한 단계 흐리게 둔다. */
+    inherited?: boolean;
+}
 
 interface Plan {
     name: string;
     billing: string;
     price: string;
-    priceSuffix?: string;
     /** 지급 크레딧. 증정이 있으면 baseCredits 에 취소선이 붙고 credits 가 강조된다. */
     credits: string;
     baseCredits?: string;
     bonusNote?: string;
-    features: string[];
+    features: PlanFeature[];
     recommended?: boolean;
-    ctaLabel: string;
 }
 
 /**
@@ -35,186 +42,235 @@ const PLANS: Plan[] = [
         name: 'Starter',
         billing: '정기 구독',
         price: '₩29,900',
-        priceSuffix: '/ 월',
         credits: '600',
         features: [
-            '기본모델 2명 무료 제공',
-            '마네킹컷 1회 무료 수정 가능',
-            '에디터 기능 제공',
-            '무제한 다운로드 가능',
+            { text: '기본모델 2명 무료 제공' },
+            { text: '마네킹컷 1회 무료 수정 가능' },
+            { text: '에디터 기능 제공' },
+            { text: '무제한 다운로드 가능' },
         ],
-        ctaLabel: '구매하기',
     },
     {
         name: 'Seller',
         billing: '정기 구독',
         price: '₩69,900',
-        priceSuffix: '/ 월',
         credits: '1,600',
         baseCredits: '1,400',
         bonusNote: '200 크레딧 추가 증정',
         features: [
-            'Starter의 모든 기능 제공',
-            '모든 AI 모델 50% 할인',
-            '매칭의류 커스텀 업로드 가능',
-            '충전할 때마다 크레딧 5% 보너스',
+            { text: 'Starter의 모든 기능 제공', inherited: true },
+            { text: '모든 AI 모델 50% 할인', highlight: '50% 할인' },
+            { text: '매칭의류 커스텀 업로드 가능' },
+            { text: '충전할 때마다 크레딧 5% 보너스', highlight: '5% 보너스' },
         ],
         recommended: true,
-        ctaLabel: '구매하기',
     },
     {
         name: 'Pro',
         billing: '정기 구독',
         price: '₩119,000',
-        priceSuffix: '/ 월',
         credits: '2,800',
         baseCredits: '2,400',
         bonusNote: '400 크레딧 추가 증정',
         features: [
-            'Seller의 모든 기능 제공',
-            '마네킹컷 2회 무료 수정 가능',
-            '모든 AI 모델 무료 제공',
-            '충전할 때마다 크레딧 10% 보너스',
+            { text: 'Seller의 모든 기능 제공', inherited: true },
+            { text: '마네킹컷 2회 무료 수정 가능', highlight: '2회 무료 수정' },
+            { text: '모든 AI 모델 무료 제공', highlight: '무료 제공' },
+            { text: '충전할 때마다 크레딧 10% 보너스', highlight: '10% 보너스' },
         ],
-        ctaLabel: '구매하기',
     },
 ];
 
-const PricingCard = ({ plan, delay }: { plan: Plan; delay: number }) => {
-    const cardRef = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const standardPageCount = Math.floor(Number(plan.credits.replaceAll(',', '')) / STANDARD_PAGE_CREDITS);
+// 3열(lg)에서만 순차 등장시킨다. 세로 스택에서는 카드마다 따로 관찰하므로 지연이 필요 없다.
+const STAGGER = ['', 'lg:delay-100', 'lg:delay-200'] as const;
 
-    useEffect(() => {
-        const el = cardRef.current;
-        if (!el) return;
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-            { threshold: 0.2 }
-        );
-        observer.observe(el);
-        return () => observer.disconnect();
-    }, []);
+const renderFeatureText = ({ text, highlight }: PlanFeature) => {
+    const start = highlight ? text.indexOf(highlight) : -1;
+    if (!highlight || start < 0) return text;
+    return (
+        <>
+            {text.slice(0, start)}
+            <strong className="font-semibold text-[#1A1A1A]">{highlight}</strong>
+            {text.slice(start + highlight.length)}
+        </>
+    );
+};
+
+const PricingCard = ({ plan, index }: { plan: Plan; index: number }) => {
+    const [cardRef, isVisible] = useInViewOnce<HTMLDivElement>(0.2);
+    const planSlug = plan.name.toLowerCase();
+    const titleId = `plan-${planSlug}`;
+    const ctaHref = `${APP_PRICING_URL}?plan=${planSlug}`;
+    const ctaLabel = `${plan.name}로 시작하기`;
 
     return (
         <div
             ref={cardRef}
-            className={`relative h-full transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-            style={{ transitionDelay: `${delay}ms` }}
-        >
-            {/* Recommended Badge */}
-            {plan.recommended && (
-                <Badge variant="dark" className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
-                    MOST POPULAR
-                </Badge>
+            className={cn(
+                'h-full transition-[opacity,translate] duration-700 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none',
+                STAGGER[index],
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
             )}
+        >
+            <Card
+                as="article"
+                variant={plan.recommended ? 'featured' : 'default'}
+                aria-labelledby={titleId}
+                className="flex h-full flex-col"
+            >
+                {/* 카드 윗선에 걸치는 배지. 같은 뜻을 h3 안 sr-only로 읽히므로 중복 낭독을 막는다. */}
+                {plan.recommended && (
+                    <Badge
+                        variant="dark"
+                        size="md"
+                        aria-hidden="true"
+                        className="absolute -top-4 left-1/2 z-10 -translate-x-1/2"
+                    >
+                        가장 많이 선택
+                    </Badge>
+                )}
 
-            <div className="flex h-full flex-col rounded-[20px] border-[1.5px] border-[rgba(34,42,53,0.12)] bg-white p-5 min-[381px]:p-7 min-[1001px]:p-[clamp(20px,2.8vw,40px)] shadow-[0_4px_8px_rgba(34,42,53,0.05)]">
-                {/* Billing kicker */}
-                <p className="mb-1 text-[13px] font-medium text-[#9E9E9E]">{plan.billing}</p>
-
-                {/* Plan Name */}
-                <p className="mb-4 text-[26px] font-extrabold tracking-[-0.02em] text-[#1A1A1A] max-md:mb-3 max-md:leading-[1.25]">
-                    {plan.name}
+                {/* Billing kicker — 추천 카드는 배지 아래 16px 이상을 띄운다. */}
+                <p
+                    className={cn(
+                        'mb-1 text-[14px] leading-[1.4] font-medium text-[#6B6B6B]',
+                        // lg 이상은 mt-2가 카드의 8px 리프트를 상쇄해 세 카드의 행이 맞는다(xl 포함).
+                        plan.recommended && 'mt-3 lg:mt-2'
+                    )}
+                >
+                    {plan.billing}
                 </p>
 
-                {/* Price */}
-                <div className="max-md:leading-[1.2]">
-                    <span className="text-[36px] font-extrabold text-[#1A1A1A]">{plan.price}</span>
-                    {plan.priceSuffix && (
-                        <span className="text-[16px] text-[#9E9E9E]"> {plan.priceSuffix}</span>
-                    )}
-                </div>
+                <h3
+                    id={titleId}
+                    className="mb-3 text-[22px] leading-[1.25] font-bold tracking-[-0.01em] text-[#1A1A1A] md:mb-4 md:text-[24px]"
+                >
+                    {plan.name}
+                    {plan.recommended && <span className="sr-only"> (추천 요금제)</span>}
+                </h3>
 
-                {/* 스튜디오와 동일하게 총 크레딧 오른쪽 위에 증정 태그를 표시한다. */}
-                <div className={`relative my-6 border-y border-[rgba(34,42,53,0.08)] pb-6 pt-[52px] ${plan.bonusNote ? '' : 'max-md:pt-6'}`}>
-                  <div className="flex items-baseline gap-2 whitespace-nowrap text-[24px] font-extrabold tracking-[-0.02em] text-[#1A1A1A]">
-                    {plan.baseCredits && (
-                        <>
-                            <s className="text-[18px] font-semibold text-[#B5B5B5] decoration-2">{plan.baseCredits}</s>
-                            <span className="text-[18px] font-medium text-[#B5B5B5]">→</span>
-                        </>
-                    )}
-                    <span className="inline-block">
-                        {plan.credits}
-                        {plan.bonusNote && (
-                            <em className="absolute right-0 top-4 inline-flex min-h-7 items-center whitespace-nowrap rounded-[12px_12px_12px_4px] border border-(--pricing-bonus-border) bg-(--pricing-bonus-bg) px-2.5 py-1 text-[12px] leading-[18px] font-semibold not-italic tracking-[-0.01em] text-(--pricing-bonus-fg) shadow-[0_3px_4px_-3px_color-mix(in_srgb,var(--pricing-bonus-fg)_24%,transparent)]">
-                                {plan.bonusNote}
-                            </em>
-                        )}
+                <p className="leading-[1.15]">
+                    <span className="text-[32px] font-bold tracking-[-0.02em] tabular-nums text-[#1A1A1A] md:text-[36px]">
+                        {plan.price}
                     </span>
-                    <span className="text-[14px] font-medium text-[#6B6B6B]">크레딧</span>
-                  </div>
-                  <p className="mt-2 text-[15px] font-medium text-[#6B6B6B]">
-                    상세페이지 약 <span className="font-bold text-[#1A1A1A]">{standardPageCount}개</span>
-                  </p>
+                    <span aria-hidden="true" className="text-[16px] text-[#6B6B6B]"> / 월</span>
+                    <span className="sr-only">, 매월 결제</span>
+                </p>
+
+                {/* 증정 카드는 숫자 위 태그 자리(태그 28 + 간격 8)를 비워 두고, 3열에서는 Starter도 같은 높이로 맞춘다. */}
+                <div
+                    className={cn(
+                        'my-5 border-y border-[rgba(34,42,53,0.08)] pb-5 lg:my-6 lg:pb-6',
+                        plan.bonusNote ? 'pt-[52px]' : 'pt-5 lg:pt-[52px]'
+                    )}
+                >
+                    <div className="flex items-baseline gap-2 whitespace-nowrap text-[20px] leading-[1.4] font-bold tracking-[-0.02em] text-[#1A1A1A]">
+                        {plan.baseCredits && (
+                            <>
+                                <s className="text-[16px] leading-[24px] font-semibold tracking-normal text-[#6B6B6B] decoration-[1.5px]">
+                                    <span className="sr-only">기존 </span>
+                                    {plan.baseCredits}
+                                </s>
+                                <span aria-hidden="true" className="text-[16px] font-medium tracking-normal text-[#B5B5B5]">
+                                    →
+                                </span>
+                            </>
+                        )}
+                        {/* 태그를 새 숫자 왼쪽 위에 붙여 꼬리가 항상 그 숫자를 가리키게 한다(단위 뒤에 두어 '1,600 크레딧'이 이어 읽힘). */}
+                        <span className="relative inline-flex items-baseline gap-2">
+                            <span>
+                                {plan.baseCredits && <span className="sr-only">증정 포함 </span>}
+                                {plan.credits}
+                            </span>
+                            <span className="text-[14px] font-medium tracking-normal text-[#6B6B6B]">크레딧</span>
+                            {plan.bonusNote && (
+                                <em className="absolute bottom-full left-0 mb-2 inline-flex min-h-7 items-center whitespace-nowrap rounded-[12px_12px_12px_4px] border border-(--pricing-bonus-border) bg-(--pricing-bonus-bg) px-2.5 py-1 text-[13px] leading-[18px] font-semibold not-italic tracking-[-0.01em] text-(--pricing-bonus-fg) shadow-[0_3px_4px_-3px_color-mix(in_srgb,var(--pricing-bonus-fg)_24%,transparent)]">
+                                    {plan.bonusNote}
+                                </em>
+                            )}
+                        </span>
+                    </div>
                 </div>
 
-                {/* Features */}
-                <ul className="mb-8 flex-1 space-y-3.5">
-                    {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-3">
+                <ul className="mb-6 flex-1 space-y-3 md:mb-8">
+                    {plan.features.map((feature) => (
+                        <li key={feature.text} className="flex items-start gap-2.5">
                             <span
-                                className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-[#2F80ED]"
+                                className="mt-px flex size-5 shrink-0 items-center justify-center rounded-full bg-[#2F80ED] xl:mt-0.5"
                                 aria-hidden="true"
                             >
                                 <Check size={12} strokeWidth={3} className="text-white" />
                             </span>
-                            <span className="text-[15px] text-[#6B6B6B]">{feature}</span>
+                            <span
+                                className={cn(
+                                    'text-[15px] leading-[1.5] xl:text-[16px]',
+                                    feature.inherited ? 'text-[#6B6B6B]' : 'text-[#4A4A4A]'
+                                )}
+                            >
+                                {renderFeatureText(feature)}
+                            </span>
                         </li>
                     ))}
                 </ul>
 
-                {/* 분석 특징 칩과 같은 색상·9초 회전. 다른 섹션의 공용 테두리는 유지한다. */}
-                <div className="mt-auto rounded-[13px] p-0.5 [background:conic-gradient(from_var(--pricing-ring-angle),var(--pricing-glow-sky),var(--pricing-glow-sage),var(--pricing-glow-sun),var(--pricing-glow-mauve),var(--pricing-glow-sky))] motion-safe:animate-[pricingRingRotate_9s_linear_infinite]">
-                    <button
-                        type="button"
-                        onClick={goToPricing}
-                        className="min-h-11 w-full cursor-pointer rounded-[11px] bg-[#2C2C2C] px-8 py-3 text-[16px] font-semibold text-white transition-colors hover:bg-[#1B1B1B] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7fd0f0] motion-reduce:transition-none"
-                        aria-label={`${plan.name} 요금제 선택하기`}
-                        tabIndex={0}
-                    >
-                        {plan.ctaLabel}
-                    </button>
-                </div>
-            </div>
+                {plan.recommended ? (
+                    // 움직이는 강조는 추천 CTA 링 하나만 남긴다(체계 Animated accent budget).
+                    <div className="mt-auto rounded-full p-0.5 [background:conic-gradient(from_var(--pricing-ring-angle),var(--pricing-glow-sky),var(--pricing-glow-sage),var(--pricing-glow-sun),var(--pricing-glow-mauve),var(--pricing-glow-sky))] motion-safe:animate-[pricingRingRotate_9s_linear_infinite]">
+                        <a href={ctaHref} className={buttonStyles({ variant: 'primary', size: 'md', className: 'flex w-full' })}>
+                            {ctaLabel}
+                        </a>
+                    </div>
+                ) : (
+                    <a href={ctaHref} className={buttonStyles({ variant: 'outline', size: 'md', className: 'mt-auto flex w-full' })}>
+                        {ctaLabel}
+                    </a>
+                )}
+            </Card>
         </div>
     );
 };
 
 const PricingSection = () => {
     return (
-        <section
+        <Section
             id="pricing"
-            className="px-6 py-16 sm:py-24 md:py-32"
-            style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                backdropFilter: 'blur(30px)',
-                borderTop: '1px solid rgba(235, 230, 220, 0.5)',
-            }}
+            aria-labelledby="pricing-title"
+            className="border-t border-[rgba(34,42,53,0.08)] bg-[rgba(255,255,255,0.5)] backdrop-blur-[30px]"
         >
-            <div className="mx-auto max-w-[1180px]">
+            <div className="mx-auto w-full max-w-[1200px]">
                 <SectionHeader
                     label="PRICING"
                     title="합리적인 요금제"
-                    subtitle="월간 정기결제 상품으로, 결제 완료 즉시 1개월 동안 이용할 수 있어요."
+                    titleId="pricing-title"
+                    subtitle={<>월간 정기결제 상품으로,<br className="md:hidden" /> 결제 즉시 1개월 동안 이용할 수 있어요.</>}
                 />
 
-                <div className="grid grid-cols-1 items-stretch gap-6 min-[1001px]:grid-cols-3">
+                <div className="mx-auto grid max-w-[560px] grid-cols-1 items-stretch gap-8 lg:max-w-none lg:grid-cols-3 lg:gap-6">
                     {PLANS.map((plan, i) => (
-                        <PricingCard key={plan.name} plan={plan} delay={i * 100} />
+                        <PricingCard key={plan.name} plan={plan} index={i} />
                     ))}
                 </div>
-                <p className="mt-6 text-center text-[14px] text-[#6B6B6B]">
-                    <span className="block">상세페이지 1개의 제작을 처음부터 끝까지 진행했을 때{' '}<br className="max-[359px]:hidden md:hidden" />평균적으로 약{'\u00A0'}250크레딧이 소모됩니다.</span>
-                    <span className="block">컷수에 따라 소모되는 비용은 상이합니다.</span>
-                </p>
-                <p className="mt-1.5 text-center text-[14px] text-[#6B6B6B]">
-                    해지 전까지 매월 자동으로 결제돼요.{' '}
-                    <Link href="/refund" className="whitespace-nowrap underline underline-offset-4">환불 및 크레딧 이용조건</Link>
-                </p>
+
+                <div className="mx-auto mt-6 max-w-[560px] text-center text-[14px] leading-[1.6] text-[#5C5C5C] md:mt-8">
+                    <p className="text-balance">
+                        <span className="block">
+                            {/* 괄호 속 구성은 한 덩어리로 묶어 '+' 앞뒤에서 갈리지 않게 한다. */}
+                            상세페이지 1개를 표준 구성
+                            <span className="inline-block">(마네킹컷 + AI 컷 10장 + 에디터 수정 1회)으로</span>{' '}
+                            만들면 평균 약{' '}250크레딧이 들어요.
+                        </span>
+                        <span className="block">컷 수에 따라 달라질 수 있어요.</span>
+                    </p>
+                    <p className="mt-2">해지 전까지 매월 자동으로 결제돼요.</p>
+                    <Link
+                        href="/refund"
+                        className="inline-flex min-h-11 items-center font-medium text-[#4A4A4A] underline decoration-black/20 underline-offset-4 transition-colors hover:text-[#1A1A1A] hover:decoration-current"
+                    >
+                        환불 및 크레딧 이용조건
+                    </Link>
+                </div>
             </div>
-        </section>
+        </Section>
     );
 };
 

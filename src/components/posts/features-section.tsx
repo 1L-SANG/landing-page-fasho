@@ -1,64 +1,78 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Check } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Section } from '@/components/ui/section';
 import { SectionHeader } from '@/components/ui/section-header';
+import { useInViewOnce } from '@/components/ui/use-in-view-once';
 
+// 사파리(WebKit)는 balance·pretty가 꺼지므로(globals.css) 의미 단위를 NBSP(U+00A0)로 묶어 한 단어만 남는 줄을 막는다.
+// 묶은 단위가 길어지면 크롬의 balance·pretty가 다른 곳(가운뎃점 앞뒤, '실제와 / 가깝게' 등)을 끊으므로 그쪽도 함께 묶는다.
+// '핏감·기장·색감'의 가운뎃점 앞뒤에는 WORD JOINER(U+2060)를 넣었다.
 const FEATURES = [
     {
         question: '실제랑 다른 의류처럼 보이면 어떡하죠?',
-        title: '의류를 실제와 가깝게 만들고 넘어가요',
-        description: '의류컷을 만들기 전에, 핏감, 색감 등을 확실하게 맞추고 넘어갈 수 있어요.',
+        // 3열(1024+)에서 제목을 의미 단위 두 줄로 고정해 설명·프리뷰 시작선을 맞춘다.
+        title: ['의류를 실제와 가깝게', '만들고 넘어가요'],
+        description: '의류컷을 만들기 전에 핏감⁠·⁠기장⁠·⁠색감부터 실제 옷과 맞춰요.',
     },
     {
         question: '색상마다 따로 만들어야 하나요?',
-        title: '색상이 여러 개여도 한 번에 만들어요',
-        description: '색상을 추가하면 색상별 컷까지 한 페이지에 담아요.',
+        title: ['색상이 여러 개여도', '한 번에 만들어요'],
+        description: '색상을 추가하면 색상별 컷까지 한 페이지에 담아요.',
     },
     {
         question: 'AI가 없는 말을 지어내면요?',
-        title: '확인한 정보로만 문구를 써요',
-        description: '카피 문구는 직접 확인한 소재와 강조 특징을 근거로 써요.',
+        title: ['확인한 정보로만', '문구를 써요'],
+        description: '카피 문구는 직접 확인한 소재와 강조 특징을 근거로 써요.',
     },
 ] as const;
 
 const GARMENT_CHECKS = [
     { title: '핏감', description: '실제 옷에 가깝게' },
     { title: '기장', description: '실제 길이에 맞게' },
-    { title: '색감', description: '조명에 틀어진 색까지' },
+    { title: '색감', description: '조명 왜곡까지' },
 ] as const;
 
 const COLORS = [
-    { image: 'knit-ivory', label: '아이보리', color: '#EFE8D8' },
-    { image: 'knit-pink', label: '핑크', color: '#E8AAB8' },
-    { image: 'knit-sky', label: '소라', color: '#A0C4E4' },
-    { image: 'knit-sage', label: '세이지', color: '#ACBEA0' },
+    { image: 'knit-ivory', label: '아이보리' },
+    { image: 'knit-pink', label: '핑크' },
+    { image: 'knit-sky', label: '소라' },
+    { image: 'knit-sage', label: '세이지' },
 ] as const;
 
-const GarmentPreview = ({ isVisible }: { isVisible: boolean }) => (
+// 3열에서만 카드 등장을 차례로 늦춘다(1열에서는 카드마다 따로 보일 때 바로 등장).
+const STAGGER = ['', 'lg:delay-120', 'lg:delay-240'] as const;
+// 프리뷰 재생 시점 계산용. 카드 래퍼의 duration-700, STAGGER의 120ms 간격과 값을 맞춘다.
+const ENTER_MS = 700;
+const STAGGER_MS = 120;
+
+const GarmentPreview = ({ play }: { play: boolean }) => (
     <div className="grid grid-cols-[34%_minmax(0,1fr)] items-center gap-3">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-[10px] bg-[#EDEDED]">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-[8px] bg-[#EDEDED]">
             <Image
                 src="/sections/mannequin-tee.webp"
                 alt=""
                 fill
-                sizes="(min-width: 1024px) 90px, (min-width: 640px) 160px, 30vw"
+                // scale-[1.55] 확대분까지 반영한 표시 폭
+                sizes="(min-width: 1280px) 146px, (min-width: 1024px) 124px, (min-width: 768px) 135px, (min-width: 640px) 258px, 44vw"
                 className="origin-[50%_12%] scale-[1.55] object-cover object-[50%_0]"
             />
         </div>
         <ul className="flex flex-col gap-[7px] xl:gap-2">
             {GARMENT_CHECKS.map((item, i) => (
-                <li key={item.title} className="flex items-start gap-[9px] rounded-[10px] bg-white px-3 py-2.5 lg:px-[10px] lg:py-2 xl:px-3 xl:py-[11px]">
+                <li key={item.title} className="flex items-start gap-[9px] rounded-[8px] bg-white px-3 py-2.5">
                     <span
-                        className={`mt-px inline-flex size-5 lg:size-[18px] xl:size-5 shrink-0 items-center justify-center rounded-full bg-[#2F80ED] [transition:scale_.38s_cubic-bezier(.34,1.56,.64,1),opacity_.2s] motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
-                        style={{ transitionDelay: `${900 + i * 250}ms` }}
+                        className={`mt-px inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-[#2F80ED] [transition:scale_.38s_cubic-bezier(.34,1.56,.64,1),opacity_.2s] motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none ${play ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
+                        style={{ transitionDelay: `${300 + i * 250}ms` }}
                     >
                         <Check size={11} strokeWidth={3} className="text-white" />
                     </span>
                     <div>
-                        <b className="block text-[14px] lg:text-[13px] xl:text-[15px] leading-[1.35] font-bold text-[#1A1A1A]">{item.title}</b>
-                        <small className="mt-px block text-[12px] lg:text-[11.5px] xl:text-[13px] leading-[1.35] text-[#9E9E9E]">{item.description}</small>
+                        <b className="block text-[14px] xl:text-[15px] leading-[1.4] font-bold text-[#1A1A1A]">{item.title}</b>
+                        <small className="mt-px block text-[12px] xl:text-[13px] leading-[1.4] text-[#6B6B6B]">{item.description}</small>
                     </div>
                 </li>
             ))}
@@ -68,7 +82,7 @@ const GarmentPreview = ({ isVisible }: { isVisible: boolean }) => (
 
 const ColorPreview = () => (
     <>
-        <div className="grid grid-cols-4 gap-[6px] xl:gap-2">
+        <div className="grid grid-cols-4 gap-2">
             {COLORS.map((color) => (
                 <figure key={color.image}>
                     <div className="relative aspect-square overflow-hidden rounded-[8px] bg-[#F6F5F8]">
@@ -76,106 +90,121 @@ const ColorPreview = () => (
                             src={`/sections/${color.image}.webp`}
                             alt=""
                             fill
-                            sizes="(min-width: 1024px) 60px, (min-width: 640px) 112px, 20vw"
+                            sizes="(min-width: 1024px) 63px, (min-width: 768px) 58px, (min-width: 640px) 118px, 20vw"
                             className="object-cover"
                         />
                     </div>
-                    <figcaption className="mt-[6px] flex items-center justify-center gap-1 text-[12px] lg:text-[11px] xl:text-[13px] font-semibold whitespace-nowrap text-[#6B6B6B]">
-                        <span className="size-2 xl:size-[9px] shrink-0 rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]" style={{ backgroundColor: color.color }} />
+                    <figcaption className="mt-[6px] text-center text-[12px] xl:text-[13px] leading-[1.4] font-medium whitespace-nowrap text-[#6B6B6B]">
                         {color.label}
                     </figcaption>
                 </figure>
             ))}
         </div>
-        <div className="mt-[10px] text-center text-[13px] lg:text-[12.5px] xl:text-[14px] font-semibold text-[#3A3A3A]">색상 4개, 상세페이지 1개</div>
+        <p className="mt-3 text-center text-[14px] leading-[1.4] font-bold text-[#1A1A1A]">색상 4개 → 상세페이지 1개</p>
     </>
 );
 
-const CopyPreview = ({ isVisible }: { isVisible: boolean }) => (
+const CopyPreview = ({ play }: { play: boolean }) => (
     <>
-        <div className="mb-[14px] flex flex-wrap gap-[6px] text-[12.5px] lg:text-[12px] xl:text-[13px] font-semibold text-[#1A1A1A]">
-            <span className="py-1 pr-[10px] text-[#9E9E9E]">확인한 정보</span>
+        <div className="mb-[14px] flex flex-wrap gap-[6px] text-[12px] xl:text-[13px] font-semibold text-[#1A1A1A]">
+            <span className="basis-full pb-0.5 text-[#6B6B6B]">확인한 정보</span>
             <span className="rounded-full bg-white px-[10px] py-1 xl:px-3 xl:py-[5px]">소재 면 100%</span>
             <span className="rounded-full bg-white px-[10px] py-1 xl:px-3 xl:py-[5px]">라운드넥</span>
         </div>
-        <div className="relative rounded-[10px] bg-white px-3 py-[10px] xl:px-[14px] xl:py-3 text-[14.5px] lg:text-[14px] xl:text-[15.5px] leading-[1.45] text-[#9E9E9E]">
-            비 오는 날에도 끄떡없는 방수 소재
-            <span className={`absolute top-1/2 left-3 xl:left-[14px] h-[1.5px] bg-[#E0527A] transition-[width] duration-[600ms] ease-[ease] motion-reduce:w-[calc(100%-24px)] xl:motion-reduce:w-[calc(100%-28px)] motion-reduce:transition-none ${isVisible ? 'w-[calc(100%-24px)] xl:w-[calc(100%-28px)]' : 'w-0'}`} style={{ transitionDelay: '1140ms' }} />
+        <div className="rounded-[8px] bg-white px-3 py-[10px] xl:px-[14px] xl:py-3 text-[14px] xl:text-[15px] leading-[1.45] text-[#6B6B6B]">
+            {/* 문장을 relative span으로 감싸 취소선이 박스가 아니라 글자 폭만큼만 그어지게 한다. */}
+            <span className="relative">
+                비 오는 날에도 끄떡없는 방수 소재
+                <span
+                    className={`absolute top-1/2 left-0 h-[2px] -translate-y-1/2 bg-[#E0527A] transition-[width] duration-[600ms] ease-[ease] motion-reduce:w-full motion-reduce:transition-none ${play ? 'w-full' : 'w-0'}`}
+                    style={{ transitionDelay: '400ms' }}
+                />
+            </span>
         </div>
-        <div className={`mt-2 rounded-[10px] bg-white px-3 py-[10px] xl:px-[14px] xl:py-3 text-[14.5px] lg:text-[14px] xl:text-[15.5px] leading-[1.45] font-semibold text-[#1A1A1A] transition-[opacity,translate] duration-[400ms] ease-[ease] motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'}`} style={{ transitionDelay: '1840ms' }}>
+        <div
+            className={`mt-2 rounded-[8px] bg-white px-3 py-[10px] xl:px-[14px] xl:py-3 text-[14px] xl:text-[15px] leading-[1.45] font-semibold text-[#1A1A1A] transition-[opacity,translate] duration-[400ms] ease-[ease] motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${play ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'}`}
+            style={{ transitionDelay: '1000ms' }}
+        >
             면 100%라 피부에 부드럽게 닿아요
         </div>
     </>
 );
 
-const FeaturesSection = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
-
+const FeatureCard = ({ feature, index }: { feature: (typeof FEATURES)[number]; index: number }) => {
+    const [cardRef, isShown] = useInViewOnce<HTMLDivElement>(0.15);
+    const [previewRef, isPreviewInView] = useInViewOnce<HTMLDivElement>(0.5, '0px 0px -10% 0px');
+    const [hasEntered, setHasEntered] = useState(false);
+    // 카드 등장이 끝난 뒤, 프리뷰가 실제로 보일 때만 마이크로 애니메이션을 재생한다.
+    // 등장 끝은 transitionend가 아니라 시간으로 잡는다. 동작 줄이기(transition-none)에서는 그 이벤트가 오지 않아,
+    // 나중에 설정을 끄면 체크·교정 문장이 숨은 채 남는다. 동작 줄이기에서는 기다리지 않는다(각 요소가 최종 상태로 보임).
     useEffect(() => {
-        const el = sectionRef.current;
-        if (!el) return;
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.disconnect();
-                }
-            },
-            { threshold: 0.15 }
-        );
-        observer.observe(el);
-        return () => observer.disconnect();
-    }, []);
+        if (!isShown) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const stagger = window.matchMedia('(min-width: 1024px)').matches ? index * STAGGER_MS : 0;
+        const timer = window.setTimeout(() => setHasEntered(true), reduce ? 0 : ENTER_MS + stagger);
+        return () => window.clearTimeout(timer);
+    }, [isShown, index]);
+    const play = hasEntered && isPreviewInView;
 
     return (
-        <section
-            id="features"
-            ref={sectionRef}
-            className="relative border-t border-[rgba(235,230,220,0.5)] bg-[rgba(255,255,255,0.5)] px-6 py-16 sm:py-24 break-keep [overflow-wrap:break-word] backdrop-blur-[30px] md:py-32"
+        <div
+            ref={cardRef}
+            className={`flex transition-[opacity,translate] duration-700 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${STAGGER[index]} ${isShown ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}
         >
-            <div className="mx-auto max-w-[1100px] xl:max-w-[1200px]">
-                <SectionHeader
-                    label="MADE FOR FASHION"
-                    title="의류 쇼핑몰에 최적화된 이유"
-                    subtitle="옷은 실제처럼, 색상은 한 번에, 문구는 사실대로."
-                />
-                <div className="mx-auto grid max-w-[560px] grid-cols-1 gap-5 lg:max-w-none lg:grid-cols-3 lg:gap-6 xl:gap-7">
-                    {FEATURES.map((feature, i) => (
-                        <div
-                            key={feature.title}
-                            className={`flex transition-[opacity,translate] duration-700 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                            style={{ transitionDelay: `${i * 120}ms` }}
-                        >
-                            <article className="flex min-w-0 flex-1 flex-col rounded-[20px] xl:rounded-[24px] border-[1.5px] border-[rgba(34,42,53,0.12)] bg-white p-7 xl:p-9 shadow-[0_4px_8px_rgba(34,42,53,0.05)] transition-[translate,border-color] duration-[250ms] ease-[ease] hover:border-[rgba(34,42,53,0.2)] motion-safe:hover:-translate-y-[2px] motion-reduce:transition-none max-[640px]:p-6">
-                                <span className="relative mb-[22px] xl:mb-6 self-start rounded-[14px_14px_14px_0] bg-[#F0F0F0] px-3 py-[7px] xl:px-[14px] xl:py-2 text-[13px] xl:text-[14px] leading-[1.45] font-medium text-[#6B6B6B] after:absolute after:top-full after:left-0 after:border-t-[6px] after:border-r-[9px] xl:after:border-t-[7px] xl:after:border-r-[10px] after:border-t-[#F0F0F0] after:border-r-transparent after:content-['']">
-                                    {feature.question}
-                                </span>
-                                <h3 className="mb-[10px] flex items-start gap-[10px] text-[19px] lg:text-[20px] xl:text-[22px] leading-[1.4] font-bold text-[#1A1A1A] max-[640px]:text-[18px]">
-                                    <span aria-hidden="true" className="mt-0.5 inline-flex size-[22px] xl:size-[26px] shrink-0 items-center justify-center rounded-full bg-[#2F80ED]">
-                                        <Check size={13} strokeWidth={3} className="text-white xl:size-[15px]" />
-                                    </span>
-                                    {feature.title}
-                                </h3>
-                                <p className="mb-[22px] xl:mb-7 text-[15px] xl:text-[16px] leading-[1.65] xl:leading-[1.7] text-[#6B6B6B]">{feature.description}</p>
-                                <div aria-hidden="true" className="relative mt-auto flex min-h-[176px] xl:min-h-[220px] flex-col justify-center rounded-[14px] xl:rounded-[16px] bg-[#F5F5F7] p-4 xl:p-[22px] leading-[normal]">
-                                    {i === 0 ? <GarmentPreview isVisible={isVisible} /> : i === 1 ? <ColorPreview /> : <CopyPreview isVisible={isVisible} />}
-                                </div>
-                            </article>
-                        </div>
-                    ))}
+            {/* 768~1023은 텍스트와 프리뷰를 가로로 놓는다(1열이 늘어난 채 쓰이던 구간). */}
+            <Card
+                as="article"
+                className="flex min-w-0 flex-1 flex-col md:max-lg:grid md:max-lg:grid-cols-[minmax(0,1fr)_280px] md:max-lg:items-center md:max-lg:gap-x-6"
+            >
+                <div className="flex min-w-0 flex-col">
+                    <span className="relative mb-[22px] xl:mb-6 self-start rounded-[14px_14px_14px_0] bg-[#F0F0F0] px-3 py-[7px] xl:px-[14px] xl:py-2 text-[14px] leading-[1.45] font-medium text-[#6B6B6B] after:absolute after:top-full after:left-0 after:border-t-[6px] after:border-r-[9px] xl:after:border-t-[7px] xl:after:border-r-[10px] after:border-t-[#F0F0F0] after:border-r-transparent after:content-['']">
+                        {feature.question}
+                    </span>
+                    <h3 className="mb-3 flex items-start gap-[10px] text-[18px] md:text-[20px] leading-[1.4] font-bold tracking-[-0.01em] text-balance text-[#1A1A1A]">
+                        <span aria-hidden="true" className="mt-0.5 inline-flex size-[22px] md:size-6 shrink-0 items-center justify-center rounded-full bg-[#2F80ED]">
+                            <Check size={13} strokeWidth={3} className="text-white md:size-[14px]" />
+                        </span>
+                        {/* br은 h3(flex) 직속이면 flex item이 되므로 span 안에 둔다. */}
+                        <span className="min-w-0">
+                            {feature.title[0]}
+                            <br className="hidden lg:inline" />{' '}
+                            {feature.title[1]}
+                        </span>
+                    </h3>
+                    <p className="mb-5 md:mb-6 md:max-lg:mb-0 text-[15px] xl:text-[16px] leading-[1.65] text-pretty text-[#6B6B6B]">{feature.description}</p>
                 </div>
-                <div className="mx-auto mt-7 xl:mt-8 flex max-w-[560px] items-center justify-between gap-4 rounded-[16px] border-[1.5px] border-[rgba(34,42,53,0.12)] bg-white px-[22px] py-4 xl:px-7 xl:py-5 shadow-[0_4px_8px_rgba(34,42,53,0.05)] max-[640px]:flex-col max-[640px]:items-start lg:max-w-none">
-                    <p className="text-[15px] lg:text-[15px] xl:text-[16px] leading-[1.55] text-[#6B6B6B]">
-                        <b className="font-bold text-[#1A1A1A]">사람 모델이 필요하면,</b>{' '}사용에 동의하고 라이선스를 받은 실제 모델도 고를 수 있어요. 별도 라이선스 요금이 있어요.
-                    </p>
-                    <a href="https://facemarket.wearless.kr" target="_blank" rel="noopener noreferrer" className="max-md:inline-block max-md:py-3 max-md:-my-3 shrink-0 text-[14px] xl:text-[15px] font-semibold text-[#1A1A1A] underline underline-offset-4">
-                        FaceMarket 알아보기
-                    </a>
+                <div
+                    ref={previewRef}
+                    aria-hidden="true"
+                    className="mt-auto flex flex-col justify-center rounded-[12px] bg-[#F5F5F7] p-3 xl:p-[22px] leading-[normal] md:max-lg:mt-0 lg:min-h-[212px] xl:min-h-[244px]"
+                >
+                    {index === 0 ? <GarmentPreview play={play} /> : index === 1 ? <ColorPreview /> : <CopyPreview play={play} />}
                 </div>
-            </div>
-        </section>
+            </Card>
+        </div>
     );
 };
+
+const FeaturesSection = () => (
+    <Section
+        id="features"
+        aria-labelledby="features-title"
+        className="relative border-t border-[rgba(34,42,53,0.08)] bg-[rgba(255,255,255,0.5)] backdrop-blur-[30px]"
+    >
+        <div className="mx-auto w-full max-w-[1200px]">
+            <SectionHeader
+                label="MADE FOR FASHION"
+                title="의류 쇼핑몰에 최적화된 이유"
+                titleId="features-title"
+                subtitle="옷은 실제처럼, 색상은 한 번에, 문구는 사실대로."
+            />
+            <div className="mx-auto grid max-w-[560px] grid-cols-1 gap-5 md:max-w-[720px] md:gap-6 lg:max-w-none lg:grid-cols-3">
+                {FEATURES.map((feature, i) => (
+                    <FeatureCard key={feature.title[0]} feature={feature} index={i} />
+                ))}
+            </div>
+        </div>
+    </Section>
+);
 
 export { FeaturesSection };

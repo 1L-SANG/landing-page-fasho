@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const NotFound = () => {
     const handleGoBack = () => {
@@ -38,23 +39,13 @@ const NotFound = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 sm:flex-row">
-                <button
-                    onClick={handleGoBack}
-                    className="flex items-center justify-center gap-2 rounded-full border-[1.5px] border-[#E5E5E5] px-8 py-3 text-[16px] font-medium text-[#6B6B6B] transition-all hover:border-[#1A1A1A] hover:text-[#1A1A1A]"
-                    aria-label="이전 페이지로 돌아가기"
-                    tabIndex={0}
-                >
+                <Button variant="outline" size="md" onClick={handleGoBack}>
                     <ArrowLeft size={18} aria-hidden="true" />
                     뒤로 가기
-                </button>
-                <button
-                    onClick={handleGoHome}
-                    className="rounded-full bg-[#1A1A1A] px-8 py-3 text-[16px] font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[#333333]"
-                    aria-label="홈으로 이동"
-                    tabIndex={0}
-                >
+                </Button>
+                <Button variant="primary" size="md" onClick={handleGoHome}>
                     홈으로 이동
-                </button>
+                </Button>
             </div>
         </div>
     );

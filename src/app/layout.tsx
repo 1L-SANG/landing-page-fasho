@@ -70,8 +70,15 @@ export default function RootLayout({
         {/* AuthProvider 가 Header 를 감싸야 한다 — 로그인 버튼이 이 컨텍스트의 openLogin 을
             부르고, 모달도 이 안에서 렌더된다. */}
         <AuthProvider>
+          {/* 키보드 사용자가 헤더 메뉴를 건너뛰어 본문으로 바로 가게 한다(포커스될 때만 보임). */}
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-6 focus:z-[60] focus:inline-flex focus:h-10 focus:items-center focus:rounded-full focus:bg-white focus:px-4 focus:text-[15px] focus:leading-none focus:font-semibold focus:text-[#1A1A1A] focus:shadow-[0_12px_32px_rgba(34,42,53,0.14)]"
+          >
+            본문 바로가기
+          </a>
           <Header />
-          <main className="relative">{children}</main>
+          <main id="main" className="relative">{children}</main>
           <Footer />
         </AuthProvider>
       </body>

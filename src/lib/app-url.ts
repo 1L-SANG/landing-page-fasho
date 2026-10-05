@@ -31,8 +31,3 @@ export const goToApp = () => {
 export const goToLogin = () => {
     window.location.href = APP_LOGIN_URL;
 };
-
-/** 요금제 선택 → 실서비스 요금제 페이지로 이동 */
-export const goToPricing = () => {
-    window.location.href = APP_PRICING_URL;
-};
