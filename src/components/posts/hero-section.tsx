@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { Star } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { VideoContainer } from '@/components/ui/video-container';
 import { goToApp } from '@/lib/app-url';
@@ -28,20 +27,7 @@ const HeroSection = () => {
             {/* 1180px 이상: 왼쪽 문구 | 오른쪽 영상. 그보다 좁으면 문구 아래 영상 */}
             <div className="mx-auto w-full max-w-[1200px] split:grid split:grid-cols-[minmax(0,42fr)_minmax(0,58fr)] split:items-center split:gap-x-14">
                 <div className="flex w-full flex-col items-center split:items-start">
-                    {/* Stats Badge */}
-                    <div
-                        className="mb-6 animate-fade-in [@media(min-width:1024px)_and_(max-width:1179px)_and_(max-height:820px)]:mb-5"
-                        style={{ animationDelay: '0s', animationDuration: '0.5s' }}
-                    >
-                        <Badge variant="glass">
-                            <Image src="/logo.svg" alt="" width={16} height={16} className="size-4 flex-none" />
-                            <span className="sr-only">Wearless</span>
-                            {/* 숫자와 문장을 한 span으로 묶어 flex gap 대신 일반 공백으로 잇는다. */}
-                            <span>
-                                <span className="font-bold text-[#2F5FBF]">200+개</span> 쇼핑몰이 함께합니다.
-                            </span>
-                        </Badge>
-                    </div>
+                    {/* 2026-10-07 오너 요청으로 '200+개 쇼핑몰' 배지를 잠시 내림. 되돌리려면 이 변경을 revert */}
 
                     {/* Headline */}
                     <h1
