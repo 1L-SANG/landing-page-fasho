@@ -308,7 +308,7 @@ html {
 
   --wl-landing-orb-hero: .40;
   --wl-landing-orb-tail: .70;
-  --wl-landing-orb-peak: 1.0; /* 오너 결정 6: 최고 세기는 이 한 줄에서 조정한다. */
+  --wl-landing-orb-peak: .8; /* 오너 결정(10/15): 한 화면 내린 지점 최고 세기 .80. 이 한 줄에서 조정한다. */
   --wl-landing-aurora-hero: .60;
   --wl-landing-aurora-tail: .85;
 
