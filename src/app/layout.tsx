@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import { APP_URL } from "@/lib/app-url";
 import "./globals.css";
 
 const SITE_URL = 'https://www.wearless.kr';
@@ -51,6 +52,8 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
+        {/* 시작하기를 누르기 전에 앱 주소 연결(DNS, 보안 연결)을 미리 열어 첫 요청을 앞당긴다. */}
+        <link rel="preconnect" href={APP_URL} />
         <script
           dangerouslySetInnerHTML={{
             __html: `(() => {
