@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { installHandoffLifecycle } from '@/lib/landing-handoff';
 import { LuminousOrbBackground } from '@/components/posts/luminous-orb-background';
 import { AuroraEdges } from '@/components/posts/aurora-edges';
 import { HeroSection } from '@/components/posts/hero-section';
@@ -12,8 +14,10 @@ import { ContactSection } from '@/components/posts/contact-section';
 import { FAQSection } from '@/components/posts/faq-section';
 
 const HomePage = () => {
+  useEffect(installHandoffLifecycle, []);
+
   return (
-    <div className="relative min-h-screen">
+    <div data-landing-page className="relative min-h-screen">
       <LuminousOrbBackground />
       <AuroraEdges />
 

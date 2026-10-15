@@ -53,7 +53,7 @@ const HeroSection = () => {
                         style={{ animationDelay: '0.2s', animationDuration: '0.5s' }}
                     >
                         <div className="flex w-full flex-col items-center split:w-auto split:flex-row split:gap-6">
-                            <Button id="hero-start-cta" variant="primary" size="lg" onClick={goToApp}>
+                            <Button id="hero-start-cta" variant="primary" size="lg" data-start-cta onClick={goToApp}>
                                 무료로 시작하기
                             </Button>
                             {/* 좌우 분할에서만 버튼 옆에 둔다. 가운데 정렬에서는 바로 아래가 영상이라 링크가 없어도 된다. */}

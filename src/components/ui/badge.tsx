@@ -18,7 +18,7 @@ const variantStyles: Record<BadgeVariant, string> = {
     neutral: neutralStyles,
     dark: 'bg-[#1A1A1A] text-white',
     glass: 'border border-[rgba(34,42,53,0.08)] bg-white/80 text-[#4A4A4A] shadow-[0_1px_2px_rgba(34,42,53,0.06)] backdrop-blur-sm',
-    info: 'border border-[#dce7f6] bg-[#eef5ff] text-[#3068b4]',
+    info: 'border border-[#dce7f6] bg-[#eef5ff] text-[#3182F6]',
     inverse: 'bg-white/10 text-white',
 };
 

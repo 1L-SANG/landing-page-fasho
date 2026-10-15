@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // 참고본은 실행되는 src 코드와 분리한다(.agent/rules/mockup.md).
+    "_mockup/**",
+    // 라우트·import가 없는 기존 단독 설문 시안.
+    "wearless-survey-3-6.jsx",
   ]),
 ]);
 

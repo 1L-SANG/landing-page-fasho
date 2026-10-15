@@ -8,6 +8,7 @@ import { cn } from '@/components/ui/cn';
 import { Section } from '@/components/ui/section';
 import { SectionHeader } from '@/components/ui/section-header';
 import { useInViewOnce } from '@/components/ui/use-in-view-once';
+import { handleAppLinkClick, handleAppLinkKeyDown } from '@/lib/landing-handoff';
 import { APP_PRICING_URL } from '@/lib/app-url';
 
 interface PlanFeature {
@@ -99,7 +100,7 @@ const PricingCard = ({ plan, index }: { plan: Plan; index: number }) => {
     const [cardRef, isVisible] = useInViewOnce<HTMLDivElement>(0.2);
     const planSlug = plan.name.toLowerCase();
     const titleId = `plan-${planSlug}`;
-    const ctaHref = `${APP_PRICING_URL}?plan=${planSlug}`;
+    const ctaHref = `${APP_PRICING_URL}?plan=${planSlug}&from=landing`;
     const ctaLabel = `${plan.name}로 시작하기`;
 
     return (
@@ -195,7 +196,7 @@ const PricingCard = ({ plan, index }: { plan: Plan; index: number }) => {
                     {plan.features.map((feature) => (
                         <li key={feature.text} className="flex items-start gap-2.5">
                             <span
-                                className="mt-px flex size-5 shrink-0 items-center justify-center rounded-full bg-[#2F80ED] xl:mt-0.5"
+                                className="mt-px flex size-5 shrink-0 items-center justify-center rounded-full bg-[#1A1A1A] xl:mt-0.5"
                                 aria-hidden="true"
                             >
                                 <Check size={12} strokeWidth={3} className="text-white" />
@@ -215,12 +216,12 @@ const PricingCard = ({ plan, index }: { plan: Plan; index: number }) => {
                 {plan.recommended ? (
                     // 움직이는 강조는 추천 CTA 링 하나만 남긴다(체계 Animated accent budget).
                     <div className="mt-auto rounded-full p-0.5 [background:conic-gradient(from_var(--pricing-ring-angle),var(--pricing-glow-sky),var(--pricing-glow-sage),var(--pricing-glow-sun),var(--pricing-glow-mauve),var(--pricing-glow-sky))] motion-safe:animate-[pricingRingRotate_9s_linear_infinite]">
-                        <a href={ctaHref} className={buttonStyles({ variant: 'primary', size: 'md', className: 'flex w-full' })}>
+                        <a href={ctaHref} data-start-cta onClick={handleAppLinkClick} onKeyDown={handleAppLinkKeyDown} className={buttonStyles({ variant: 'primary', size: 'md', className: 'flex w-full' })}>
                             {ctaLabel}
                         </a>
                     </div>
                 ) : (
-                    <a href={ctaHref} className={buttonStyles({ variant: 'outline', size: 'md', className: 'mt-auto flex w-full' })}>
+                    <a href={ctaHref} data-start-cta onClick={handleAppLinkClick} onKeyDown={handleAppLinkKeyDown} className={buttonStyles({ variant: 'outline', size: 'md', className: 'mt-auto flex w-full' })}>
                         {ctaLabel}
                     </a>
                 )}

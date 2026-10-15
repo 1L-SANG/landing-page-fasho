@@ -1,3 +1,6 @@
+import type { MouseEvent } from 'react';
+import { startAppHandoff } from '@/lib/landing-handoff';
+
 // Wearless 상세페이지 스튜디오 (실서비스) 진입 URL
 // NEXT_PUBLIC_APP_URL 로 덮어쓸 수 있다 — 앱을 로컬(vite dev)로 띄워 놓고 랜딩에서
 // 실제로 눌러 보려면 이 값을 바꿔야 한다. 안 주면 실서비스로 간다.
@@ -23,8 +26,8 @@ export const APP_PRICING_URL = `${APP_URL}/pricing`;
  */
 export const APP_LOGIN_URL = `${APP_URL}/create/input?login=1`;
 
-export const goToApp = () => {
-    window.location.href = APP_URL;
+export const goToApp = (event?: MouseEvent<HTMLButtonElement>) => {
+    startAppHandoff(`${APP_URL}/?from=landing`, event?.currentTarget);
 };
 
 /** 로그인 → 실서비스에서 로그인 모달을 띄운 채로 진입 */

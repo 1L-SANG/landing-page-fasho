@@ -65,7 +65,7 @@ const GarmentPreview = ({ play }: { play: boolean }) => (
             {GARMENT_CHECKS.map((item, i) => (
                 <li key={item.title} className="flex items-start gap-[9px] rounded-[8px] bg-white px-3 py-2.5">
                     <span
-                        className={`mt-px inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-[#2F80ED] [transition:scale_.38s_cubic-bezier(.34,1.56,.64,1),opacity_.2s] motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none ${play ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
+                        className={`mt-px inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-[#3182F6] [transition:scale_.38s_cubic-bezier(.34,1.56,.64,1),opacity_.2s] motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:transition-none ${play ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
                         style={{ transitionDelay: `${300 + i * 250}ms` }}
                     >
                         <Check size={11} strokeWidth={3} className="text-white" />
@@ -161,7 +161,7 @@ const FeatureCard = ({ feature, index }: { feature: (typeof FEATURES)[number]; i
                         {feature.question}
                     </span>
                     <h3 className="mb-3 flex items-start gap-[10px] text-[18px] md:text-[20px] leading-[1.4] font-bold tracking-[-0.01em] text-balance text-[#1A1A1A]">
-                        <span aria-hidden="true" className="mt-0.5 inline-flex size-[22px] md:size-6 shrink-0 items-center justify-center rounded-full bg-[#2F80ED]">
+                        <span aria-hidden="true" className="mt-0.5 inline-flex size-[22px] md:size-6 shrink-0 items-center justify-center rounded-full bg-[#3182F6]">
                             <Check size={13} strokeWidth={3} className="text-white md:size-[14px]" />
                         </span>
                         {/* br은 h3(flex) 직속이면 flex item이 되므로 span 안에 둔다. */}
@@ -196,7 +196,7 @@ const FeaturesSection = () => (
                 label="MADE FOR FASHION"
                 title="의류 쇼핑몰에 최적화된 이유"
                 titleId="features-title"
-                subtitle="옷은 실제처럼, 색상은 한 번에, 문구는 사실대로."
+                subtitle={<>옷은 실제처럼, 색상은 <span className="inline-block">한 번에,</span> 문구는 사실대로.</>}
             />
             <div className="mx-auto grid max-w-[560px] grid-cols-1 gap-5 md:max-w-[720px] md:gap-6 lg:max-w-none lg:grid-cols-3">
                 {FEATURES.map((feature, i) => (

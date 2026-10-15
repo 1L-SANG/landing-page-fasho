@@ -63,7 +63,7 @@ const ContactSection = () => {
                                 <br />
                                 지금 무료로 만들어보세요.
                             </p>
-                            <Button variant="inverse" size="lg" onClick={goToApp}>
+                            <Button variant="inverse" size="lg" data-start-cta onClick={goToApp}>
                                 무료로 시작하기
                             </Button>
                         </div>

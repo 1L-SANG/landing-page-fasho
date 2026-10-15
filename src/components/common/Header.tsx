@@ -195,14 +195,14 @@ const Header = () => {
                                 로그아웃
                             </Button>
                         )}
-                        <Button variant="primary" size="sm" onClick={goToApp}>
+                        <Button variant="primary" size="sm" data-start-cta onClick={goToApp}>
                             시작하기
                         </Button>
                     </div>
 
                     {/* 1024 미만: 메뉴를 열지 않아도 시작 경로가 늘 보이도록 햄버거 앞에 compact CTA */}
                     <div className="flex items-center gap-2 lg:hidden">
-                        <Button variant="primary" size="compact" onClick={goToApp}>
+                        <Button variant="primary" size="compact" data-start-cta onClick={goToApp}>
                             시작하기
                         </Button>
                         <button
@@ -229,6 +229,7 @@ const Header = () => {
             {mobileMenuOpen && (
                 <>
                     <div
+                        data-handoff-menu-backdrop
                         className="fixed inset-0 z-40 touch-none bg-black/20 transition-opacity duration-150 starting:opacity-0 lg:hidden"
                         onClick={closeMenuToTrigger}
                         aria-hidden="true"
@@ -266,10 +267,8 @@ const Header = () => {
                                 variant="primary"
                                 size="md"
                                 className="w-full"
-                                onClick={() => {
-                                    setMobileMenuOpen(false);
-                                    goToApp();
-                                }}
+                                data-start-cta
+                                onClick={goToApp}
                             >
                                 시작하기
                             </Button>
