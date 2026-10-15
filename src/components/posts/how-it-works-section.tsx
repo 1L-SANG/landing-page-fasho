@@ -38,7 +38,7 @@ const UploadPreview = () => (
                     {image && (
                         <>
                             <Image src={image} alt="" fill sizes="(min-width: 1280px) 52px, (min-width: 768px) 11vw, 18vw" className="object-cover" />
-                            <span className="absolute top-1 right-1 size-[9px] rounded-full bg-[#2F80ED] shadow-[0_0_0_2px_#fff]" />
+                            <span className="absolute top-1 right-1 size-[9px] rounded-full bg-[#3182F6] shadow-[0_0_0_2px_#fff]" />
                         </>
                     )}
                 </div>
@@ -109,7 +109,7 @@ const EditorPreview = () => (
             <span className="rounded-full border border-[#E3E3E8] bg-white px-2 py-[3px] text-[#1A1A1A]">미리보기</span>
             <span className="rounded-full bg-[#1A1A1A] px-2 py-[3px] text-white">다운로드</span>
         </div>
-        <div className="rounded-[5px] border border-[#dce7f6] bg-[#eef5ff] px-[6px] py-1 text-[11px] leading-[1.4] text-[#3068b4]">
+        <div className="rounded-[5px] border border-[#dce7f6] bg-[#eef5ff] px-[6px] py-1 text-[11px] leading-[1.4] text-[#3182F6]">
             {'지금도 문구와 배치를 고칠 수 있어요. 창을 닫아도 계속 만들어져요.'}
         </div>
         <div className="grid flex-1 grid-cols-2 grid-rows-2 gap-1">
@@ -117,7 +117,7 @@ const EditorPreview = () => (
                 <Image src="/sections/sig_women_01.webp" alt="" fill sizes="(min-width: 1280px) 110px, (min-width: 768px) 21vw, 36vw" className="object-cover object-[center_30%]" />
             </div>
             {/* 지금 고치고 있는 문구 블록 */}
-            <div className="flex flex-col justify-center gap-1 rounded-[4px] bg-white px-2 ring-2 ring-[#2F80ED]">
+            <div className="flex flex-col justify-center gap-1 rounded-[4px] bg-white px-2 ring-2 ring-[#3182F6]">
                 <span className="h-[3px] w-3/4 rounded-full bg-[#DCDCE2]" />
                 <span className="h-[3px] w-1/2 rounded-full bg-[#DCDCE2]" />
             </div>
@@ -194,7 +194,7 @@ const HowItWorksSection = () => {
                 <ol role="list" className="relative grid grid-cols-1 gap-8 max-md:mx-auto max-md:max-w-[560px] md:grid-cols-2 md:gap-6 xl:grid-cols-4">
                     {STEPS.map((step, i) => (
                         <StepItem key={step.title} index={i}>
-                            <Card variant="dark" className="flex h-full flex-col pb-6 md:pb-7 xl:pb-8">
+                            <Card data-handoff-dark variant="dark" className="flex h-full flex-col pb-6 md:pb-7 xl:pb-8">
                                 <StepPreview index={i} />
                                 <Badge variant="inverse" size="sm" aria-hidden="true" className="mb-2 flex w-fit text-white/70">
                                     STEP {i + 1}
@@ -221,7 +221,7 @@ const HowItWorksSection = () => {
                     ))}
                 </ol>
                 <div className="mt-10 flex justify-center md:mt-12 xl:hidden">
-                    <Button id="howto-start-cta" variant="primary" size="lg" onClick={goToApp}>
+                    <Button id="howto-start-cta" variant="primary" size="lg" data-start-cta onClick={goToApp}>
                         무료로 시작하기
                     </Button>
                 </div>

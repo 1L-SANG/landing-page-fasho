@@ -52,6 +52,15 @@ export default function RootLayout({
     <html lang="ko" suppressHydrationWarning>
       <head>
         <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+              const origin = performance.timeOrigin || (Date.now() - performance.now());
+              const phase = (origin - Date.UTC(2026, 0, 1)) / 1000;
+              document.documentElement.style.setProperty('--wl-t', phase.toFixed(3));
+            })();`,
+          }}
+        />
+        <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-TGVNWXLW10"
         />

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { goToApp } from '@/lib/app-url';
+import { installHandoffLifecycle } from '@/lib/landing-handoff';
 import { isModifiedClick, prefersReducedMotion, scrollToSection } from '@/lib/scroll-to-section';
 import { useAuth } from '@/components/auth/auth-provider';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,9 @@ const Header = () => {
     const showEnterApp = isConfigured && !loading && Boolean(session);
     // 섹션이 있는 곳은 랜딩 홈뿐이다. 다른 경로에서는 이전 값이 남아 있어도 표시하지 않는다.
     const currentId = pathname === '/' ? activeId : null;
+
+    // 홈·법적 고지 모두에서 복귀를 처리하고, 경로가 바뀌면 진행 중인 전환을 정리한다.
+    useEffect(installHandoffLifecycle, [pathname]);
 
     useEffect(() => {
         const sections = NAV_LINKS.map((link) => document.getElementById(link.id)).filter(
@@ -195,14 +199,14 @@ const Header = () => {
                                 로그아웃
                             </Button>
                         )}
-                        <Button variant="primary" size="sm" onClick={goToApp}>
+                        <Button variant="primary" size="sm" data-start-cta onClick={goToApp}>
                             시작하기
                         </Button>
                     </div>
 
                     {/* 1024 미만: 메뉴를 열지 않아도 시작 경로가 늘 보이도록 햄버거 앞에 compact CTA */}
                     <div className="flex items-center gap-2 lg:hidden">
-                        <Button variant="primary" size="compact" onClick={goToApp}>
+                        <Button variant="primary" size="compact" data-start-cta onClick={goToApp}>
                             시작하기
                         </Button>
                         <button
@@ -229,6 +233,7 @@ const Header = () => {
             {mobileMenuOpen && (
                 <>
                     <div
+                        data-handoff-menu-backdrop
                         className="fixed inset-0 z-40 touch-none bg-black/20 transition-opacity duration-150 starting:opacity-0 lg:hidden"
                         onClick={closeMenuToTrigger}
                         aria-hidden="true"
@@ -266,10 +271,8 @@ const Header = () => {
                                 variant="primary"
                                 size="md"
                                 className="w-full"
-                                onClick={() => {
-                                    setMobileMenuOpen(false);
-                                    goToApp();
-                                }}
+                                data-start-cta
+                                onClick={goToApp}
                             >
                                 시작하기
                             </Button>

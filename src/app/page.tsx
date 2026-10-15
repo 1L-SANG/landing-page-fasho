@@ -13,7 +13,7 @@ import { FAQSection } from '@/components/posts/faq-section';
 
 const HomePage = () => {
   return (
-    <div className="relative min-h-screen">
+    <div data-landing-page className="relative min-h-screen">
       <LuminousOrbBackground />
       <AuroraEdges />
 

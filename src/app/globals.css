@@ -2,15 +2,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* 스튜디오 요금제와 동일한 증정 태그·분석 특징 칩 테두리 색상. */
+/* 오너 결정 3: 증정 칩은 앱 --bg-2, --fg-1, --ring-strong과 같은 무채색. */
 #pricing {
-  --pricing-bonus-bg: #eef5ff;
-  --pricing-bonus-fg: #3068b4;
-  --pricing-bonus-border: #dce7f6;
-  --pricing-glow-sky: #7fd0f0;
-  --pricing-glow-sage: #b9a5e8;
-  --pricing-glow-sun: #e3ddf3;
-  --pricing-glow-mauve: #5fa7dd;
+  --pricing-bonus-bg: #f5f5f5;
+  --pricing-bonus-fg: #0e0d14;
+  --pricing-bonus-border: rgba(34, 42, 53, 0.12);
+  --pricing-glow-sky: var(--wl-sky);
+  --pricing-glow-sage: var(--wl-lav);
+  --pricing-glow-sun: var(--wl-peach);
+  --pricing-glow-mauve: var(--wl-mint);
 }
 
 @property --pricing-ring-angle {
@@ -268,6 +268,141 @@ html {
   font-size: var(--font-size);
 }
 
+
+/* --- Palette C: 승인 시안 orb-c.css --- */
+:root {
+  --wl-sky-rgb: 143 198 246;
+  --wl-peri-rgb: 159 182 255;
+  --wl-lav-rgb: 207 184 244;
+  --wl-peach-rgb: 255 205 178;
+  --wl-mint-rgb: 198 236 214;
+  --wl-white-rgb: 255 255 255;
+  --wl-sky: rgb(var(--wl-sky-rgb));
+  --wl-peri: rgb(var(--wl-peri-rgb));
+  --wl-lav: rgb(var(--wl-lav-rgb));
+  --wl-peach: rgb(var(--wl-peach-rgb));
+  --wl-mint: rgb(var(--wl-mint-rgb));
+  --wl-white: rgb(var(--wl-white-rgb));
+  --wl-l1-opacity: .64;
+  --wl-l2-opacity: .40;
+  --wl-l3-opacity: .24;
+  --wl-hi-opacity: .9;
+  --wl-l1-size: 300px;
+  --wl-l2-size: 250px;
+  --wl-l3-size: 200px;
+  --wl-hi-size: 130px;
+  --wl-l1-blur: 48px;
+  --wl-l2-blur: 40px;
+  --wl-l3-blur: 36px;
+  --wl-hi-blur: 28px;
+  /* 세 겹이 함께 도니 색 바퀴 전체가 돈다. 원래 무지개 층(16.2초) 빠르기로 차분하게. */
+  --wl-l1-cycle: 16.2s;
+  /* 같은 색 구간끼리 돌아 복숭아 위에 하늘색이 겹쳐 탁해지지 않는다. */
+  --wl-l2-cycle: var(--wl-l1-cycle);
+  --wl-l3-cycle: var(--wl-l1-cycle);
+  --wl-l1-angle: -30deg;
+  --wl-l2-angle: -18deg;
+  --wl-l3-angle: -24deg;
+  --wl-orb-stops: var(--wl-sky) 0% 12%, var(--wl-lav) 28% 40%, var(--wl-peach) 56% 72%, var(--wl-mint) 86%, var(--wl-sky) 100%;
+  --wl-inner-stops: var(--wl-white) 0%, var(--wl-lav) 28% 40%, var(--wl-peach) 56% 72%, var(--wl-mint) 86%, var(--wl-white) 100%;
+
+  --wl-landing-orb-hero: .40;
+  --wl-landing-orb-tail: .70;
+  --wl-landing-orb-peak: .8; /* 오너 결정(10/15): 한 화면 내린 지점 최고 세기 .80. 이 한 줄에서 조정한다. */
+  --wl-landing-aurora-hero: .60;
+  --wl-landing-aurora-tail: .85;
+
+  /* 두 저장소 계약: wearless_studio/docs/adr/0021-palette-c-glow-system-and-landing-handoff.md
+     랜딩 마지막 장면과 앱 첫 그림의 위치·배율·뿌리 세기를 함께 바꾼다(앱 먼저 배포). */
+  --wl-app-orb-y: calc(clamp(210px, 28vh, 260px) - 50vh);
+  --wl-app-orb-scale: 1.2;
+  --wl-app-orb-opacity: .82;
+  --wl-app-aurora-opacity: .52;
+
+  --wl-aurora-reach: clamp(80px, 11vw, 232px);
+  --wl-aurora-side-opacity: .8;
+  --wl-ribbon-opacity: .8;
+  --wl-breathe-low: .6;
+  --wl-breathe-high: 1;
+  --wl-landing-mask-pass: .20;
+  --wl-mask-ramp: 10vh;
+  --wl-rb-l1-core: .34;
+  --wl-rb-l1-edge: .14;
+  --wl-rb-l2-core: .34;
+  --wl-rb-l2-edge: .14;
+  --wl-rb-l3-core: .42;
+  --wl-rb-l3-edge: .17;
+  --wl-rb-r1-core: .36;
+  --wl-rb-r1-edge: .15;
+  --wl-rb-r2-core: .32;
+  --wl-rb-r2-edge: .13;
+  --wl-rb-r3-core: .46;
+  --wl-rb-r3-edge: .19;
+
+  --wl-handoff-press: 90ms;
+  --wl-handoff-press-scale: .97;
+  --wl-handoff-exit: 200ms;
+  --wl-handoff-exit-y: -8px;
+  --wl-handoff-travel: 400ms;
+  --wl-handoff-leave: 420ms;
+  --wl-handoff-ease: cubic-bezier(.22, 1, .36, 1);
+  --wl-handoff-exit-ease: cubic-bezier(.4, 0, 1, 1);
+}
+@media (min-width: 768px) {
+  :root {
+    --wl-l1-size: 600px;
+    --wl-l2-size: 500px;
+    --wl-l3-size: 400px;
+    --wl-hi-size: 260px;
+    --wl-l1-blur: 60px;
+    --wl-l2-blur: 50px;
+    --wl-l3-blur: 45px;
+    --wl-hi-blur: 40px;
+    /* 위 앱 ADR 0021의 768px 이상 자세와 동일하다. */
+    --wl-app-orb-y: calc(clamp(170px, 23vh, 250px) - 50vh);
+    --wl-app-orb-scale: 1.14;
+    --wl-app-orb-opacity: .64;
+  }
+}
+.wl-orb {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  transform: translateY(0) scale(1); transform-origin: center;
+}
+.wl-orb > i { position: absolute; display: block; border-radius: 50%; }
+.wl-orb__l1 {
+  width: var(--wl-l1-size); height: var(--wl-l1-size); filter: blur(var(--wl-l1-blur)); opacity: var(--wl-l1-opacity);
+  background: conic-gradient(from var(--wl-l1-angle), var(--wl-orb-stops));
+}
+.wl-orb__l2 {
+  width: var(--wl-l2-size); height: var(--wl-l2-size); filter: blur(var(--wl-l2-blur)); opacity: var(--wl-l2-opacity);
+  background: conic-gradient(from var(--wl-l2-angle), var(--wl-orb-stops));
+}
+.wl-orb__l3 {
+  width: var(--wl-l3-size); height: var(--wl-l3-size); filter: blur(var(--wl-l3-blur)); opacity: var(--wl-l3-opacity);
+  background: conic-gradient(from var(--wl-l3-angle), var(--wl-inner-stops));
+}
+.wl-orb__hi {
+  width: var(--wl-hi-size); height: var(--wl-hi-size); filter: blur(var(--wl-hi-blur)); opacity: var(--wl-hi-opacity);
+  background: radial-gradient(var(--wl-white) 12%, rgb(var(--wl-white-rgb) / .9) 28%, transparent 72%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wl-orb__l1 { animation: wl-spin var(--wl-l1-cycle) linear infinite; }
+  .wl-orb__l2 { animation: wl-spin var(--wl-l2-cycle) linear infinite; }
+  .wl-orb__l3 { animation: wl-spin var(--wl-l3-cycle) linear infinite; }
+  .wl-orb__l1, .wl-orb__l2, .wl-orb__l3 { animation-delay: calc(var(--wl-t, 0) * -1s); }
+}
+@keyframes wl-spin { to { transform: rotate(360deg); } }
+
+@property --wl-mask-pass {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+.wl-aurora { --wl-mask-pass: var(--wl-landing-mask-pass); }
+
+#contact { position: relative; z-index: 1; }
+
 /* --- Orb Spin Animation --- */
 @keyframes spin {
   from {
@@ -342,8 +477,8 @@ html {
 @media (prefers-reduced-motion: no-preference) {
   .aurora-ribbon {
     animation:
-      auroraFlow var(--aurora-flow, 48s) ease-in-out var(--aurora-delay, 0s) infinite alternate,
-      auroraBreathe var(--aurora-breathe, 20s) ease-in-out var(--aurora-delay, 0s) infinite alternate;
+      auroraFlow var(--aurora-flow, 48s) ease-in-out calc(var(--aurora-delay, 0s) - var(--wl-t, 0) * 1s) infinite alternate,
+      auroraBreathe var(--aurora-breathe, 20s) ease-in-out calc(var(--aurora-delay, 0s) - var(--wl-t, 0) * 1s) infinite alternate;
   }
 }
 
@@ -374,6 +509,64 @@ html {
     scale: none;
   }
 }
+
+/* 배경의 조상에는 transform/opacity를 붙이지 않는다. fixed 기준과 색 합성을 보존한다. */
+[data-start-cta]:active,
+[data-start-cta][data-handoff-pressed] {
+  scale: var(--wl-handoff-press-scale);
+  transition: scale var(--wl-handoff-press) var(--wl-handoff-ease);
+}
+html[data-handoff="leaving"] body { pointer-events: none; }
+html[data-handoff="leaving"] header > nav,
+html[data-handoff="leaving"] [data-landing-page] > section,
+html[data-handoff="leaving"] body > footer {
+  opacity: 0 !important;
+  translate: 0 var(--wl-handoff-exit-y);
+  transition: opacity var(--wl-handoff-exit) var(--wl-handoff-exit-ease),
+              translate var(--wl-handoff-exit) var(--wl-handoff-exit-ease);
+}
+html[data-handoff="leaving"] [data-orb-root] {
+  opacity: var(--wl-app-orb-opacity) !important;
+  transition: opacity var(--wl-handoff-travel) var(--wl-handoff-ease);
+}
+html[data-handoff="leaving"] [data-aurora-root] {
+  --wl-mask-pass: 1;
+  opacity: var(--wl-app-aurora-opacity) !important;
+  transition: opacity var(--wl-handoff-travel) var(--wl-handoff-ease),
+              --wl-mask-pass var(--wl-handoff-exit) var(--wl-handoff-exit-ease);
+}
+html[data-handoff="leaving"] .wl-orb {
+  transform: translateY(var(--wl-app-orb-y)) scale(var(--wl-app-orb-scale));
+  transition: transform var(--wl-handoff-travel) var(--wl-handoff-ease);
+}
+/* split의 독립 translate/scale을 각각 원점과 배율 1로 돌린다. */
+html[data-handoff="leaving"] .orb-hero-shift {
+  translate: 0 0;
+  scale: 1;
+  transition: translate var(--wl-handoff-travel) var(--wl-handoff-ease),
+              scale var(--wl-handoff-travel) var(--wl-handoff-ease);
+}
+
+/* 메뉴의 어두운 막도 남지 않게 한다. 배경 조상에는 transform/opacity를 주지 않는다. */
+html[data-handoff="leaving"] [data-handoff-menu-backdrop] {
+  opacity: 0;
+  transition: opacity var(--wl-handoff-exit) var(--wl-handoff-exit-ease);
+}
+/* 감사 2: 어두운 면은 160ms 감속으로 먼저 걷어낸다. */
+html[data-handoff="leaving"] #contact {
+  opacity: 0 !important;
+  translate: 0 var(--wl-handoff-exit-y);
+  transition: opacity 160ms cubic-bezier(0, 0, .2, 1), translate 160ms cubic-bezier(0, 0, .2, 1);
+}
+html[data-handoff="leaving"] [data-handoff-dark] {
+  opacity: 0 !important;
+  /* 이동은 부모 섹션의 8px을 따른다. 자식에서도 옮기면 16px로 겹친다. */
+  transition: opacity 160ms cubic-bezier(0, 0, .2, 1);
+}
+/* bfcache 복귀는 퇴장의 역재생 없이 원래 자세로 돌아간다. */
+html[data-handoff="resetting"] *,
+html[data-handoff="resetting"] *::before,
+html[data-handoff="resetting"] *::after { transition: none !important; }
 
 /* --- Video Controls Hidden --- */
 .video-no-controls::-webkit-media-controls {
@@ -434,6 +627,8 @@ html {
  * 무한 회전·그라데이션·등장 전환을 사실상 즉시 끝나게 한다. 개별 컴포넌트의 motion-safe/motion-reduce 와 함께 쓴다.
  * 파일 끝에 두어 위의 애니메이션 규칙보다 늦게 온다. */
 @media (prefers-reduced-motion: reduce) {
+  :root { --wl-handoff-press-scale: 1; }
+
   *,
   *::before,
   *::after {
