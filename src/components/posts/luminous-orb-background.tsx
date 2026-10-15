@@ -34,8 +34,6 @@ const useScrollFade = (ref: RefObject<HTMLElement | null>, { heroFloor, tailFloo
             const y = Math.max(0, window.scrollY);
             const h = Math.max(1, window.innerHeight);
             el.style.opacity = String(getScrollFadeOpacity(y, h, { heroFloor, tailFloor }, peak));
-            // 분할 히어로의 자리(globals.css .orb-hero-shift)가 읽는다.
-            el.style.setProperty('--hero-progress', String(Math.min(y / h, 1)));
         };
         const schedule = () => {
             if (frame === 0) frame = requestAnimationFrame(apply);
@@ -107,14 +105,11 @@ const LuminousOrbBackground = () => {
             // 하이드레이션 전에도 첫 화면 세기로 그린다.
             style={{ opacity: ORB_FADE.heroFloor }}
         >
-            {/* 1180px 이상 분할 히어로에서는 첫 화면 동안 왼쪽 제목 뒤에 머문다. */}
-            <div className="orb-hero-shift absolute inset-0 flex items-center justify-center">
-                <div className="wl-orb">
-                    <i className="wl-orb__l1" />
-                    <i className="wl-orb__l2" />
-                    <i className="wl-orb__l3" />
-                    <i className="wl-orb__hi" />
-                </div>
+            <div className="wl-orb">
+                <i className="wl-orb__l1" />
+                <i className="wl-orb__l2" />
+                <i className="wl-orb__l3" />
+                <i className="wl-orb__hi" />
             </div>
         </div>
     );

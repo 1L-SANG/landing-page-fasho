@@ -15,7 +15,7 @@ const load = ({ peak = '1', reduced = false, animations = [] } = {}) => {
     let frameId = 0;
     let handoff = null;
     let clock = 4500;
-    const style = { opacity: '', setProperty(name, value) { this[name] = value; } };
+    const style = { opacity: '' };
     const element = { style, querySelectorAll: () => [{ getAnimations: () => animations }] };
     const exports = {};
     const window = {
@@ -90,11 +90,9 @@ test('scroll updates pause while leaving, then restore the saved position on res
     h.fire('resize');
     h.flush();
     assert.ok(Math.abs(Number(h.style.opacity) - 0.6) < 1e-10);
-    assert.equal(h.style['--hero-progress'], '0.5');
     h.setHandoff('resetting');
     h.fire('wl-handoff-reset');
     assert.equal(h.style.opacity, '0.8');
-    assert.equal(h.style['--hero-progress'], '1');
     cleanups.forEach((cleanup) => cleanup());
 });
 
@@ -107,7 +105,6 @@ test('invalid peak falls back to 1 and restored overscroll keeps the hero floor'
     h.window.scrollY = -50;
     h.fire('wl-handoff-reset');
     assert.equal(h.style.opacity, '0.4');
-    assert.equal(h.style['--hero-progress'], '0');
 });
 
 test('wall-clock phase catches up at mount and after a bfcache restore', () => {
