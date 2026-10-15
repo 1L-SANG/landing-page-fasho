@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 const source = new URL('../src/lib/landing-handoff.ts', import.meta.url);
-const load = ({ reduced = false, failAnimation = false, hasOrb = true } = {}) => {
+const load = ({ reduced = false, failAnimation = false, hasOrb = true, pathname = '/' } = {}) => {
     const attributes = new Map();
     const ctaAttributes = new Map();
     const timers = new Map();
@@ -53,6 +53,40 @@ const load = ({ reduced = false, failAnimation = false, hasOrb = true } = {}) =>
     vm.runInContext(ts.transpileModule(readFileSync(source, 'utf8'), {
         compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
     }).outputText, context);
+    // 홈을 렌더하지 않아도 공통 헤더의 실제 effect가 이동 복구를 설치하는지 확인한다.
+    const mountHeader = () => {
+        const effects = [];
+        const headerExports = {};
+        vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../src/components/common/Header.tsx', import.meta.url), 'utf8'), {
+            compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.ReactJSX },
+        }).outputText, {
+            exports: headerExports,
+            window,
+            document: { ...context.document, getElementById: () => null },
+            require: (name) => {
+                switch (name) {
+                    case 'react': return {
+                        useEffect: (effect) => effects.push(effect),
+                        useState: (initial) => [initial, () => {}],
+                        useRef: () => ({ current: null }),
+                        useSyncExternalStore: (_subscribe, _snapshot, serverSnapshot) => serverSnapshot(),
+                    };
+                    case 'react/jsx-runtime': return { jsx: () => null, jsxs: () => null };
+                    case 'next/navigation': return { usePathname: () => pathname };
+                    case '@/lib/landing-handoff': return exports;
+                    case '@/components/auth/auth-provider': return { useAuth: () => ({
+                        session: null, loading: false, isConfigured: false,
+                        openLogin() {}, closeLogin() {}, signOut() {},
+                    }) };
+                    case '@/components/ui/cn': return { cn: () => '' };
+                    default: return {};
+                }
+            },
+        });
+        headerExports.Header();
+        const cleanups = effects.map((effect) => effect());
+        return () => cleanups.forEach((cleanup) => cleanup?.());
+    };
     const tick = (milliseconds) => {
         now += milliseconds;
         for (const [key, timer] of [...timers]) {
@@ -73,7 +107,7 @@ const load = ({ reduced = false, failAnimation = false, hasOrb = true } = {}) =>
         event.currentTarget.click = () => exports.handleAppLinkClick(click({ currentTarget: event.currentTarget }));
         return event;
     };
-    return { api: exports, root, cta, ctaAttributes, navigations, fire, tick, click };
+    return { api: exports, root, cta, ctaAttributes, navigations, fire, tick, click, mountHeader };
 };
 
 test('waits 420ms and ignores repeated starts even from another CTA', () => {
@@ -107,6 +141,22 @@ test('legal pages without an orb navigate immediately', () => {
     const h = load({ hasOrb: false });
     h.api.startAppHandoff('/?from=landing', h.cta);
     assert.deepEqual(h.navigations, ['/?from=landing']);
+});
+
+test('legal-page header permits app navigation again after a bfcache return', () => {
+    for (const pathname of ['/terms', '/privacy', '/refund', '/model-license-terms']) {
+        const h = load({ hasOrb: false, pathname });
+        const unmount = h.mountHeader();
+        try {
+            h.api.startAppHandoff('/?from=landing', h.cta);
+            h.fire('pagehide');
+            h.fire('pageshow', { persisted: true });
+            h.api.startAppHandoff('/?from=landing', h.cta);
+            assert.deepEqual(h.navigations, ['/?from=landing', '/?from=landing'], pathname);
+        } finally {
+            unmount();
+        }
+    }
 });
 
 test('pricing click uses its href including plan and from parameters', () => {

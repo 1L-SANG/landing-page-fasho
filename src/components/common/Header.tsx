@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { goToApp } from '@/lib/app-url';
+import { installHandoffLifecycle } from '@/lib/landing-handoff';
 import { isModifiedClick, prefersReducedMotion, scrollToSection } from '@/lib/scroll-to-section';
 import { useAuth } from '@/components/auth/auth-provider';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,9 @@ const Header = () => {
     const showEnterApp = isConfigured && !loading && Boolean(session);
     // 섹션이 있는 곳은 랜딩 홈뿐이다. 다른 경로에서는 이전 값이 남아 있어도 표시하지 않는다.
     const currentId = pathname === '/' ? activeId : null;
+
+    // 홈·법적 고지 모두에서 복귀를 처리하고, 경로가 바뀌면 진행 중인 전환을 정리한다.
+    useEffect(installHandoffLifecycle, [pathname]);
 
     useEffect(() => {
         const sections = NAV_LINKS.map((link) => document.getElementById(link.id)).filter(
