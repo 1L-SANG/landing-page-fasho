@@ -476,6 +476,23 @@ html {
   }
 }
 
+.orb-hero-lift {
+  translate: 0 calc(var(--orb-lift, 0px) * (1 - var(--hero-progress, 0)));
+}
+
+/* 768px 이상만 조정해 폰은 그대로 두고, 버튼과 만족도 줄 사이인 430px에 맞춘다. */
+@media (min-width: 768px) {
+  .orb-hero-lift {
+    --orb-lift: min(0px, calc(430px - 50vh));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-hero-lift {
+    translate: none;
+  }
+}
+
 /* 배경의 조상에는 transform/opacity를 붙이지 않는다. fixed 기준과 색 합성을 보존한다. */
 [data-start-cta]:active,
 [data-start-cta][data-handoff-pressed] {
@@ -504,6 +521,10 @@ html[data-handoff="leaving"] [data-aurora-root] {
 html[data-handoff="leaving"] .wl-orb {
   transform: translateY(var(--wl-app-orb-y)) scale(var(--wl-app-orb-scale));
   transition: transform var(--wl-handoff-travel) var(--wl-handoff-ease);
+}
+html[data-handoff="leaving"] .orb-hero-lift {
+  translate: 0 0;
+  transition: translate var(--wl-handoff-travel) var(--wl-handoff-ease);
 }
 /* 메뉴의 어두운 막도 남지 않게 한다. 배경 조상에는 transform/opacity를 주지 않는다. */
 html[data-handoff="leaving"] [data-handoff-menu-backdrop] {

@@ -18,7 +18,7 @@ export const getScrollFadeOpacity = (scrollY: number, viewportHeight: number, { 
     return Math.max(tailFloor, peak - (y - h) / (2 * h));
 };
 
-// 스크롤마다 리렌더하지 않도록 프레임당 한 번 DOM의 opacity만 직접 바꾼다. 사이드 오로라도 같은 곡선을 쓴다.
+// 스크롤마다 리렌더하지 않도록 프레임당 한 번 DOM의 세기와 진행도를 직접 바꾼다. 사이드 오로라도 같은 곡선을 쓴다.
 const useScrollFade = (ref: RefObject<HTMLElement | null>, { heroFloor, tailFloor, peakProperty }: ScrollFade) => {
     useEffect(() => {
         const el = ref.current;
@@ -34,6 +34,7 @@ const useScrollFade = (ref: RefObject<HTMLElement | null>, { heroFloor, tailFloo
             const y = Math.max(0, window.scrollY);
             const h = Math.max(1, window.innerHeight);
             el.style.opacity = String(getScrollFadeOpacity(y, h, { heroFloor, tailFloor }, peak));
+            el.style.setProperty('--hero-progress', String(Math.min(y / h, 1)));
         };
         const schedule = () => {
             if (frame === 0) frame = requestAnimationFrame(apply);
@@ -105,11 +106,13 @@ const LuminousOrbBackground = () => {
             // 하이드레이션 전에도 첫 화면 세기로 그린다.
             style={{ opacity: ORB_FADE.heroFloor }}
         >
-            <div className="wl-orb">
-                <i className="wl-orb__l1" />
-                <i className="wl-orb__l2" />
-                <i className="wl-orb__l3" />
-                <i className="wl-orb__hi" />
+            <div className="orb-hero-lift absolute inset-0 flex items-center justify-center">
+                <div className="wl-orb">
+                    <i className="wl-orb__l1" />
+                    <i className="wl-orb__l2" />
+                    <i className="wl-orb__l3" />
+                    <i className="wl-orb__hi" />
+                </div>
             </div>
         </div>
     );
