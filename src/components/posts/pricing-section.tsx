@@ -45,7 +45,6 @@ const PLANS: Plan[] = [
         credits: '600',
         features: [
             { text: '기본모델 2명 무료 제공' },
-            { text: '마네킹컷 1회 무료 수정 가능' },
             { text: '에디터 기능 제공' },
             { text: '무제한 다운로드 가능' },
         ],
@@ -74,7 +73,6 @@ const PLANS: Plan[] = [
         bonusNote: '400 크레딧 추가 증정',
         features: [
             { text: 'Seller의 모든 기능 제공', inherited: true },
-            { text: '마네킹컷 2회 무료 수정 가능', highlight: '2회 무료 수정' },
             { text: '모든 AI 모델 무료 제공', highlight: '무료 제공' },
             { text: '충전할 때마다 크레딧 10% 보너스', highlight: '10% 보너스' },
         ],
